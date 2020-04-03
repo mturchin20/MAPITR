@@ -1,1 +1,1 @@
-# MAPIT.R
+# MAPIT_R
