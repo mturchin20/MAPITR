@@ -54,10 +54,10 @@ The `MAPIT_R` R package was developed by [Michael Turchin][michaelt] at
 the [Brown University][brownu], with contributions from
 [Greg Darnell][greg] and [Lorin Crawford][lorin].
 
-[MAPIT_R-website]: http://mturchin20.github.io/MAPIT_R/ 
+[MAPIT_R-website]: http://mturchin20.github.io/MAPIT_R 
 [MAPIT_R-vignette1]: http://mturchin20.github.io/MAPIT_R/articles/MAPIT_RIntro.1.SimulatedData.html
 [MAPIT_R-vignette2]: http://mturchin20.github.io/MAPIT_R/articles/MAPIT_RIntro.2.RealData.html
-[biorxiv-paper]: 
+[biorxiv-paper]: http://www.google.com 
 [issues]: https://github.com/mturchin20/MAPIT_R/issues
 [lorin]: http://www.lcrawlab.com/ 
 [michaelt]: http://home.uchicago.edu/mturchin20/index.html 
