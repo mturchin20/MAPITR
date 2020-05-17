@@ -19,7 +19,12 @@ BugReports: https://github.com/mturchin20/MAPITR/issues
 Depends: R (>= 3.5.0)
 Imports:
     utils,
-    stats
+    stats,
+    doParallel,
+    Rcpp,
+    RcppArmadillo,
+    RcppParallel,
+    CompQuadForm
 Suggests:
     testthat,
     knitr,
@@ -27,11 +32,6 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 
-Encoding: UTF-8
-Type: Package
-Package: bmass
-Version: 1.0.3
-Date: 2019-05-15
 Title: Bayesian Multivariate Analysis of Summary Statistics
 Authors@R: c(person("Michael","Turchin",email = "mturchin20@uchicago.edu",
                     role=c("aut","cre")),
@@ -51,16 +51,8 @@ Description: Multivariate tool for analyzing genome-wide association
     for Association Analysis with Multiple Related Phenotypes",
     M. Stephens (2013) <doi:10.1371/journal.pone.0065245>.
 License: GPL (>= 3)
-URL: https://github.com/mturchin20/bmass
-BugReports: https://github.com/mturchin20/bmass/issues
 Depends: R (>= 3.3.0)
-Imports:
-    utils,
-    stats
-Suggests:
-    testthat,
-    knitr,
-    rmarkdown
+
 LazyData: true
 NeedsCompilation: no
 RoxygenNote: 6.1.1
