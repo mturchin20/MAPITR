@@ -1,32 +1,28 @@
-
-
-
-
 #' @useDynLib MAPITR
 #' @import doParallel
 #' @import Rcpp
 #' @import RcppArmadillo
 #' @import RcppParallel
 #' @import CompQuadForm
-RunMAPITR.NothingProvided <- function (Phenotypes, Genotypes, Pathway, Covariates, CenterStandardize) {
+RunMAPITR.NothingProvided <- function (PhenotypesMatrix, Genotypes, Pathways, Covariates, CenterStandardize) {
 
 	RunMAPITR.NothingProvided.Output <- list();
 
 
-	#unit test this
-	if (CenterStandardize == TRUE) {
-		Genotypes.Mean <- apply(Genotypes, 2, mean); 
-		Genotypes.SD <- apply(Genotypes, 2, sd); 
-		Genotypes <- t((t(Genotypes)-Genotypes.Mean)/Genotypes.SD);
-	}
-	Data3.mean <- apply(Data3, 2, mean); Data3.sd <- apply(Data3, 2, sd); Data3 <- t((t(Data3)-Data3.mean)/Data3.sd); \
-	
-	Genotypes.Pathway <- Genotypes[,Pathway];
+#	#unit test this
+#	if (CenterStandardize == TRUE) {
+#		Genotypes.Mean <- apply(Genotypes, 2, mean); 
+#		Genotypes.SD <- apply(Genotypes, 2, sd); 
+#		Genotypes <- t((t(Genotypes)-Genotypes.Mean)/Genotypes.SD);
+#	}
+#	Data3.mean <- apply(Data3, 2, mean); Data3.sd <- apply(Data3, 2, sd); Data3 <- t((t(Data3)-Data3.mean)/Data3.sd); \
+#	
+#	Genotypes.Pathway <- Genotypes[,Pathway];
 
 	GRM_Grand <- 1/ncol(Genotypes) * tcrossprod(as.matrix(Genotypes)); 
 	GRM_Pathway <- 1/ncol(Genotypes.Pathway) * tcrossprod(as.matrix(Genotypes.Pathway)); 
 
-	RunMAPITR.NothingProvided.Output.temp <- MAPITR(t(Genotypes.Pathway),Phenotypes,as.matrix(GRM_Grand),as.matrix(GRM_Pathway),t(as.matrix(Z)),cores=cores);
+	RunMAPITR.NothingProvided.Output.temp <- MAPITR(t(Genotypes.Pathway),PhenotypesMatrix,as.matrix(GRM_Grand),as.matrix(GRM_Pathway),t(as.matrix(Z)),cores=cores);
 
 
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/InterPath/Vs1/InterPath.Vs2.GjDrop.mtEdits.SingleRun.vs1.wCovs.vs1.cpp"); 

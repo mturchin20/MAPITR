@@ -39,7 +39,7 @@
 #	return(MAPITRmain(DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, ...))
 #}
 
-MAPITR <- function (Phenotypes, Genotypes = NULL, Pathway = NULL, GRM_Grand = Null, GRM_Pathway = NULL, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE) {
+MAPITR <- function (PhenotypesVector, Genotypes = NULL, Pathway = NULL, GRM_Grand = Null, GRM_Pathway = NULL, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE) {
 
         MAPITRoutput <- list()
 	MAPITRoutput$pValue <- NULL
