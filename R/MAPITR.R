@@ -43,8 +43,22 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
 
         MAPITRprocessing <- list()
 	MAPITRoutput <- list()
+	MAPITRoutput$LogFile <- c();
 	MAPITRoutput$pValue <- NULL
 	MAPITRoutput$PVE <- NULL
+
+        MAPITRoutput$LogFile <- rbind(MAPITRoutput$LogFile, paste(format(Sys.time()), " -- beginning MAPITR.", sep=""))
+        if (PrintProgress == TRUE) {
+                write(paste(format(Sys.time()), " -- beginning MAPITR.", sep=""), stderr())
+        }
+
+	#Check for NAs in PhenotypesVector
+	MAPITRoutput$LogFile <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates
+
+	                bmassOutput$LogFile <- CheckIndividualDataSources(DataSources, GWASsnps, ExpectedColumnNames, SigmaAlphas, bmassOutput$MergedDataSources, ProvidedPriors, UseFlatPriors, PruneMarginalSNPs, PruneMarginalSNPs_bpWindow, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, NminThreshold, bmassSeedValue, bmassOutput$LogFile)
+
+
+	MAPITRprocessing$log <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates
 
 	MAPITRprocessing <- PreprocessData(PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes
 

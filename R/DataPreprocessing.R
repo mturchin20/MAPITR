@@ -1,9 +1,56 @@
+CheckNumericClass <- function (InputData) {
+	returnValue <- FALSE
+	
+	if (is.numeric(InputData)) {
+		returnValue <- TRUE
+	}
+
+	return(returnValue)
+}
+
+CheckForNAs <- function (InputData) {
+	returnValue <- FALSE
+	
+	if (is.na(InputData)) {
+		returnValue <- TRUE
+	}
+
+	return(returnValue)
+}
+
+DataChecks <- function ( ) {
+
+	#Checking for NAs in phenotype vector
+	#unit test
+	if (is.na(PhenotypesVector)) {
+		stop(Sys.time(), " -- there are NAs in the phenotype vector. Please remove and align the remaining files (eg genotype matrix).");
+	}
+	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- PhenotypesVector passed NA check.", sep=""))
+
+	#Checking for missingness in genotype matrix
+	if (apply(Genotypes, 2, is.na)) {
+		stop(Sys.time(), " -- there are NAs in the genotype matrix. There must be zero missingness in the genotype matrix. Please correct and rerun.");
+	}
+	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- Genotypes passed NA check.", sep=""))
+
+#	#Checking for NAs in pathways file
+#	if (apply(Pathways, 1, 
+
+	#If using covariates, checking for NAs in covariate matrix
+
+	DataSourcesCheckMAFIsMAF <- apply(DataSources, 2, CheckDataSourceMAFIsMAF)
+	if (FALSE %in% DataSourcesCheckMAFIsMAF) {
+		stop(Sys.time(), " -- the following data sources have variants whose MAF entry are > .5; bmass expects the MAF column to only have values <= .5. Please fix and rerun bmass: ", paste(DataSources[!DataSourcesCheckMAFIsMAF], collapse=" "))
+	}
+	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- DataSources passed MAF column check.", sep=""))
+
+
+}
+
 PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes) {
 
 	PreprocessData.Output <- list();
 	PhenotypesMatrix <- c();
-
-	#removing NAs based on phenotype and equalizing across input files
 
 	#unit test this
 	if (CenterStandardize == TRUE) {
