@@ -3,7 +3,11 @@
 
 
 
-
+#' @import doParallel
+#' @import Rcpp
+#' @import RcppArmadillo
+#' @import RcppParallel
+#' @import CompQuadForm
 RunMAPITR.NothingProvided <- function ( CenterStandardize) {
 
 	RunMAPITR.NothingProvided.Output <- list()
@@ -42,17 +46,11 @@ InterPath.output.temp <- InterPath(t(X.Pheno.noNAs),Y.Pheno.noNAs,as.matrix(X.co
 
 InterPath.output$Est <- c(InterPath.output$Est, InterPath.output.temp$Est); InterPath.output$Eigenvalues <- cbind(InterPath.output$Eigenvalues, InterPath.output.temp$Eigenvalues); InterPath.output$PVE <- c(InterPath.output$PVE, InterPath.output.temp$PVE); 
                                 
-R -q -e "library(\"CompQuadForm\"); neg.is.na <- Negate(is.na); \
+library("CompQuadForm"); neg.is.na <- Negate(is.na); \
 
-                                Results1 <- c(); Counter1 <- 1; for (i in $PathNum:($PathNum+79)) { \
-                                        if (i <= $NumPaths) { if (neg.is.na(InterPath.output.Est[Counter1,1])) { \
-                                                Lambda <- sort(InterPath.output.Eigenvalues[,Counter1], decreasing=TRUE); \
-                                                Davies.Output <- davies(InterPath.output.Est[Counter1,1], lambda=Lambda, acc=1e-8); \
-                                                pVal <- 2*min(1-Davies.Output\$Qq, Davies.Output\$Qq); \
-                                                Results1 <- rbind(Results1, c(as.character(Pathways[i,1]), InterPath.output.Est[Counter1,1], InterPath.output.PVE[Counter1,1], pVal, Davies.Output\$Qq, Davies.Output\$ifault)); \
-                                                Counter1 = Counter1 + 1; \
-                                        } else { Results1 <- rbind(Results1, c(as.character(Pathways[i,1]), rep(NA, 5))); }; \
-
+Lambda <- sort(InterPath.output.Eigenvalues[,Counter1], decreasing=TRUE); \
+Davies.Output <- davies(InterPath.output.Est[Counter1,1], lambda=Lambda, acc=1e-8); \
+pVal <- 2*min(1-Davies.Output\$Qq, Davies.Output\$Qq); \
 
 
 	return(RunMAPITR.NothingProvided.Output)
