@@ -1,17 +1,30 @@
-PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, CenterStandardize, RegressPhenotypes) {
+PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes) {
 
 	PreprocessData.Output <- list();
-	
+	PhenotypesMatrix <- c();
+
+	#removing NAs based on phenotype and equalizing across input files
+
 	#unit test this
 	if (CenterStandardize == TRUE) {
 		Genotypes.Mean <- apply(Genotypes, 2, mean); 
 		Genotypes.SD <- apply(Genotypes, 2, sd); 
 		Genotypes <- t((t(Genotypes)-Genotypes.Mean)/Genotypes.SD);
 	}
-	Data3.mean <- apply(Data3, 2, mean); Data3.sd <- apply(Data3, 2, sd); Data3 <- t((t(Data3)-Data3.mean)/Data3.sd); \
-	
-	Genotypes.Pathway <- Genotypes[,Pathway];
+	Data3.mean <- apply(Data3, 2, mean); Data3.sd <- apply(Data3, 2, sd); Data3 <- t((t(Data3)-Data3.mean)/Data3.sd); \i
 
+	if (RegressPhenotypes == TRUE) { 
+		for (i in 1:nrow(Pathways)) { 
+			Genotypes.Pathway <- Genotypes[,Pathway];
+		
+			residuals(lm(Data1[,j] ~ Data2 - 1, na.action=na.exclude)))
+
+		}
+	} else {
+		for (i in 1:nrow(Pathways)) { 
+			PhenotypesMatrix <- cbind(PhenotypesMatrix, PhenotypesVector);
+		}
+	}
 
 	return(PreprocessData.Output);
 

@@ -34,25 +34,25 @@
 #'
 #' @export
 #' 
-#MAPITR <- function (Phenotypes, Genotypes, 
-#DataSources, GWASsnps = NULL, SNPMarginalUnivariateThreshold = 1e-6, SNPMarginalMultivariateThreshold = 1e-6, GWASThreshFlag = TRUE, GWASThreshValue = 5e-8, NminThreshold = 0, PrintMergedData = FALSE, PrintProgress = FALSE, ...) {
-#	return(MAPITRmain(DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, ...))
-#}
+MAPITR <- function (Phenotypes, Genotypes, Pathways, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE)
+DataSources, GWASsnps = NULL, SNPMarginalUnivariateThreshold = 1e-6, SNPMarginalMultivariateThreshold = 1e-6, GWASThreshFlag = TRUE, GWASThreshValue = 5e-8, NminThreshold = 0, PrintMergedData = FALSE, PrintProgress = FALSE, ...) {
+	return(MAPITRmain(DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, ...))
+}
 
-MAPITR <- function (PhenotypesVector, Genotypes = NULL, Pathway = NULL, GRM_Grand = Null, GRM_Pathway = NULL, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE) {
+MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE) {
 
-        MAPITRoutput <- list()
+        MAPITRprocessing <- list()
+	MAPITRoutput <- list()
 	MAPITRoutput$pValue <- NULL
 	MAPITRoutput$PVE <- NULL
+
+	MAPITRprocessing <- PreprocessData(PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes
 
 	return(MAPITRoutput) 
 
 }
 
 DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, MergedDataSources = NULL, ZScoresCorMatrix = NULL, ExpectedColumnNames = c("Chr", "BP", "Marker", "MAF", "A1", "Direction", "pValue", "N"), GWASsnps_AnnotateWindow = 5e5, SigmaAlphas = c(0.005,0.0075,0.01,0.015,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.15), ProvidedPriors = NULL, UseFlatPriors = NULL, PruneMarginalSNPs = TRUE, PruneMarginalSNPs_bpWindow = 5e5, bmassSeedValue = 1) {
-
-	function (Phenotypes, Genotypes, 
-
 
         MAPITRoutput <- list()
 	MAPITRoutput$MergedDataSources <- NULL
@@ -63,13 +63,6 @@ DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateTh
         if (!is.null(ZScoresCorMatrix)) {
 		MAPITRoutput$ZScoresCorMatrix <- ZScoresCorMatrix
 	}
-	MAPITRoutput$MarginalSNPs <- list()
-	MAPITRoutput$Models <- NULL
-	MAPITRoutput$ModelPriors <- NULL
-        MAPITRoutput$PreviousSNPs <- list()
-        MAPITRoutput$NewSNPs <- list()
-        MAPITRoutput$GWASlogBFMinThreshold <- NULL
-	MAPITRoutput$LogFile <- c()
 	MAPITRoutput$MarginalSNPs <- list()
 	MAPITRoutput$Models <- NULL
 	MAPITRoutput$ModelPriors <- NULL
@@ -99,8 +92,6 @@ DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateTh
 		
 		MAPITRoutput[c("MergedDataSources", "LogFile")] <- MergeDataSources(DataSources, MAPITRoutput$LogFile)[c("MergedDataSources", "LogFile")]
 	}
-
-	MAPITRoutput[c("MergedDataSources", "MarginalSNPs", "ZScoresCorMatrix", "LogFile")] <- ProcessMergedAndAnnotatedDataSources(DataSources, MAPITRoutput$MergedDataSources, MAPITRoutput$ZScoresCorMatrix, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, MAPITRoutput$LogFile)[c("MergedDataSources", "MarginalSNPs", "ZScoresCorMatrix", "LogFile")]
 
 	MAPITRoutput[c("MarginalSNPs", "PreviousSNPs", "ModelPriors", "GWASlogBFMinThreshold", "LogFile")] <- DetermineAndApplyPriors(DataSources, MAPITRoutput$MarginalSNPs, GWASsnps, SigmaAlphas, MAPITRoutput$Models, MAPITRoutput$ModelPriors, ProvidedPriors, UseFlatPriors, GWASThreshFlag, GWASThreshValue, bmassSeedValue, MAPITRoutput$LogFile)[c("MarginalSNPs", "PreviousSNPs", "ModelPriors", "GWASlogBFMinThreshold", "LogFile")]
 	
