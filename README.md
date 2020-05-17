@@ -1,9 +1,9 @@
-# MAPIT_R: MArginal EPIstasis Test for Regions
+# MAPITR: MArginal ePIstasis Test for Regions
 
-[![CRAN status badge](https://www.r-pkg.org/badges/version/MAPIT_R)](https://cran.r-project.org/package=MAPIT_R)
-[![Travis Build Status](https://travis-ci.org/mturchin20/MAPIT_R.svg?branch=master)](https://travis-ci.org/mturchin20/MAPIT_R)
+[![CRAN status badge](https://www.r-pkg.org/badges/version/MAPITR)](https://cran.r-project.org/package=MAPITR)
+[![Travis Build Status](https://travis-ci.org/mturchin20/MAPITR.svg?branch=master)](https://travis-ci.org/mturchin20/MAPITR)
 
-The `MAPIT_R` R package provides accessible functions for running the
+The `MAPITR` R package provides accessible functions for running the
 algorithms described in...
 
 If you find a bug, or you have a question or feedback on our work,
@@ -11,7 +11,7 @@ please post an [issue][issues].
 
 ## Citing this work
 
-If you find the `MAPIT_R` package or any of the source code in this
+If you find the `MAPITR` package or any of the source code in this
 repository useful for your work, please cite:
 
 > Turchin MC, Darnell G, Crawford L, and Ramachandran S (2020) 
@@ -27,38 +27,38 @@ file [LICENSE](LICENSE) for the full text of the license.
 
 ## Quick Start
 
-To install `MAPIT_R` from [CRAN](https://cran.r-project.org/web/packages/MAPIT_R/index.html):
+To install `MAPITR` from [CRAN](https://cran.r-project.org/web/packages/MAPITR/index.html):
 
 ```{r}
-install.packages("MAPIT_R")
+install.packages("MAPITR")
 ```
 
-To install the most recent dev version of `MAPIT_R` from [github](https://github.com/mturchin20/MAPIT_R):
+To install the most recent dev version of `MAPITR` from [github](https://github.com/mturchin20/MAPITR):
 ```{r}
 install.packages("devtools")
-devtools::install_github("mturchin20/MAPIT_R@v1.0.3", build_vignettes=TRUE)
+devtools::install_github("mturchin20/MAPITR@v1.0.3", build_vignettes=TRUE)
 ```
 
 Once you have installed the package, load the package in R:
 
 ```{r}
-library("MAPIT_R")
+library("MAPITR")
 ```
 
 Next, view and run the example code provided in the 
-[introductory vignette][MAPIT_R-vignette1] using simulated data. 
+[introductory vignette][MAPITR-vignette1] using simulated data. 
 
 ## Credits
 
-The `MAPIT_R` R package was developed by [Michael Turchin][michaelt] at
+The `MAPITR` R package was developed by [Michael Turchin][michaelt] at
 the [Brown University][brownu], with contributions from
 [Greg Darnell][greg] and [Lorin Crawford][lorin].
 
-[MAPIT_R-website]: http://mturchin20.github.io/MAPIT_R 
-[MAPIT_R-vignette1]: http://mturchin20.github.io/MAPIT_R/articles/MAPIT_RIntro.1.SimulatedData.html
-[MAPIT_R-vignette2]: http://mturchin20.github.io/MAPIT_R/articles/MAPIT_RIntro.2.RealData.html
+[MAPITR-website]: http://mturchin20.github.io/MAPITR 
+[MAPITR-vignette1]: http://mturchin20.github.io/MAPITR/articles/MAPITRIntro.1.SimulatedData.html
+[MAPITR-vignette2]: http://mturchin20.github.io/MAPITR/articles/MAPITRIntro.2.RealData.html
 [biorxiv-paper]: http://www.google.com 
-[issues]: https://github.com/mturchin20/MAPIT_R/issues
+[issues]: https://github.com/mturchin20/MAPITR/issues
 [lorin]: http://www.lcrawlab.com/ 
 [michaelt]: http://home.uchicago.edu/mturchin20/index.html 
 [mit-license]: https://opensource.org/licenses/mit-license.html
