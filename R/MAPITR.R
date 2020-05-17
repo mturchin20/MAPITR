@@ -39,7 +39,7 @@ DataSources, GWASsnps = NULL, SNPMarginalUnivariateThreshold = 1e-6, SNPMarginal
 	return(MAPITRmain(DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, ...))
 }
 
-MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE) {
+MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
         MAPITRprocessing <- list()
 	MAPITRoutput <- list()
@@ -52,15 +52,20 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
                 write(paste(format(Sys.time()), " -- beginning MAPITR.", sep=""), stderr())
         }
 
-	#Check for NAs in PhenotypesVector
-	MAPITRoutput$LogFile <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates
+	#DataChecks
+	MAPITRoutput$LogFile <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates, MAPITRoutput$LogFile)
 
 	                bmassOutput$LogFile <- CheckIndividualDataSources(DataSources, GWASsnps, ExpectedColumnNames, SigmaAlphas, bmassOutput$MergedDataSources, ProvidedPriors, UseFlatPriors, PruneMarginalSNPs, PruneMarginalSNPs_bpWindow, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, NminThreshold, bmassSeedValue, bmassOutput$LogFile)
 
 
 	MAPITRprocessing$log <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates
 
-	MAPITRprocessing <- PreprocessData(PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes
+	MAPITRoutput.temp1[c("PhenotypeMatrix","Genotypes","LogFile")] <- PreprocessData(PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, MAPITRoutput$LogFile)
+	PhenotypesMatrix <- MAPITRoutput.temp1$PhenotypesMatrix
+	Genotypes <- MAPITRoutput.temp1$Genotypes
+	MAPITRoutput$LogFile <- MAPITRoutput.temp1$LogFile
+	rm(MAPITRoutput.temp1)	
+	MAPITRoutput[c("MergedDataSources", "LogFile")] <- MergeDataSources(DataSources, MAPITRoutput$LogFile)[c("MergedDataSources", "LogFile")]
 
 	return(MAPITRoutput) 
 
