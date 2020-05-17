@@ -1,3 +1,35 @@
+
+
+
+
+
+
+RunMAPITR.NothingProvided <- function ( ) {
+
+	RunMAPITR.NothingProvided.Output <- list()
+
+	return(RunMAPITR.NothingProvided.Output)
+
+}
+FinalizeAndFormatResults
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # This function expects columns from nSigmaAlphas stacked Model x SNP
 # matrices of posterior probabilities, such that a single column (ie
 # single SNP) is converted to a Model x nSigmaAlphas matrix and summed
