@@ -1,0 +1,9 @@
+Meta
+doc
+*swp
+.Rproj.user
+.Rhistory
+.RData
+inst/doc
+vignettes/my-vignette.Rmd
+vignettes/*html
