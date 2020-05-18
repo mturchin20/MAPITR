@@ -88,32 +88,11 @@ DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateTh
 	}
 	MAPITRoutput$MarginalSNPs <- list()
 	MAPITRoutput$Models <- NULL
-	MAPITRoutput$ModelPriors <- NULL
-        MAPITRoutput$PreviousSNPs <- list()
-        MAPITRoutput$NewSNPs <- list()
-        MAPITRoutput$GWASlogBFMinThreshold <- NULL
 	MAPITRoutput$LogFile <- c()
 
         MAPITRoutput$LogFile <- rbind(MAPITRoutput$LogFile, paste(format(Sys.time()), " -- beginning bmass.", sep=""))
 	if (PrintProgress == TRUE) {
         	write(paste(format(Sys.time()), " -- beginning bmass.", sep=""), stderr())
-	}
-
-        #Loading and checking data
-        #~~~~~~
-
-	if (!is.null(MergedDataSources)) {
-		MAPITRoutput$LogFile <- rbind(MAPITRoutput$LogFile, paste(format(Sys.time()), " -- MergedDataSources was provided, skipping merging data step.", sep=""))
-		if (PrintProgress == TRUE) {
-        		write(paste(format(Sys.time()), " -- MergedDataSources was provided, skipping merging data step.", sep=""), stderr())
-		}
-	} else {
-		if (PrintProgress == TRUE) {
-        		write(paste(format(Sys.time()), " -- Checking individual datasource files and merging datasets.", sep=""), stderr())
-		}
-		MAPITRoutput$LogFile <- CheckIndividualDataSources(DataSources, GWASsnps, ExpectedColumnNames, SigmaAlphas, MAPITRoutput$MergedDataSources, ProvidedPriors, UseFlatPriors, PruneMarginalSNPs, PruneMarginalSNPs_bpWindow, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, NminThreshold, bmassSeedValue, MAPITRoutput$LogFile)
-		
-		MAPITRoutput[c("MergedDataSources", "LogFile")] <- MergeDataSources(DataSources, MAPITRoutput$LogFile)[c("MergedDataSources", "LogFile")]
 	}
 
 	MAPITRoutput[c("MarginalSNPs", "PreviousSNPs", "ModelPriors", "GWASlogBFMinThreshold", "LogFile")] <- DetermineAndApplyPriors(DataSources, MAPITRoutput$MarginalSNPs, GWASsnps, SigmaAlphas, MAPITRoutput$Models, MAPITRoutput$ModelPriors, ProvidedPriors, UseFlatPriors, GWASThreshFlag, GWASThreshValue, bmassSeedValue, MAPITRoutput$LogFile)[c("MarginalSNPs", "PreviousSNPs", "ModelPriors", "GWASlogBFMinThreshold", "LogFile")]
@@ -125,7 +104,4 @@ DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateTh
 	if (PrintProgress == TRUE) {
         	write(paste(format(Sys.time()), " -- Finishing bmass, exiting.", sep=""), stderr())
 	}
-
-	return(MAPITRoutput)
-}
 
