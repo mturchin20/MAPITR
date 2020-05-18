@@ -4,26 +4,13 @@
 #' @import RcppArmadillo
 #' @import RcppParallel
 #' @import CompQuadForm
-RunMAPITR.NothingProvided <- function (PhenotypesMatrix, Genotypes, Pathways, Covariates, CenterStandardize) {
+RunMAPITR.NothingProvided <- function (PhenotypesMatrix, Genotypes, Pathways) {
 
-	RunMAPITR.NothingProvided.Output <- list();
+	RunMAPITR.NothingProvided.Output <- list()
 
-#	#unit test this
-#	if (CenterStandardize == TRUE) {
-#		Genotypes.Mean <- apply(Genotypes, 2, mean); 
-#		Genotypes.SD <- apply(Genotypes, 2, sd); 
-#		Genotypes <- t((t(Genotypes)-Genotypes.Mean)/Genotypes.SD);
-#	}
-#	Data3.mean <- apply(Data3, 2, mean); Data3.sd <- apply(Data3, 2, sd); Data3 <- t((t(Data3)-Data3.mean)/Data3.sd); \
-#	
-#	Genotypes.Pathway <- Genotypes[,Pathway];
+	RunMAPITR.NothingProvided.Output.temp1 <- MAPITR(t(Genotypes.Pathway),PhenotypesMatrix,as.matrix(GRM_Grand),as.matrix(GRM_Pathway),t(as.matrix(Z)),cores=cores)
 
-#	GRM_Grand <- 1/ncol(Genotypes) * tcrossprod(as.matrix(Genotypes)); 
-#	GRM_Pathway <- 1/ncol(Genotypes.Pathway) * tcrossprod(as.matrix(Genotypes.Pathway)); 
-
-	RunMAPITR.NothingProvided.Output.temp <- MAPITR(t(Genotypes.Pathway),PhenotypesMatrix,as.matrix(GRM_Grand),as.matrix(GRM_Pathway),t(as.matrix(Z)),cores=cores);
-
-	return( )
+	return(list(Est=RunMAPITR.NothingProvided.Output.temp1$Est, Eigenvalues=RunMAPITR.NothingProvided.Output.temp1$Eigenvalues, PVE=RunMAPITR.NothingProvided.Output.temp1$PVE))
 	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, LogFile=LogFile))
 
 }

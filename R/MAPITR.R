@@ -35,9 +35,12 @@
 #' @export
 #' 
 MAPITR <- function (Phenotypes, Genotypes, Pathways, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE)
-DataSources, GWASsnps = NULL, SNPMarginalUnivariateThreshold = 1e-6, SNPMarginalMultivariateThreshold = 1e-6, GWASThreshFlag = TRUE, GWASThreshValue = 5e-8, NminThreshold = 0, PrintMergedData = FALSE, PrintProgress = FALSE, ...) {
-	return(MAPITRmain(DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, ...))
+	return(MAPITRmain(Phenotypes, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, ...))
 }
+
+#DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, ...))
+#DataSources, GWASsnps = NULL, SNPMarginalUnivariateThreshold = 1e-6, SNPMarginalMultivariateThreshold = 1e-6, GWASThreshFlag = TRUE, GWASThreshValue = 5e-8, NminThreshold = 0, PrintMergedData = FALSE, PrintProgress = FALSE, ...) {
+#DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, MergedDataSources = NULL, ZScoresCorMatrix = NULL, ExpectedColumnNames = c("Chr", "BP", "Marker", "MAF", "A1", "Direction", "pValue", "N"), GWASsnps_AnnotateWindow = 5e5, SigmaAlphas = c(0.005,0.0075,0.01,0.015,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.15), ProvidedPriors = NULL, UseFlatPriors = NULL, PruneMarginalSNPs = TRUE, PruneMarginalSNPs_bpWindow = 5e5, bmassSeedValue = 1) {
 
 MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
@@ -54,11 +57,10 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
 
 	#DataChecks
 	MAPITRoutput$LogFile <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates, MAPITRoutput$LogFile)
+#	MAPITRprocessing$log <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates
 
 	                bmassOutput$LogFile <- CheckIndividualDataSources(DataSources, GWASsnps, ExpectedColumnNames, SigmaAlphas, bmassOutput$MergedDataSources, ProvidedPriors, UseFlatPriors, PruneMarginalSNPs, PruneMarginalSNPs_bpWindow, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, NminThreshold, bmassSeedValue, bmassOutput$LogFile)
 
-
-	MAPITRprocessing$log <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates
 
 	MAPITRoutput.temp1 <- PreprocessData(PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, MAPITRoutput$LogFile)
 	PhenotypesMatrix <- MAPITRoutput.temp1$PhenotypesMatrix
@@ -67,41 +69,17 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
 	MAPITRoutput$LogFile <- MAPITRoutput.temp1$LogFile
 	rm(MAPITRoutput.temp1)	
 
-	#NOTE -- Pathways needs t
-	
+	if ( ) {
+		MAPITRoutput.temp2 <- RunMAPITR.NothingProvided(PhenotypesVector, Genotypes, Pathways, MAPITRoutput$LogFile) 
+	} elsif ( ) { 
+
+	} else if
+		
+
 	MAPITRoutput[c("MergedDataSources", "LogFile")] <- MergeDataSources(DataSources, MAPITRoutput$LogFile)[c("MergedDataSources", "LogFile")]
 
 	return(MAPITRoutput) 
 
 }
 
-DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, MergedDataSources = NULL, ZScoresCorMatrix = NULL, ExpectedColumnNames = c("Chr", "BP", "Marker", "MAF", "A1", "Direction", "pValue", "N"), GWASsnps_AnnotateWindow = 5e5, SigmaAlphas = c(0.005,0.0075,0.01,0.015,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.15), ProvidedPriors = NULL, UseFlatPriors = NULL, PruneMarginalSNPs = TRUE, PruneMarginalSNPs_bpWindow = 5e5, bmassSeedValue = 1) {
-
-        MAPITRoutput <- list()
-	MAPITRoutput$MergedDataSources <- NULL
-        if (!is.null(MergedDataSources)) {
-		MAPITRoutput$MergedDataSources <- MergedDataSources
-	}
-	MAPITRoutput$ZScoresCorMatrix <- NULL
-        if (!is.null(ZScoresCorMatrix)) {
-		MAPITRoutput$ZScoresCorMatrix <- ZScoresCorMatrix
-	}
-	MAPITRoutput$MarginalSNPs <- list()
-	MAPITRoutput$Models <- NULL
-	MAPITRoutput$LogFile <- c()
-
-        MAPITRoutput$LogFile <- rbind(MAPITRoutput$LogFile, paste(format(Sys.time()), " -- beginning bmass.", sep=""))
-	if (PrintProgress == TRUE) {
-        	write(paste(format(Sys.time()), " -- beginning bmass.", sep=""), stderr())
-	}
-
-	MAPITRoutput[c("MarginalSNPs", "PreviousSNPs", "ModelPriors", "GWASlogBFMinThreshold", "LogFile")] <- DetermineAndApplyPriors(DataSources, MAPITRoutput$MarginalSNPs, GWASsnps, SigmaAlphas, MAPITRoutput$Models, MAPITRoutput$ModelPriors, ProvidedPriors, UseFlatPriors, GWASThreshFlag, GWASThreshValue, bmassSeedValue, MAPITRoutput$LogFile)[c("MarginalSNPs", "PreviousSNPs", "ModelPriors", "GWASlogBFMinThreshold", "LogFile")]
-	
-	if (PrintProgress == TRUE) {
-        	write(paste(format(Sys.time()), " -- Getting final list of MarginalSNPs, PreviousSNPs, and NewSNPs (where applicable).", sep=""), stderr())
-	}
-
-	if (PrintProgress == TRUE) {
-        	write(paste(format(Sys.time()), " -- Finishing bmass, exiting.", sep=""), stderr())
-	}
 
