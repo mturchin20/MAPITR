@@ -48,6 +48,12 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 	PreprocessData.Output <- list();
 	PhenotypesMatrix <- c();
 
+	#Setup file for indices of each pathway
+	#unit test
+	Pathways.Full <- strsplit(Pathways[,2], ",")
+	strsplit(vals1[,2], ",")
+
+	#Center and standardize genotype matrix if flagged
 	#unit test this
 	if (CenterStandardize == TRUE) {
 		Genotypes.Mean <- apply(Genotypes, 2, mean); 
@@ -56,6 +62,7 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 	}
 	Data3.mean <- apply(Data3, 2, mean); Data3.sd <- apply(Data3, 2, sd); Data3 <- t((t(Data3)-Data3.mean)/Data3.sd); \i
 
+	#Regress out additive effects from phenotype if flagged
 	#unit test??
 	if (RegressPhenotypes == TRUE) { 
 		for (i in 1:nrow(Pathways)) { 
@@ -68,7 +75,7 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 		}
 	}
 
-	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, LogFile=LogFile))
+	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, Pathways.Full=Pathways.Full, LogFile=LogFile))
 	return(PreprocessData.Output);
 	return(list(MergedDataSources=MergedDataSources, MarginalSNPs=MarginalSNPs, ZScoresCorMatrix=ZScoresCorMatrix, LogFile=LogFile))
 

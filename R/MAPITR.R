@@ -63,8 +63,11 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
 	MAPITRoutput.temp1 <- PreprocessData(PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, MAPITRoutput$LogFile)
 	PhenotypesMatrix <- MAPITRoutput.temp1$PhenotypesMatrix
 	Genotypes <- MAPITRoutput.temp1$Genotypes
+	Pathways.Full <- MAPITRoutput.temp1$Pathways.Full
 	MAPITRoutput$LogFile <- MAPITRoutput.temp1$LogFile
 	rm(MAPITRoutput.temp1)	
+
+	#NOTE -- Pathways needs t
 	
 	MAPITRoutput[c("MergedDataSources", "LogFile")] <- MergeDataSources(DataSources, MAPITRoutput$LogFile)[c("MergedDataSources", "LogFile")]
 
