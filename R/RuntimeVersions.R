@@ -4,14 +4,17 @@
 #' @import RcppArmadillo
 #' @import RcppParallel
 #' @import CompQuadForm
-RunMAPITR.NothingProvided <- function (PhenotypesMatrix, Genotypes, Pathways) {
+RunMAPITR.NothingProvided <- function (PhenotypesMatrix, Genotypes, Pathways.Full, LogFile) {
 
 	RunMAPITR.NothingProvided.Output <- list()
 
-	RunMAPITR.NothingProvided.Output.temp1 <- MAPITR(t(Genotypes.Pathway),PhenotypesMatrix,as.matrix(GRM_Grand),as.matrix(GRM_Pathway),t(as.matrix(Z)),cores=cores)
+	#MAPITR expects a n x r phenotype matrix, a p x n genotype matrix, and a list of SNP indices for each pathway
+	RunMAPITR.NothingProvided.Output.temp1 <- MAPITR(PhenotypesMatrix,t(Genotypes.Pathway),Pathways.Full,cores=cores)
+#	List MAPITR(mat Y,mat X,mat regions,int cores = 1){
+#	InterPath.output.temp <- InterPath(t(X.Pheno.noNAs),Y.Pheno.noNAs,as.matrix(X.cov.Pheno.noNAs),K,t(as.matrix(Z)),Pathways.Regions,nrow(X.Pheno.noNAs),as.numeric(as.character($NumSNPs)),cores=cores);
 
-	return(list(Est=RunMAPITR.NothingProvided.Output.temp1$Est, Eigenvalues=RunMAPITR.NothingProvided.Output.temp1$Eigenvalues, PVE=RunMAPITR.NothingProvided.Output.temp1$PVE))
-	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, LogFile=LogFile))
+	return(list(Est=RunMAPITR.NothingProvided.Output.temp1$Est, Eigenvalues=RunMAPITR.NothingProvided.Output.temp1$Eigenvalues, PVE=RunMAPITR.NothingProvided.Output.temp1$PVE, LogFile=LogFile))
+#	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, LogFile=LogFile))
 
 }
 
@@ -46,6 +49,8 @@ pVal <- 2*min(1-Davies.Output\$Qq, Davies.Output\$Qq); \
 RunMAPITR.wCovs <- function (Phenotypes, Genotypes, Pathway, Covariates, CenterStandardize) {
 
 	RunMAPITR.wCovs.Output <- list()
+	
+	RunMAPITR.NothingProvided.Output.temp1 <- MAPITR(PhenotypesMatrix,t(Genotypes.Pathway),PhenotypesMatrix,as.matrix(GRM_Grand),as.matrix(GRM_Patht(as.matrix(Z)),cores=cores)
 
 	return(RunMAPITR.wCovs.Output)
 

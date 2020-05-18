@@ -70,7 +70,7 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
 	rm(MAPITRoutput.temp1)	
 
 	if ( ) {
-		MAPITRoutput.temp2 <- RunMAPITR.NothingProvided(PhenotypesVector, Genotypes, Pathways, MAPITRoutput$LogFile) 
+		MAPITRoutput.temp2 <- RunMAPITR.NothingProvided(PhenotypesVector, Genotypes, Pathways.Full, MAPITRoutput$LogFile) 
 	} elsif ( ) { 
 
 	} else if
