@@ -3,17 +3,16 @@
 #' @import Rcpp
 #' @import RcppArmadillo
 #' @import RcppParallel
-RunMAPITR.NothingProvided <- function (PhenotypesMatrix, Genotypes, Pathways.Full, cores, LogFile) {
+RunMAPITR.Base <- function (PhenotypesMatrix, Genotypes, Pathways.Full, cores, LogFile) {
 
-	RunMAPITR.NothingProvided.Output <- list()
+	RunMAPITR.Base.Output <- list()
 
 	#MAPITR expects a n x r phenotype matrix, a p x n genotype matrix, and a list of SNP indices for each pathway
-	RunMAPITR.NothingProvided.Output.temp1 <- MAPITR(as.matrix(PhenotypesMatrix),t(as.matrix(Genotypes)),Pathways.Full,cores=cores)
+	RunMAPITR.Base.Output.temp1 <- MAPITR(as.matrix(PhenotypesMatrix),t(as.matrix(Genotypes)),Pathways.Full,cores=cores)
 
-	return(list(Est=RunMAPITR.NothingProvided.Output.temp1$Est, Eigenvalues=RunMAPITR.NothingProvided.Output.temp1$Eigenvalues, PVE=RunMAPITR.NothingProvided.Output.temp1$PVE, LogFile=LogFile))
+	return(list(Est=RunMAPITR.Base.Output.temp1$Est, Eigenvalues=RunMAPITR.Base.Output.temp1$Eigenvalues, PVE=RunMAPITR.Base.Output.temp1$PVE, LogFile=LogFile))
 
 }
-
 
 RunMAPITR.wCovs <- function (Phenotypes, Genotypes, Pathway, Covariates, CenterStandardize) {
 
@@ -63,21 +62,6 @@ GetMAPITRpValues <- function (Est, Eigenvalues, acc=1e-8) {
 CollapseSigmaAlphasTogether <- function (inputValues1, nSigmaAlphas) {
         CollapsedInputs <- apply(matrix(inputValues1, ncol=nSigmaAlphas, byrow=FALSE), 1, sum)
         return(CollapsedInputs)
-}
-
-#This function is expecting nSigmaAlphas Model x SNP matrices of
-#logBFs stacked ontop of one another. ModelPriors_Matrix is a matrix
-#containing the vector of model priors (ModelPriors = one set of model
-#priors * nSigmaAlphas) replicated as a column for each snp.
-GetSumAcrossSigmaAlphas_withPriors <- function(logBFs1, ModelPriors_Matrix, nGammas, nSigmaAlphas) {
-	WeightedSumAcrossAlphaSigmas <- matrix(0, ncol=ncol(logBFs1), nrow=nGammas)
-        for (i in 1:nGammas) {
-                SigmaAlpha_Coordinates <- seq.int(from=i, by=nGammas, length.out=nSigmaAlphas)
-                max <- apply(logBFs1[SigmaAlpha_Coordinates,], 2, max)
-                logBFs1[SigmaAlpha_Coordinates,] <- logBFs1[SigmaAlpha_Coordinates,] - matrix(max, nrow=nrow(logBFs1[SigmaAlpha_Coordinates,]), ncol=ncol(logBFs1[SigmaAlpha_Coordinates,]), byrow=TRUE)
-		WeightedSumAcrossAlphaSigmas[i,] <- log10(sapply(apply(ModelPriors_Matrix[SigmaAlpha_Coordinates,] * apply(10^logBFs1[SigmaAlpha_Coordinates,], c(1,2), CheckForAndReplaceOnes), 2, sum), CheckForAndReplaceZeroes)) + max
-        }
-        return(WeightedSumAcrossAlphaSigmas)
 }
 
 #' @importFrom stats pnorm runif

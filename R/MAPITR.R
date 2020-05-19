@@ -38,15 +38,12 @@ MAPITR <- function (Phenotypes, Genotypes, Pathways, Covariates = NULL, CenterSt
 	return(MAPITRmain(Phenotypes, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, ...))
 }
 
-#DataSources, GWASsnps = NULL, SNPMarginalUnivariateThreshold = 1e-6, SNPMarginalMultivariateThreshold = 1e-6, GWASThreshFlag = TRUE, GWASThreshValue = 5e-8, NminThreshold = 0, PrintMergedData = FALSE, PrintProgress = FALSE, ...) {
-#DataSources, GWASsnps, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, GWASThreshFlag, GWASThreshValue, NminThreshold, PrintMergedData, PrintProgress, MergedDataSources = NULL, ZScoresCorMatrix = NULL, ExpectedColumnNames = c("Chr", "BP", "Marker", "MAF", "A1", "Direction", "pValue", "N"), GWASsnps_AnnotateWindow = 5e5, SigmaAlphas = c(0.005,0.0075,0.01,0.015,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.15), ProvidedPriors = NULL, UseFlatPriors = NULL, PruneMarginalSNPs = TRUE, PruneMarginalSNPs_bpWindow = 5e5, bmassSeedValue = 1) {
-
 MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
         MAPITRprocessing <- list()
 	MAPITRoutput <- list()
 	MAPITRoutput$LogFile <- c();
-	MAPITRoutput$pValue <- NULL
+	MAPITRoutput$pValues <- NULL
 	MAPITRoutput$PVE <- NULL
 	cores = detectCores()
 
@@ -55,14 +52,10 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
                 write(paste(format(Sys.time()), " -- beginning MAPITR.", sep=""), stderr())
         }
 
-	#DataChecks
+	#Data Checks
 	MAPITRoutput$LogFile <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates, MAPITRoutput$LogFile)
-#	MAPITRprocessing$log <- DataChecks(PhenotypesVector, Genotypes, Pathways, Covariates
 
-#	                bmassOutput$LogFile <- CheckIndividualDataSources(DataSources, GWASsnps, ExpectedColumnNames, SigmaAlphas, bmassOutput$MergedDataSources, ProvidedPriors, UseFlatPriors, PruneMarginalSNPs, PruneMarginalSNPs_bpWindow, SNPMarginalUnivariateThreshold, SNPMarginalMultivariateThreshold, NminThreshold, bmassSeedValue, bmassOutput$LogFile)
-#	MAPITRoutput[c("MergedDataSources", "LogFile")] <- MergeDataSources(DataSources, MAPITRoutput$LogFile)[c("MergedDataSources", "LogFile")]
-
-
+	#Preprocessing Data
 	MAPITRoutput.temp1 <- PreprocessData(PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, MAPITRoutput$LogFile)
 	PhenotypesMatrix <- MAPITRoutput.temp1$PhenotypesMatrix
 	Genotypes <- MAPITRoutput.temp1$Genotypes
@@ -70,15 +63,22 @@ MAPITRmain <- function (PhenotypesVector, Genotypes, Pathways, GRM_Grand = Null,
 	MAPITRoutput$LogFile <- MAPITRoutput.temp1$LogFile
 	rm(MAPITRoutput.temp1)	
 
-	if ( ) {
-		MAPITRoutput.temp2 <- RunMAPITR.NothingProvided(PhenotypesVector, Genotypes, Pathways.Full, cores, MAPITRoutput$LogFile) 
-	} elsif ( ) { 
-
-	} else if
+	#Running appropriate version of MAPITR
+	
+	if (is.null(Covariates)) {
+		MAPITRoutput.temp2 <- RunMAPITR.Base(PhenotypesVector, Genotypes, Pathways.Full, cores, MAPITRoutput$LogFile) 
+		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
+	} else if (!is.null(Covariates)) { 
+		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypesVector, Genotypes, Covariates, Pathways.Full, cores, MAPITRoutput$LogFile) 
+		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
+	} else {
+		stop(Sys.time(), " -- there are NAs in the genotype matrix. There must be zero missingness in the genotype matrix. Please correct and rerun.");	
+	}
 		
+	#Postprocessing of results (if needed)
+	Pathway.Names <- Pathways[,1]; 
+	MAPITRoutput.Final <- cbind(Pathway.Names, MAPITRoutput$pValues, MAPITRoutput$PVE); 
 
-	return(MAPITRoutput) 
+	return(MAPITRoutput.Final) 
 
 }
-
-

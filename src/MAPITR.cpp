@@ -22,7 +22,7 @@ arma::mat GetLinearKernel(arma::mat X){
 ////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-List MAPITR(mat Y,mat X,mat regions,int cores = 1){
+List MAPITR(mat Y,mat X,List regions,int cores = 1){
     int i;
     const int n = X.n_cols;
     const int nsnp = X.n_rows;
@@ -41,10 +41,10 @@ List MAPITR(mat Y,mat X,mat regions,int cores = 1){
 #pragma omp parallel for schedule(dynamic)
     for(i=0; i<p; i++){
 	//Extract phenotype
-	vec y = Y.cols(i)
+	vec y = Y.cols(i);
 
         //Pre-compute the Linear GSM
-        uvec j = find_finite(regions.col(i));
+        uvec j = regions[i];
         
         //Compute K covariance matrices
         mat K = (GSM*nsnp-GetLinearKernel(X.rows(j))*j.n_elem)/(nsnp-j.n_elem-1);
