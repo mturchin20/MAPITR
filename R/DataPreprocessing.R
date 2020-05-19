@@ -1,23 +1,3 @@
-CheckNumericClass <- function (InputData) {
-	returnValue <- FALSE
-	
-	if (is.numeric(InputData)) {
-		returnValue <- TRUE
-	}
-
-	return(returnValue)
-}
-
-CheckForNAs <- function (InputData) {
-	returnValue <- FALSE
-	
-	if (is.na(InputData)) {
-		returnValue <- TRUE
-	}
-
-	return(returnValue)
-}
-
 DataChecks <- function (PhenotypesVector, Genotypes, Pathways, Covariates, LogFile) {
 
 	#Checking for NAs in phenotype vector
@@ -34,10 +14,10 @@ DataChecks <- function (PhenotypesVector, Genotypes, Pathways, Covariates, LogFi
 	}
 	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- Genotypes passed NA check.", sep=""))
 
-#	#Checking for NAs in pathways file
+#	#Checking for NAs in pathways file (?)
 #	if (apply(Pathways, 1, 
 
-#	#If using covariates, checking for NAs in covariate matrix
+#	#If using covariates, checking for NAs in covariate matrix (?)
 
 	return(LogFile)
 
