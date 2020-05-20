@@ -4,17 +4,29 @@
 #' @description Run \code{MAPITR} for a group of pathways on a single
 #' phenotype and a set of genome-wide SNPs
 #'
-#' @param Phenotype
+#' @param Phenotype A vector containing phenotypic values for all
+#' individuals being analyzed. No default value.
 #'
-#' @param Genotypes
+#' @param Genotypes A n x p matrix containing the genotypes (0/1/2) for
+#' all p SNPs across all n individuals. No default value.
 #'
 #' @param Pathways
 #'
 #' @param Covariates
 #'
-#' @param CenterStandardize
+#' @param CenterStandardize A logical \code{TRUE}/\code{FALSE} flag that
+#' indicates whether the genotype matrix \code{Genotypes} should be
+#' centered and standardized before analysis. This is a recommended step.
+#' Indicate \code{FALSE} if this is a preprocessing step that has
+#' already been done prior to running \code{MAPITR}. The default value 
+#' is TRUE.  
 #'
-#' @param RegressPhenotypes
+#' @param RegressPhenotypes A logical \code{TRUE}/\code{FALSE} flag that
+#' indicates whether the additive genotype effects for each pathway
+#' will be regressed out of the phenotype. This is a necessary step. 
+#' This should only be set to \code{FALSE} if a preprocessing step has
+#' already done this prior to running \code{MAPITR}. The default value
+#' is TRUE.
 #'
 #' @param DataSources A string indicating the variable names of the
 #' input datafiles and phenotypes. No default value.
@@ -26,12 +38,6 @@
 #' \code{MAPITR} p-values for each pathway, and in the third column the
 #' associated \code{MAPITR} PVEs for each pathway.
 #' 
-#' @return A list containing model, SNP, and posterior information for
-#' both the previously significant univariate SNPs (\code{PreviousSNPs})
-#' and the newly significant multivariate SNPs (\code{NewSNPs}). For a 
-#' full breakdown of the \code{bmass} output list structure, please see 
-#' the associated vignettes.
-#'
 #' @examples
 #' Phenotypes <- c("bmass_SimulatedData1", "bmass_SimulatedData2")
 #' bmassOutput <- bmass(Phenotypes, bmass_SimulatedSigSNPs)
