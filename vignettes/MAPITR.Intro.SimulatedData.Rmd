@@ -59,6 +59,12 @@ And to see the output `MAPITR()` provides, we can run the following:
 head(MAPITRresults)
 ```
 
+The output shown from `MAPITRresults` should be a matrix with three columns. The first column should be the same list of pathway names as the input pathways file, the second column should contain `MAPITR` p-values, and the third column should contain `MAPITR` PVE estimates. In this example, there should be 3 pathways that have p-values below the Bonferonni-corrected threshold of XXX (.05 / XX, the number of pathways tested):
+
+```{r}
+MAPITRresults[MAPITRresults[,2] , XXX,]
+```
+
 
 
 As you can see, there are multiple output variables corresponding to different components of the results. For the purposes of this vignette, we will only touch on the first three variables shown from this `summary()` output: `PreviousSNPs`, `MarginalSNPS`, and `NewSNPs`. `PreviousSNPs` refers to information on the input GWAS SNPs we used for the analysis, `MarginalSNPs` refers to information on the the marginally significant SNPs that were used in the final steps of the analysis, and `NewSNPs` refers to information on any SNPs that reach multivariate genome-wide levels of significance.
