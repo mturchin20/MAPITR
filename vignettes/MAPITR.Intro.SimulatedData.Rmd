@@ -1,0 +1,85 @@
+---
+title: "MAPITR Introduction -- Simulated Data"
+author: "Michael C Turchin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MAPITR Introduction -- Simulated Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This is a simple introductory vignette on how to run `MAPITR`. In this introductory example, we will use a simulated dataset to run `MAPITR` and explore some basic output. The purpose of this vignette is to get users up and running the `MAPIT`. The dataset is provided with the package.
+
+## Running `MAPITR`
+
+For this introductory vignette, we will be using `bmass_SimulatedData1`, `bmass_SimulatedData2`, and `bmass_SimulatedSigSNPs`. These are simulated datasets created for the purposes of unit testing and this vignette. To load up 'bmass' and the datasets, run the following:
+
+```{r}
+library("MAPITR");
+
+data(bmass_SimulatedData1, bmass_SimulatedData2, bmass_SimulatedSigSNPs)
+Phenotypes <- c("bmass_SimulatedData1", "bmass_SimulatedData2")
+```
+
+First, we'll take a look at the format of one of our simulated datasets:
+
+```{r}
+head(bmass_SimulatedData1)
+```
+
+Here you should see nine columns: Chr, BP, Marker, MAF, A1, A2, Direction, pValue, N. `bmass` expects each input dataset (representing a single phenotype GWAS) to contain these 9 columns and with these specific headers. Their descriptions are as follows --
+
+* Chr: Chromosome
+* BP: Basepair Position 
+* Marker: Variant ID information, such as a rsID # (should be a unique value for each variant)
+* MAF: Minor Allele Frequency
+* A1: Reference allele
+* A2: AlternativeaAllele
+* Direction: Direction of effect size (a column of "+" or "-")
+* pValue: p-Value from univariate GWAS
+* N: Sample size
+
+Now to run `bmass`, all we use is the following code:
+
+```{r}
+bmassResults <- bmass(Phenotypes, bmass_SimulatedSigSNPs);
+```
+
+Note that at its most basic level, we only need to provide two inputs for `bmass()` to properly run: a vector of strings containing the variable names of each of our univariate summary GWAS datasets and a file containing the list of previously associated univariate genome-wide significant SNPs. The former input, the vector of strings, dictates to `bmass()` where to find each dataset and what to call each phenotype being analyzed (ie the name of each variable containg the GWAS summary data is expected to correspond to the phenotype represented by that data). The latter input is just a list of each previous GWAS SNP with the following two columns of information, `Chr` and `BP`:
+
+```{r}
+bmass_SimulatedSigSNPs
+```
+
+## Exploring basic results
+
+Now to begin to get a sense of what `bmass()` outputs, we can run the following:
+
+```{r}
+summary(bmassResults)
+```
+
+As you can see, there are multiple output variables corresponding to different components of the results. For the purposes of this vignette, we will only touch on the first three variables shown from this `summary()` output: `PreviousSNPs`, `MarginalSNPS`, and `NewSNPs`. `PreviousSNPs` refers to information on the input GWAS SNPs we used for the analysis, `MarginalSNPs` refers to information on the the marginally significant SNPs that were used in the final steps of the analysis, and `NewSNPs` refers to information on any SNPs that reach multivariate genome-wide levels of significance.
+
+The main result most users will be immediately interested in is whether there are any new variants identified as genome-wide multivariate significant, and this can be determined by accessing the `NewSNPs` sublist: 
+```{r}
+summary(bmassResults$NewSNPs)
+head(bmassResults$NewSNPs$SNPs)
+```
+
+As you can see in this example, we have 1 new SNP that reaches multivariate genome-wide significance. This is determined by using the smallest log BF weighted average value among the previous univariate significanct GWAS SNPs (`PreviousSNPS`):
+
+```{r}
+bmassResults$GWASlogBFMinThreshold
+```
+
+Any `MarginalSNPs` with `logBFWeightedAvg` greater than this value are designated as new multivariate associations (see eq. 1 in [Turchin and Stephens bioRxiv 2019][biorxiv-paper]).
+
+For further exploration and details of `bmass` output, please see the
+second introductory vignette.
+
+[bmass-vignette2]: http://mturchin20.github.io/bmass/articles/bmassIntro.2.RealData.html
+[biorxiv-paper]: https://www.biorxiv.org/content/10.1101/638882v1
+[globallipids2013]: http://csg.sph.umich.edu/willer/public/lipids2013/
+[stephens2013]: https://doi.org/10.1371/journal.pone.0065245
