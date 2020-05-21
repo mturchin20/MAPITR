@@ -10,9 +10,19 @@
 #' @param Genotypes A n x p matrix containing the genotypes (0/1/2) for
 #' all p SNPs across all n individuals. No default value.
 #'
-#' @param Pathways
+#' @param Pathways A r x 2 matrix containing the pathway names and then
+#' a comma-separated list of each \code{Genotypes} column index
+#' representing each SNP in the associated pathway. Note, this second 
+#' column of comma-separated indices are the numeric positions for each 
+#' SNP in \code{Genotypes} and not the SNP IDs or column names. No
+#' default value.
 #'
-#' @param Covariates
+#' @param Covariates A n x q matrix containing any q additional covariates
+#' that should be included in the M-projection matrix of the model. 
+#' See Turchin et al. 2019 for details. Note that these are covariates
+#' which are applied to both sides of the model, ie the phenotype as well
+#' as the genotypes. A y-intercept term is automatically included and does
+#' not need to be part of this n x q matrix. No default value.
 #'
 #' @param CenterStandardize A logical \code{TRUE}/\code{FALSE} flag that
 #' indicates whether the genotype matrix \code{Genotypes} should be
