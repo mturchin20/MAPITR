@@ -33,25 +33,21 @@ head(MAPITR_SimulatedPhenotype)
 
 Here you should a vector of our input phenotypic values. `MAPITR` currently only runs on one phenotype as a time, so this requires only a single vector of phenotypic values as proper input. 
 
-Here you should see nine columns: Chr, BP, Marker, MAF, A1, A2, Direction, pValue, N. `bmass` expects each input dataset (representing a single phenotype GWAS) to contain these 9 columns and with these specific headers. Their descriptions are as follows --
-
-* Chr: Chromosome
-* BP: Basepair Position 
-* Marker: Variant ID information, such as a rsID # (should be a unique value for each variant)
-* MAF: Minor Allele Frequency
-* A1: Reference allele
-* A2: AlternativeaAllele
-* Direction: Direction of effect size (a column of "+" or "-")
-* pValue: p-Value from univariate GWAS
-* N: Sample size
-
 ```{r}
 MAPITR_SimulatedGenotypes[1:10,1:10]
 ```
 
+Here you should see the first ten rows and columns of our genotype matrix. The genotype matrix is n x p, so the rows are our n individuals and the columns are our p SNPs. SNP genotypes, the entry of each column, are assumed to be 0, 1, or 2 -- so note, diploid information is assumed to have been collaspsed into a single value for each SNP. For example, the typical diploid setup of 0/0, 0/1, and 1/1, representing either reference allele (0) or alternative allele (1) for both chromosomal copies in an individual, is now instead represented as 0 (0/0), 1 (0/1), or 2 (1/1).
+
+Also note that it is required there be zero genotype missingness. This is necessary for the current form of constructing the genetic relatedness matrices (GRMs). For each entry in the genotype matrix, the only acceptable values are 0, 1, and 2. 
+
 ```{r}
 head(MAPITR_SimulatedPathways)
 ```
+
+
+
+
 
 Now to run `MAPITR`, all we use is the following code:
 
