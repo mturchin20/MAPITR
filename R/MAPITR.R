@@ -21,16 +21,6 @@
 #' already been done prior to running \code{MAPITR}. The default value 
 #' is TRUE.  
 #'
-#' @param RegressPhenotypes A logical \code{TRUE}/\code{FALSE} flag that
-#' indicates whether the additive genotype effects for each pathway
-#' will be regressed out of the phenotype. This is a necessary step. 
-#' This should only be set to \code{FALSE} if a preprocessing step has
-#' already done this prior to running \code{MAPITR}. The default value
-#' is TRUE.
-#'
-#' @param DataSources A string indicating the variable names of the
-#' input datafiles and phenotypes. No default value.
-#' 
 #' @param ... Additional optional arguments.
 #'
 #' @return A matrix containing in the first column the list of pathways
@@ -57,8 +47,8 @@
 #'
 #' @export
 #' 
-MAPITR <- function (Phenotype, Genotypes, Pathways, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE)
-	return(MAPITRmain(Phenotype, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, ...))
+MAPITR <- function (Phenotype, Genotypes, Pathways, Covariates = NULL, CenterStandardize = TRUE)
+	return(MAPITRmain(Phenotype, Genotypes, Pathways, Covariates, CenterStandardize, ...))
 }
 
 MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
