@@ -1,0 +1,75 @@
+context("Basic R Functionality")
+
+data(bmass_TestData1, bmass_TestData2, bmass_TestSigSNPs)
+DataSources <- c("bmass_TestData1", "bmass_TestData2")
+ExpectedColumnNames <- c("Chr", "BP", "A1", "MAF", "Direction", "pValue", "N") 
+VectorOfTrueFalse <- c(TRUE, TRUE, FALSE)
+VectorOfTrue <- c(TRUE, TRUE, TRUE)
+VectorOfFalse <- c(FALSE, FALSE, FALSE)
+LogTest1 <- c("Test1")
+LogTest2 <- matrix(c("Test1", "Test1"), nrow=2)
+assign("bmass_ZeroMatrix", matrix(0, nrow=2, ncol=2), envir = .GlobalEnv)
+#TestEvalParseCommands1 <- paste("Testing This With ", LogTest1, sep="")
+#TestEvalParseCommands2 <- eval(parse(text=paste("Testing This With ", LogTest1, sep="")))
+#eval(parse(text=paste("TestEvalParseCommands3 <- Testing This With ", LogTest1, sep="")))
+assign("MergeTest1", c(6.0e-13,3.1e-02,1.0e-01,7.6e-02,3.0e-09,5.6e-03,1.0e-07,5.0e-08,7.2e-01,0.0e+00,6.1e-01,2.0e-13,5.1e-02,2.6e-01,8.6e-01,5.0e-09,7.6e-03,4.0e-07,9.0e-08,1.2e-01,0.0e+00,6.6e-01), envir = .GlobalEnv)
+assign("MergeTest2", c(2.0e-13,5.1e-02,2.6e-01,8.6e-01,5.0e-09,7.6e-03,4.0e-07,9.0e-08,1.2e-01,0.0e+00,6.6e-01,6.0e-13,3.1e-02,1.0e-01,7.6e-02,3.0e-09,5.6e-03,1.0e-07,5.0e-08,7.2e-01,0.0e+00,6.1e-01), envir = .GlobalEnv)
+
+test_that("Check basic R functionality", {
+	expect_equal(is.null(NULL), TRUE)
+	expect_equal(!is.null(NULL), FALSE)
+	expect_equal(is.null(NA), FALSE)
+	expect_equal(is.na(NA), TRUE)
+	expect_equal(is.na(435), FALSE)
+	expect_equal(is.numeric(13), TRUE)
+	expect_equal(is.numeric("ah"), FALSE)
+	expect_equal(is.numeric(NA), FALSE)
+	expect_equal(is.character("3"), TRUE)
+	expect_equal(is.character(3), FALSE)
+	expect_equal(is.character(NA), FALSE)
+	expect_equal(is.vector(c(1,2,3)), TRUE)
+	expect_equal(is.vector("2"), TRUE)
+	expect_equal(is.vector(matrix(0, nrow=2, ncol=2)), FALSE)
+	expect_equal(length(c(1,2,3,4,5,6,7,8,9)) != length(c(1,2)), TRUE)
+	expect_equal(length(c(1,2,3,4,5,6,7,8,9)) == 3^length(c(1,2)), TRUE)
+	expect_equal(length(ExpectedColumnNames) != length(DataSources), TRUE)
+	expect_equal(length(ExpectedColumnNames) != 3^length(DataSources), TRUE)
+	expect_equal(length(c(1,2,3,4,5,6,7,8,9)[c(1,2,3,4,5,6,7,8,9)>5]) == 4, TRUE)
+
+	expect_error(stop("StopMessage"), "StopMessage")
+	expect_error(stop(paste(LogTest1, "StopMessage", sep="")), "Test1StopMessage")
+	expect_error(stop(paste(DataSources, sep=" ")), "bmass_TestData1bmass_TestData2")
+	expect_error(stop(paste(DataSources, collapse=" ")), "bmass_TestData1 bmass_TestData2")
+
+	expect_equal(eval(parse(text="bmass_TestData1")), bmass_TestData1)
+	expect_equal(eval(parse(text=paste("bmass_TestData1", "$Direction", sep=""))), bmass_TestData1$Direction)
+	expect_equal(eval(parse(text=paste("bmass_TestData1", "$Direction", sep="")))[eval(parse(text=paste("bmass_TestData1", "$Direction", sep=""))) == "+"], bmass_TestData1$Direction[bmass_TestData1$Direction == "+"])
+#	expect_equal(TestEvalParseCommands1, TestEvalParseCommands2)
+#	expect_equal(TestEvalParseCommands1, TestEvalParseCommands3)
+#	expect_equal(TestEvalParseCommands2, TestEvalParseCommands3)
+})
+
+test_that("DataSources is of datatype vector", {
+	expect_equal(is.vector(DataSources), TRUE)
+	expect_equal(!is.vector(DataSources), FALSE)
+})
+
+test_that("Check %in% functionality regarding TRUE/FALSE vectors", {
+	expect_equal(TRUE %in% VectorOfTrue, TRUE)
+	expect_equal(FALSE %in% VectorOfTrue, FALSE)
+	expect_equal(FALSE %in% VectorOfFalse, TRUE)
+	expect_equal(TRUE %in% VectorOfFalse, FALSE)
+	expect_equal(TRUE %in% VectorOfTrueFalse, TRUE)
+	expect_equal(FALSE %in% VectorOfTrueFalse, TRUE)
+})
+
+test_that("Check merge() functionality", {
+	expect_equal(c(matrix(unlist(merge(bmass_TestData1[,c("Marker", "pValue")], bmass_TestData2[,c("Marker", "pValue")], by="Marker")[,2:3]))), MergeTest1, tolerance = 1e-6)
+	expect_equal(c(matrix(unlist(merge(bmass_TestData2[,c("Marker", "pValue")], bmass_TestData1[,c("Marker", "pValue")], by="Marker")[,2:3]))), MergeTest2, tolerance = 1e-6)
+})
+
+test_that("Check basic LogFile functionality works", {
+	expect_equal(matrix(rbind(LogTest1, LogTest1)), LogTest2)
+})
+
+rm(bmass_TestData1, bmass_TestData2, bmass_TestSigSNPs, bmass_ZeroMatrix, MergeTest1, MergeTest2, envir = .GlobalEnv)
