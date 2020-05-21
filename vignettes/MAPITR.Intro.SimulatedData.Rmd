@@ -13,20 +13,25 @@ This is a simple introductory vignette on how to run `MAPITR`. In this introduct
 
 ## Running `MAPITR`
 
-For this introductory vignette, we will be using `bmass_SimulatedData1`, `bmass_SimulatedData2`, and `bmass_SimulatedSigSNPs`. These are simulated datasets created for the purposes of unit testing and this vignette. To load up 'bmass' and the datasets, run the following:
+For this introductory vignette, we will be using `MAPITR_SimulatedPhenotype`, `MAPITR_SimulatedGenotypes`, and `MAPITR_SimulatedPathways`. These are simulated datasets created for the purposes of unit testing and this vignette. To load up 'MAPITR' and the datasets, run the following:
 
 ```{r}
 library("MAPITR");
+
+data(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
 
 data(bmass_SimulatedData1, bmass_SimulatedData2, bmass_SimulatedSigSNPs)
 Phenotypes <- c("bmass_SimulatedData1", "bmass_SimulatedData2")
 ```
 
-First, we'll take a look at the format of one of our simulated datasets:
+First, we'll take a look at the formats of our simulated input data:
 
 ```{r}
 head(bmass_SimulatedData1)
+head(MAPITR_SimulatedPhenotype)
 ```
+
+Here you should a vector of our input phenotypic values. `MAPITR` currently only runs on one phenotype as a time, so this requires only a single vector of phenotypic values as proper input. 
 
 Here you should see nine columns: Chr, BP, Marker, MAF, A1, A2, Direction, pValue, N. `bmass` expects each input dataset (representing a single phenotype GWAS) to contain these 9 columns and with these specific headers. Their descriptions are as follows --
 
@@ -40,16 +45,18 @@ Here you should see nine columns: Chr, BP, Marker, MAF, A1, A2, Direction, pValu
 * pValue: p-Value from univariate GWAS
 * N: Sample size
 
-Now to run `bmass`, all we use is the following code:
-
 ```{r}
-bmassResults <- bmass(Phenotypes, bmass_SimulatedSigSNPs);
+MAPITR_SimulatedGenotypes[1:10,1:10]
 ```
 
-Note that at its most basic level, we only need to provide two inputs for `bmass()` to properly run: a vector of strings containing the variable names of each of our univariate summary GWAS datasets and a file containing the list of previously associated univariate genome-wide significant SNPs. The former input, the vector of strings, dictates to `bmass()` where to find each dataset and what to call each phenotype being analyzed (ie the name of each variable containg the GWAS summary data is expected to correspond to the phenotype represented by that data). The latter input is just a list of each previous GWAS SNP with the following two columns of information, `Chr` and `BP`:
+```{r}
+head(MAPITR_SimulatedPathways)
+```
+
+Now to run `MAPITR`, all we use is the following code:
 
 ```{r}
-bmass_SimulatedSigSNPs
+MAPITRResults <- MAPITR(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
 ```
 
 ## Exploring basic results
