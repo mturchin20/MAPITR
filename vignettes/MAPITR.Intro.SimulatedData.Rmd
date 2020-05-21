@@ -45,31 +45,23 @@ Also note that it is required there be zero genotype missingness. This is necess
 head(MAPITR_SimulatedPathways)
 ```
 
+Here you should see a matrix with two columns. The first column should list the name of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by `MAPITR` to extract the proper SNPs per pathway to conduct the marginal epistasis analysis. Note that the values for this second collumn are not the SNP IDs (eg rsID#s) or are they column headers (if your genotype matrix has them). They are the specific column locations for each SNP in the input genotype matrix.
 
-
-
-
-Now to run `MAPITR`, all we use is the following code:
+Now to run `MAPITR`, we use the following code:
 
 ```{r}
-MAPITRResults <- MAPITR(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
+MAPITRresults <- MAPITR(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
 ```
 
-## Exploring basic results
-
-Now to begin to get a sense of what `bmass()` outputs, we can run the following:
+And to see the output `MAPITR()` provides, we can run the following:
 
 ```{r}
-summary(bmassResults)
+head(MAPITRresults)
 ```
+
+
 
 As you can see, there are multiple output variables corresponding to different components of the results. For the purposes of this vignette, we will only touch on the first three variables shown from this `summary()` output: `PreviousSNPs`, `MarginalSNPS`, and `NewSNPs`. `PreviousSNPs` refers to information on the input GWAS SNPs we used for the analysis, `MarginalSNPs` refers to information on the the marginally significant SNPs that were used in the final steps of the analysis, and `NewSNPs` refers to information on any SNPs that reach multivariate genome-wide levels of significance.
-
-The main result most users will be immediately interested in is whether there are any new variants identified as genome-wide multivariate significant, and this can be determined by accessing the `NewSNPs` sublist: 
-```{r}
-summary(bmassResults$NewSNPs)
-head(bmassResults$NewSNPs$SNPs)
-```
 
 As you can see in this example, we have 1 new SNP that reaches multivariate genome-wide significance. This is determined by using the smallest log BF weighted average value among the previous univariate significanct GWAS SNPs (`PreviousSNPS`):
 
@@ -79,10 +71,12 @@ bmassResults$GWASlogBFMinThreshold
 
 Any `MarginalSNPs` with `logBFWeightedAvg` greater than this value are designated as new multivariate associations (see eq. 1 in [Turchin and Stephens bioRxiv 2019][biorxiv-paper]).
 
-For further exploration and details of `bmass` output, please see the
+
+
+
+For further details of the model underlying `MAPITR`, please see the associated [manuscript][MAPITR-paper]. 
 second introductory vignette.
 
+[MAPITR-paper]:
 [bmass-vignette2]: http://mturchin20.github.io/bmass/articles/bmassIntro.2.RealData.html
 [biorxiv-paper]: https://www.biorxiv.org/content/10.1101/638882v1
-[globallipids2013]: http://csg.sph.umich.edu/willer/public/lipids2013/
-[stephens2013]: https://doi.org/10.1371/journal.pone.0065245
