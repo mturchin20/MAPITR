@@ -39,21 +39,12 @@
 #' associated \code{MAPITR} PVEs for each pathway.
 #' 
 #' @examples
-#' Phenotypes <- c("bmass_SimulatedData1", "bmass_SimulatedData2")
-#' bmassOutput <- bmass(Phenotypes, bmass_SimulatedSigSNPs)
-#' summary(bmassOutput)
-#' bmassOutput$NewSNPs$SNPs
-#'
-#' @section Other Examples:
-#' \code{bmass(c("HDL","LDL","TG","TC"), GWASsnps, NminThreshold = 50000)}
-#' \code{bmass(c("HDL","LDL","TG","TC"), GWASsnps, GWASThreshValue = 1e-8,
-#'   NminThreshold = 50000, PrintProgress = TRUE)} 
-#' \code{bmass(c("HDL", "LDL", "TG", "TC"), GWASsnps, GWASThreshFlag = FALSE,
-#'   SNPMarginalUnivariateThreshold = 1e-4,
-#'   SNPMarginalMultivariateThreshold = 1e-4,
-#'   PrintMergedData = TRUE)} 
-#' \code{bmassOutput <- bmass(c("HDL","LDL","TG","TC"),
-#'   GWASsnps, NminThreshold = 50000)} 
+#' Phenotype <- c("MAPITR_SimulatedPhenotype")
+#' Genotypes <- c("MAPITR_SimulatedGenotypes")
+#' Pathways <- c("MAPITR_SimulatedPathways")
+#' MAPITROutput <- bmass(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
+#' summary(MAPITROutput)
+#' MAPITR[MAPITR$pValues < 1e-4,1]
 #'
 #' @export
 #' 
