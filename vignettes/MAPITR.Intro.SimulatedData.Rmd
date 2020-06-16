@@ -67,19 +67,6 @@ MAPITRresults[MAPITRresults[,2] , XXX,]
 
 
 
-As you can see, there are multiple output variables corresponding to different components of the results. For the purposes of this vignette, we will only touch on the first three variables shown from this `summary()` output: `PreviousSNPs`, `MarginalSNPS`, and `NewSNPs`. `PreviousSNPs` refers to information on the input GWAS SNPs we used for the analysis, `MarginalSNPs` refers to information on the the marginally significant SNPs that were used in the final steps of the analysis, and `NewSNPs` refers to information on any SNPs that reach multivariate genome-wide levels of significance.
-
-As you can see in this example, we have 1 new SNP that reaches multivariate genome-wide significance. This is determined by using the smallest log BF weighted average value among the previous univariate significanct GWAS SNPs (`PreviousSNPS`):
-
-```{r}
-bmassResults$GWASlogBFMinThreshold
-```
-
-Any `MarginalSNPs` with `logBFWeightedAvg` greater than this value are designated as new multivariate associations (see eq. 1 in [Turchin and Stephens bioRxiv 2019][biorxiv-paper]).
-
-
-
-
 For further details of the model underlying `MAPITR`, please see the associated [manuscript][MAPITR-paper]. 
 second introductory vignette.
 
