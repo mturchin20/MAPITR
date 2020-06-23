@@ -1,11 +1,11 @@
 Package: MAPITR
 Title: MArginal ePIstasus Test for Regions
 Version: 0.0.0.9000
-Authors@R: c(person(given="Michael",family="Turchin",email = "michael_turchin@brown.edu",
+Authors@R: c(person("Michael","Turchin",email = "michael_turchin@brown.edu",
                     role=c("aut","cre"), comment=c(ORCID="0000-0003-3569-1529")),
-             person(given="Lorin",family="Crawford",email = "lcrawford@brown.edu",
+             person("Lorin","Crawford",email = "lcrawford@brown.edu",
 	            role = "aut","ctb"),
-             person(given="Sohini",family="Ramachandran",email="sramachandran@brown.edu", 
+             person("Sohini","Ramachandran",email="sramachandran@brown.edu", 
 	     	    role="aut"))
 Description: What the package does (one paragraph).
 License: GPL (>= 3)
@@ -29,4 +29,6 @@ LazyData: true
 NeedsCompilation: NA
 RoxygenNote: NA
 VignetteBuilder: NA
-LinkingTo: Rcpp
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo

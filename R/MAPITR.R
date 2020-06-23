@@ -48,7 +48,7 @@
 #'
 #' @export
 #' 
-MAPITR <- function (Phenotype, Genotypes, Pathways, Covariates = NULL, CenterStandardize = TRUE)
+MAPITR <- function (Phenotype, Genotypes, Pathways, Covariates = NULL, CenterStandardize = TRUE) {
 	return(MAPITRmain(Phenotype, Genotypes, Pathways, Covariates, CenterStandardize, ...))
 }
 

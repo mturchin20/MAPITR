@@ -22,12 +22,12 @@ arma::mat GetLinearKernel(arma::mat X){
 ////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-List MAPITR(mat Y,mat X,List regions,int cores = 1){
+List MAPITR(arma::mat Y,arma::mat X,List regions,int cores = 1){
     int i;
     const int n = X.n_cols;
     const int nsnp = X.n_rows;
-    const int p = regions.n_cols;
-    const int q = Z.n_rows;
+    const int p = regions.size();
+    //const int q = Z.n_rows;
 
     //Set up the vectors to save the outputs
     NumericVector sigma_est(p);
@@ -41,7 +41,7 @@ List MAPITR(mat Y,mat X,List regions,int cores = 1){
 #pragma omp parallel for schedule(dynamic)
     for(i=0; i<p; i++){
 	//Extract phenotype
-	vec y = Y.cols(i);
+	vec y = Y.col(i);
 
         //Pre-compute the Linear GSM
         uvec j = regions[i];
