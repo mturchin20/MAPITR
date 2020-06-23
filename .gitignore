@@ -4,6 +4,7 @@ doc
 .Rproj.user
 .Rhistory
 .RData
+*RcppExports*
 inst/doc
 vignettes/my-vignette.Rmd
 vignettes/*html
