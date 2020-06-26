@@ -52,6 +52,7 @@ MAPITR <- function (Phenotype, Genotypes, Pathways, Covariates = NULL, CenterSta
 	return(MAPITRmain(Phenotype, Genotypes, Pathways, Covariates, CenterStandardize, ...))
 }
 
+#' @importFrom doParallel detectCores
 MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
         MAPITRprocessing <- list()
