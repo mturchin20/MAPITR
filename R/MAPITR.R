@@ -78,12 +78,16 @@ MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pa
 	Pathways.Full <- MAPITRoutput.temp1$Pathways.Full
 	MAPITRoutput$LogFile <- MAPITRoutput.temp1$LogFile
 	rm(MAPITRoutput.temp1)	
+	print("yaya2")
 
 	#Running appropriate version of MAPITR
 	if (is.null(Covariates)) {
+		print("yaya3")
 		MAPITRoutput.temp2 <- RunMAPITR.Base(PhenotypeMatrix, Genotypes, Pathways.Full, cores, MAPITRoutput$LogFile) 
+		print("yaya4")
 		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 		rm(MAPITRoutput.temp2)
+		print("yaya5")
 	} else if (!is.null(Covariates)) { 
 		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Covariates, Pathways.Full, cores, MAPITRoutput$LogFile) 
 		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
