@@ -54,7 +54,9 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 		}
 	}
 
-	print("yaya1")
+	print(c(nrow(PhenotypesMatrix), ncol(PhenotypesMatrix))) 
+	print(PhenotypesMatrix[1:5,1:5])
+	#print(c(nrow(PhenotypesMatrix), ncol(PhenotypesMatrix))) 
 
 	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, Pathways.Full=Pathways.Full, LogFile=LogFile))
 

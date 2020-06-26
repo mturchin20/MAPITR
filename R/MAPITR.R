@@ -72,6 +72,7 @@ MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pa
 
 	#Preprocessing Data
 	MAPITRoutput.temp1 <- PreprocessData(Phenotype, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, MAPITRoutput$LogFile)
+	print("yaya1")
 	PhenotypeMatrix <- MAPITRoutput.temp1$PhenotypeMatrix
 	Genotypes <- MAPITRoutput.temp1$Genotypes
 	Pathways.Full <- MAPITRoutput.temp1$Pathways.Full
