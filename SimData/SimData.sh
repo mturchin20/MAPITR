@@ -86,8 +86,26 @@ Y <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR
 Pathways <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
 SNPs.Pathways <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.SNPs_Pathways.txt", header=F);
 SNPs.Genome <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.SNPs_Genome.txt", header=F);
+
+library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel");
+sourceCpp("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/src/MAPITR.cpp");
+
+library("devtools"); devtools::load_all();
+set.seed(582724); 
+X <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
+Y <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pheno.txt", header=F);
+Pathways <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
+SNPs.Pathways <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Pathways.txt", header=F);
+SNPs.Genome <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Genome.txt", header=F);
+
+library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel");
+sourceCpp("/home/mturchin20/TempStuff/MAPITR/src/MAPITR.cpp")
+
 Y2 <- cbind(Y,Y);
 Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
+
+
+
 X.mean <- apply(X, 2, mean); X.sd <- apply(X, 2, sd); X.adj <- t((t(X)-X.mean)/X.sd); 
 summary(lm(as.matrix(Y) ~ X.adj[,1252] + X.adj[,956] + X.adj[,1252] * X.adj[,956]))
 
@@ -96,7 +114,7 @@ MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
 #library("Rcpp"); library("RcppArmadillo"); 
 
-MAPITRBase(as.matrix(Y2), as.matrix(t(X)), Pathways.Full, cores=1)
+MAPITRBase(as.matrix(Y2), as.matrix(t(X)), Pathways.Full[1:2], cores=1)
 MAPITRBaseTest(as.matrix(Y), as.matrix(t(X)), Pathways.Full[1], cores=1)
 MAPITRBaseTest(as.matrix(Y), Pathways.Full[1], cores=1)
 Test2 <- 
