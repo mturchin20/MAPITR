@@ -90,8 +90,11 @@ Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric);
 ##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
+library("Rcpp"); library("RcppArmadillo"); 
+
 MAPITRBase(as.matrix(Y2), as.matrix(t(X)), Pathways.Full, cores=1)
-MAPITRBaseTest(as.matrix(Y2), as.matrix(t(X)), Pathways.Full[1:2], cores=1)
+MAPITRBaseTest(as.matrix(Y), as.matrix(t(X)), Pathways.Full[1], cores=1)
+MAPITRBaseTest(as.matrix(Y), Pathways.Full[1], cores=1)
 
 
 #30 pathways

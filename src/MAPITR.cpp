@@ -16,7 +16,7 @@ arma::mat GetLinearKernel(arma::mat X){
 }
 
 // [[Rcpp::export]]
-List MAPITRBaseTest(List regions,int cores = 1){
+List MAPITRBaseTest(arma::mat Y,List regions,int cores = 1){
     int i;
 //    const int n = X.n_cols;
 //    const int nsnp = X.n_rows;
