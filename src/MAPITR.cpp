@@ -15,27 +15,6 @@ arma::mat GetLinearKernel(arma::mat X){
     return X.t()*X/p;
 }
 
-// [[Rcpp::export]]
-List MAPITRBaseTest(arma::mat Y,List regions,int cores = 1){
-    int i;
-//    const int n = X.n_cols;
-//    const int nsnp = X.n_rows;
-//    const int p = regions.size();
-    //const int q = Z.n_rows;
-    
-    Rcout << "nana1" << endl;
-
-    //Set up the vectors to save the outputs
-//    NumericVector sigma_est(p);
-//    NumericVector pve(p);
-//    mat Lambda(n,p);
-    
-    //Pre-compute the Linear GSM
- //   mat GSM = GetLinearKernel(X);
-
-	return Rcpp::List::create(Rcpp::Named("Est") = i);
-}  
-
 ////////////////////////////////////////////////////////////////////////////
 
 //Below is a function for MAPITR looking for interaction effects for pathways
@@ -50,7 +29,7 @@ List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
     const int p = regions.size();
     //const int q = Z.n_rows;
     
-    Rcout << "nana1" << endl;
+//    Rcout << "nana1" << endl;
 
     //Set up the vectors to save the outputs
     NumericVector sigma_est(p);
