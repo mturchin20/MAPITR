@@ -85,13 +85,14 @@ X <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR
 Y <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
 Pathways <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
 Y2 <- cbind(Y,Y);
-Pathways.Full <- strsplit(as.character(Pathways[,2]), ",") 
+Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
 
 ##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
+MAPITRBase(as.matrix(Y2), as.matrix(t(X)), Pathways.Full, cores=1)
+MAPITRBaseTest(as.matrix(Y2), as.matrix(t(X)), Pathways.Full[1:2], cores=1)
 
-MAPITRBase(as.matrix(Y2), as.matrix(t(X)), Pathways.Full, cores=1
 
 #30 pathways
 #4 true

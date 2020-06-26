@@ -16,14 +16,14 @@ arma::mat GetLinearKernel(arma::mat X){
 }
 
 // [[Rcpp::export]]
-List MAPITRBaseTest(arma::mat Y,arma::mat X,List regions,int cores = 1){
+List MAPITRBaseTest(List regions,int cores = 1){
     int i;
 //    const int n = X.n_cols;
 //    const int nsnp = X.n_rows;
 //    const int p = regions.size();
     //const int q = Z.n_rows;
     
-//    Rcout << "nana1" << endl;
+    Rcout << "nana1" << endl;
 
     //Set up the vectors to save the outputs
 //    NumericVector sigma_est(p);
@@ -33,7 +33,7 @@ List MAPITRBaseTest(arma::mat Y,arma::mat X,List regions,int cores = 1){
     //Pre-compute the Linear GSM
  //   mat GSM = GetLinearKernel(X);
 
-	return i;
+	return Rcpp::List::create(Rcpp::Named("Est") = i);
 }  
 
 ////////////////////////////////////////////////////////////////////////////
