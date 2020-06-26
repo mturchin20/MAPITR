@@ -30,7 +30,7 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 
 	#Setup file for indices of each pathway
 	#unit test
-	Pathways.Full <- strsplit(Pathways[,2], ",")
+	Pathways.Full <- strsplit(as.character(Pathways[,2]), ",")
 
 	#Center and standardize genotype matrix (n x p) if flagged
 	#unit test this
@@ -45,14 +45,16 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 	#unit test??
 	if (RegressPhenotypes == TRUE) { 
 		for (i in 1:nrow(Pathways)) { 
-			Genotypes.Pathway <- Genotypes[,Pathway];
-			PhenotypesMatrix <- cbind(PhenotypesMatrix, residuals(lm(PhenotypesVector ~ Genotypes.Pathway - 1)))	
+			Genotypes.Pathway <- Genotypes[,as.numeric(unlist(Pathways.Full[i]))];
+			PhenotypesMatrix <- cbind(PhenotypesMatrix, residuals(lm(as.matrix(PhenotypesVector) ~ as.matrix(Genotypes.Pathway) - 1)))	
 		}
 	} else {
 		for (i in 1:nrow(Pathways)) { 
 			PhenotypesMatrix <- cbind(PhenotypesMatrix, PhenotypesVector);
 		}
 	}
+
+	print("yaya1")
 
 	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, Pathways.Full=Pathways.Full, LogFile=LogFile))
 

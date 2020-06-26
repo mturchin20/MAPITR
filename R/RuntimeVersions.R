@@ -14,7 +14,7 @@ RunMAPITR.Base <- function (PhenotypesMatrix, Genotypes, Pathways.Full, cores, L
 
 }
 
-RunMAPITR.wCovs <- function (Phenotypes, Genotypes, Pathway, Covariates, CenterStandardize) {
+RunMAPITR.wCovs <- function (Phenotypes, Genotypes, Pathways.Full, Covariates, CenterStandardize) {
 
 	RunMAPITR.wCovs.Output <- list()
 	
