@@ -79,16 +79,19 @@ write.table(SNPs.Genome, file="/Users/mturchin20/Documents/Work/LabMisc/Ramachan
 #"
 
 #R -q -e"
+library("devtools"); devtools::load_all();
 set.seed(582724); 
 X <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
 Y <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
 Pathways <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
+Y2 <- cbind(Y,Y);
+Pathways.Full <- strsplit(as.character(Pathways[,2]), ",") 
 
-#MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
-
+##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
 
+MAPITRBase(as.matrix(Y2), as.matrix(t(X)), Pathways.Full, cores=1
 
 #30 pathways
 #4 true

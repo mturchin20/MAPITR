@@ -15,6 +15,27 @@ arma::mat GetLinearKernel(arma::mat X){
     return X.t()*X/p;
 }
 
+// [[Rcpp::export]]
+List MAPITRBaseTest(arma::mat Y,arma::mat X,List regions,int cores = 1){
+    int i;
+//    const int n = X.n_cols;
+//    const int nsnp = X.n_rows;
+//    const int p = regions.size();
+    //const int q = Z.n_rows;
+    
+//    Rcout << "nana1" << endl;
+
+    //Set up the vectors to save the outputs
+//    NumericVector sigma_est(p);
+//    NumericVector pve(p);
+//    mat Lambda(n,p);
+    
+    //Pre-compute the Linear GSM
+ //   mat GSM = GetLinearKernel(X);
+
+	return i;
+}  
+
 ////////////////////////////////////////////////////////////////////////////
 
 //Below is a function for MAPITR looking for interaction effects for pathways
@@ -22,12 +43,14 @@ arma::mat GetLinearKernel(arma::mat X){
 ////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-List MAPITR(arma::mat Y,arma::mat X,List regions,int cores = 1){
+List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
     int i;
     const int n = X.n_cols;
     const int nsnp = X.n_rows;
     const int p = regions.size();
     //const int q = Z.n_rows;
+    
+    Rcout << "nana1" << endl;
 
     //Set up the vectors to save the outputs
     NumericVector sigma_est(p);
@@ -36,7 +59,8 @@ List MAPITR(arma::mat Y,arma::mat X,List regions,int cores = 1){
     
     //Pre-compute the Linear GSM
     mat GSM = GetLinearKernel(X);
-    
+  
+
     omp_set_num_threads(cores);
 #pragma omp parallel for schedule(dynamic)
     for(i=0; i<p; i++){
