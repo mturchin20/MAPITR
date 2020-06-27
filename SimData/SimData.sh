@@ -7,7 +7,8 @@ mkdir /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulati
 
 #zcat /users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz | R -q -e "set.seed(68361); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 10000); Rows <- sample(1:nrow(Data1), 2000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations/MAPITR/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz
 
-#scp -p mturchin@desktop4.ccv.brown.edu:/users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/.
+##scp -p mturchin@desktop4.ccv.brown.edu:/users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/.
+#scp -p mturchin@desktop4.ccv.brown.edu:/users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz /home/mturchin20/TempStuff/MAPITR/SimData/. 
 #gunzip /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz
 
 #cat /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit | R -q -e "set.seed(68361); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 10000); Rows <- sample(1:nrow(Data1), 2000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz 
@@ -50,29 +51,55 @@ for (k in 1:4) { \
 
 #R -q -e "
 set.seed(973459); Data1 <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
-##R -q -e "
+#R -q -e "
+##set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz", header=T); 
 set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
+#Data1 <- Data1[sample(1:nrow(Data1), 2000), sample(1:ncol(Data1), 10000)];
 Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
-Y <- runif(nrow(Data1)); 
+PVE <- .6
+rho <- .8
+Pathways.Num <- 30
+Pathways.SNPs <- 50
+Pathways.SNPs.Interaction <- 200
+Genome.Additive.Prop <- .5
+
+Y <- rnorm(nrow(Data1)); 
+
+#Additive SNPs
+Data1.Additive <- Data1[,sample(1:ncol(Data1), ncol(Data1)*Genome.Additive.Prop)];
+Data1.Additive.Betas <- rnorm(0,1,ncol(Data1.Additive));
+Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
+Data1.Additive.Betas <- Data1.Additive.Betas * sqrt((PVE * rho) / var(Y.Additive)); #Normalize in respect to PVE
+Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
+
 Pathways <- c(); 
 Pathways.Full <- sample(1:ncol(Data1), 6000); 
-Count1 <- 1; for (i in 1:30) { 
-	Pathways <- rbind(Pathways, Pathways.Full[Count1:(Count1+29)]); 
-	Count1 <- Count1 + 29; 
+Count1 <- 1; for (i in 1:20) { 
+	Pathways <- rbind(Pathways, Pathways.Full[Count1:(Count1+49)]); 
+	Count1 <- Count1 + 49; 
 }; 
+
+
 SNPs.Pathways <- c(); 
 SNPs.Genome <- c(); 
 Genome.SNPs <- 1:ncol(Data1); 
 for (j in 1:1) { 
-	SNPs.Pathways <- rbind(SNPs.Pathways, sample(Pathways[j,], 10)); 
-	SNPs.Genome <- rbind(SNPs.Genome, sample(Genome.SNPs[! Genome.SNPs %in% Pathways[j,]], 10)); 
+	SNPs.Pathways <- rbind(SNPs.Pathways, sample(Pathways[j,], 20)); 
+	SNPs.Genome <- rbind(SNPs.Genome, sample(Genome.SNPs[! Genome.SNPs %in% Pathways[j,]], 200)); 
 }; 
+
+
 Y.new <- Y; 
 for (k in 1:1) { 
-	for (l in 1:10) { 
-		Y.new <- Y.new + 2 * (Data1[,SNPs.Pathways[k,l]] * Data1[,SNPs.Genome[k,l]]); 
+	for (l in 1:20) { 
+		for (m in 1:200) {
+			Y.new <- Y.new + 4 * (Data1[,SNPs.Pathways[k,l]] * Data1[,SNPs.Genome[k,m]]); 
+		};
 	}; 
 }; 
+
+
+
 Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); });
 Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits);
 Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits);
