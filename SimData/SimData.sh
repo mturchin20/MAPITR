@@ -59,6 +59,7 @@ Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t
 PVE <- .6
 rho <- .8
 Pathways.Num <- 30
+Pathways.Num.Selected <- 5
 Pathways.SNPs <- 50
 Pathways.SNPs.Interaction <- 200
 Genome.Additive.Prop <- .5
@@ -72,32 +73,39 @@ Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
 Data1.Additive.Betas <- Data1.Additive.Betas * sqrt((PVE * rho) / var(Y.Additive)); #Normalize in respect to PVE
 Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
 
+#Pathways & Genome Partners Make
 Pathways <- c(); 
-Pathways.Full <- sample(1:ncol(Data1), 6000); 
-Count1 <- 1; for (i in 1:20) { 
-	Pathways <- rbind(Pathways, Pathways.Full[Count1:(Count1+49)]); 
-	Count1 <- Count1 + 49; 
+Pathways.Full <- sample(1:ncol(Data1), Pathways.Num * Pathways.SNPs); 
+Count1 <- 1; for (i in 1:Pathways.Num) { 
+	Pathways <- rbind(Pathways, Pathways.Full[Count1:(Count1+Pathways.SNPs-1)]); 
+	Count1 <- Count1 + Pathways.SNPs - 1; 
 }; 
+##SNPs.Pathways <- c(); 
+Genome.AntiPathway.SNPs <- c(); 
+Genome.Total.SNPs <- 1:ncol(Data1); 
+for (j in 1:Pathways.Num.Selected) { 
+	Genome.AntiPathway.SNPs <- rbind(Genome.AntiPathway.SNPs, sample(Genome.Total.SNPs[! Genome.Total.SNPs %in% Pathways[j,]], Pathways.SNPs.Interaction)); 
+};
 
-
-SNPs.Pathways <- c(); 
-SNPs.Genome <- c(); 
-Genome.SNPs <- 1:ncol(Data1); 
-for (j in 1:1) { 
-	SNPs.Pathways <- rbind(SNPs.Pathways, sample(Pathways[j,], 20)); 
-	SNPs.Genome <- rbind(SNPs.Genome, sample(Genome.SNPs[! Genome.SNPs %in% Pathways[j,]], 200)); 
-}; 
-
-
-Y.new <- Y; 
-for (k in 1:1) { 
-	for (l in 1:20) { 
-		for (m in 1:200) {
-			Y.new <- Y.new + 4 * (Data1[,SNPs.Pathways[k,l]] * Data1[,SNPs.Genome[k,m]]); 
+#Pathway Epistasis
+Y.Epistasis <- 0;
+Data1.Epistasis.Alphas <- c();
+for (k in 1:Pathways.Num.Selected) {
+	for (l in 1:Pathways.SNPs) {
+		for (m in 1:Pathways.SNPs.Interaction) {
+			Alpha1 <- rnorm(1,0,1);
+			Y.Epistasis <- Y.Epistasis + Alpha1 * (Data1[,Pathways[k,l]] * Data1[,SNPs.Genome[k,m]]); 
+			Data1.Epistasis.Alphas <- c(Data1.Epistasis.Alphas, Alpha1);
 		};
-	}; 
+	};
 }; 
 
+
+correction_factor = np.sqrt(self.pve*(1.0-self.rho)/np.var(self.y_pathway))
+
+for (n in (Pathways.Num.Selected+1):Pathways.Num) {
+
+};
 
 
 Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); });
