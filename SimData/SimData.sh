@@ -53,8 +53,8 @@ for (k in 1:4) { \
 set.seed(973459); Data1 <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
 #R -q -e "
 ##set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz", header=T); 
+##Data1 <- Data1[sample(1:nrow(Data1), 2000), sample(1:ncol(Data1), 10000)];
 set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
-#Data1 <- Data1[sample(1:nrow(Data1), 2000), sample(1:ncol(Data1), 10000)];
 Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
 PVE <- .6
 rho <- .8
@@ -63,8 +63,6 @@ Pathways.Num.Selected <- 5
 Pathways.SNPs <- 50
 Pathways.SNPs.Interaction <- 200
 Genome.Additive.Prop <- .5
-
-Y <- rnorm(nrow(Data1)); 
 
 #Additive SNPs
 Data1.Additive <- Data1[,sample(1:ncol(Data1), ncol(Data1)*Genome.Additive.Prop)];
@@ -99,9 +97,27 @@ for (k in 1:Pathways.Num.Selected) {
 		};
 	};
 }; 
+Epistasis.PVE.Rescale <- sqrt((PVE * (1-rho)) / var(Y.Epistasis));
+Y.Epistasis <- 0;
+Count2 <- 1; for (k in 1:Pathways.Num.Selected) { for (l in 1:Pathways.SNPs) { for (m in 1:Pathways.SNPs.Interaction) {
+			Y.Epistasis <- Y.Epistasis + Data1.Epistasis.Alphas[Count2] * (Data1[,Pathways[k,l]] * Data1[,SNPs.Genome[k,m]]) * Epistasis.PVE.Rescale; 
+			Count2 <- Count2 + 1;
+}; }; }; 
+
+#Error
+PVE.Error <- (1 - PVE) * (var(Y.Additive + Y.Epistasis) / PVE);
+Y.Error <- rnorm(nrow(Data1),0,sqrt(PVE.Error));
+
+#Final Phenotype
+Y.Final <- Y.Additive + Y.Epistasis + Y.Error
+
+        
+#correction_factor = np.sqrt(self.pve*(1.0-self.rho)/np.var(self.y_pathway))
+#        eps = (1.0-self.pve)*np.var(self.y_additive+self.y_pathway)/self.pve
+#        self.y_err = np.random.normal(0,np.sqrt(eps),size=self.X.shape[0])
+#        self.y = self.y_additive + self.y_pathway + self.y_err + self.y_pcs
 
 
-correction_factor = np.sqrt(self.pve*(1.0-self.rho)/np.var(self.y_pathway))
 
 for (n in (Pathways.Num.Selected+1):Pathways.Num) {
 
@@ -121,6 +137,7 @@ write.table(SNPs.Pathways, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimDa
 write.table(SNPs.Genome, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Genome.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 #"
 
+##Y <- rnorm(nrow(Data1)); 
 #write.table(Y, file="/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.Orig.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
 #write.table(Y.new, file="/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
 #write.table(Pathways, file="/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
