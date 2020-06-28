@@ -66,9 +66,9 @@ Genome.Additive.Prop <- .5
 
 #Additive SNPs
 Data1.Additive <- Data1[,sample(1:ncol(Data1), ncol(Data1)*Genome.Additive.Prop)];
-Data1.Additive.Betas <- rnorm(0,1,ncol(Data1.Additive));
+Data1.Additive.Betas <- rnorm(ncol(Data1.Additive),0,1);
 Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
-Data1.Additive.Betas <- Data1.Additive.Betas * sqrt((PVE * rho) / var(Y.Additive)); #Normalize in respect to PVE
+Data1.Additive.Betas <- Data1.Additive.Betas * c(sqrt((PVE * rho) / var(Y.Additive))); #Normalize in respect to PVE
 Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
 
 #Pathways & Genome Partners Make
@@ -84,6 +84,7 @@ Genome.Total.SNPs <- 1:ncol(Data1);
 for (j in 1:Pathways.Num.Selected) { 
 	Genome.AntiPathway.SNPs <- rbind(Genome.AntiPathway.SNPs, sample(Genome.Total.SNPs[! Genome.Total.SNPs %in% Pathways[j,]], Pathways.SNPs.Interaction)); 
 };
+#for (i in 1:5) { print(table(Pathways[i,] %in% Genome.AntiPathway.SNPs[i,])); }; #Data check
 
 #Pathway Epistasis
 Y.Epistasis <- 0;
@@ -94,7 +95,7 @@ for (k in 1:Pathways.Num.Selected) {
 	Data1.Epistasis.Alphas.temp1 <- c();
 	for (l in 1:Pathways.SNPs) {
 		for (m in 1:Pathways.SNPs.Interaction) {
-			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,SNPs.Genome[k,m]]);
+			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,Genome.AntiPathway.SNPs[k,m]]);
 			Alpha1 <- rnorm(1,0,1);
 			Y.Epistasis <- Y.Epistasis + Alpha1 * Epistasis1; 
 			Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
@@ -128,18 +129,7 @@ PVE.Check.Error <- var(Y.Error) / var(Y.Final)
 PVE.Check.Pathways <- c(); for (i in 1:length(Data1.Epistasis)) { PVE.Check.Pathways <- c(PVE.Check.Pathways, var(Data1.Epistasis[[i]] %*% Data1.Epistasis.Alphas[,i]) / var(Y.Final)); };
 print(c(PVE.Check.Linear, PVE.Check.Epistasis, PVE.Check.Error, PVE.Check.Pathways));
 
-	self.linear_pve = np.var(np.dot(self.X_additive,self.beta))/np.var(self.y)
-        self.epistatic_pve = np.var(self.y_pathway)/np.var(self.y)
-        self.pcs_pve = np.var(self.y_pcs)/np.var(self.y)
-        print("additive pve: ",self.linear_pve)
-        print("pathway pve: ",self.epistatic_pve)
-        print("pc pve: ",self.pcs_pve)
-        print("PVE per pathway")
-        for idx,alpha_i in enumerate(self.alpha):
-            print(np.var(np.dot(self.get_W(idx),alpha_i))/np.var(self.y))
-        print("error pve: ",np.var(self.y_err)/np.var(self.y))
-
-
+#Output writing
 write.table(Y.Final, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
 write.table(Pathways, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 write.table(Pathways.Edits, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
@@ -161,8 +151,16 @@ write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/Sim
 #        self.y = self.y_additive + self.y_pathway + self.y_err + self.y_pcs
 #for (n in (Pathways.Num.Selected+1):Pathways.Num) {
 #};
-
-
+#	self.linear_pve = np.var(np.dot(self.X_additive,self.beta))/np.var(self.y)
+#        self.epistatic_pve = np.var(self.y_pathway)/np.var(self.y)
+#        self.pcs_pve = np.var(self.y_pcs)/np.var(self.y)
+#        print("additive pve: ",self.linear_pve)
+#        print("pathway pve: ",self.epistatic_pve)
+#        print("pc pve: ",self.pcs_pve)
+#        print("PVE per pathway")
+#        for idx,alpha_i in enumerate(self.alpha):
+#            print(np.var(np.dot(self.get_W(idx),alpha_i))/np.var(self.y))
+#        print("error pve: ",np.var(self.y_err)/np.var(self.y))
 
 ##R -q -e"
 #library("devtools"); devtools::load_all();
@@ -212,4 +210,95 @@ Results.temp2.pValues
 #each have 200 SNPs 
 #10 real SNPs each interacting with 10 other SNPs in the genome
 
+~~~
+#20200627
+> Data1.Additive.Betas <- rnorm(ncol(Data1.Additive),0,1);
+> length(Data1.Additive.Betas)
+[1] 5000
+> Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
+> length(Y.Additive)
+[1] 2000
+> sqrt((PVE * rho) / var(Y.Additive))
+           [,1]
+[1,] 0.00950565
+> var(Y.Additive)
+         [,1]
+[1,] 5312.239
+> Data1.Additive.Betas <- Data1.Additive.Betas * sqrt((PVE * rho) / var(Y.Additive)); #Normalize in respect to PVE
+Warning message:
+In Data1.Additive.Betas * sqrt((PVE * rho)/var(Y.Additive)) :
+  Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.
+  
+> Y.Additive <- Data1.Additive %*% Data1.Additive.Betas;
+> head(Data1.Additive.Betas * 2)
+[1]  0.009188504 -0.002522482  0.036276107  0.001369265  0.023999342
+[6] -0.031937548
+> head(Data1.Additive.Betas * sqrt((PVE * rho) / var(Y.Additive)))
+[1]  0.0045942520 -0.0012612410  0.0181380535  0.0006846324  0.0119996711
+[6] -0.0159687741
+Warning message:
+In Data1.Additive.Betas * sqrt((PVE * rho)/var(Y.Additive)) :
+  Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.
+
+> sqrt((PVE * rho)/var(Y.Additive))
+     [,1]
+[1,]    1
+> c(sqrt((PVE * rho)/var(Y.Additive)))
+[1] 1
+> var(Y.Additive)
+     [,1]
+[1,] 0.48
+> (PVE * rho)
+[1] 0.48
+> dim(Pathways)
+[1] 30 50
+> Pathways.Num * Pathways.SNPs
+[1] 1500
+> length(Pathways.Full
++ )
+[1] 1500
+> Pathways[1:2,]
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
+[1,] 9403 2298 1900 3218 4905 2302 2496  159 8667  1013  8392  1455  8661  6143
+[2,] 3147 5575 8072  771 5471 2837 3894 3440 4016  6048  7685  6329  3831  9532
+     [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25] [,26]
+[1,]  5277  4125  7428  5330  7290  5308  8919  2469  3400   960  4391  6969
+[2,]  5204  8701  2940  9810  5943  4329  6555  1665   988  7866  9970   395
+     [,27] [,28] [,29] [,30] [,31] [,32] [,33] [,34] [,35] [,36] [,37] [,38]
+[1,]  1465   527  5872  9641  3455  2762  8772  2986  3586  5430  1462  6739
+[2,]  1690  7547  5339  5352  3382  3125  5370  4953  2828  4128  9407  1967
+     [,39] [,40] [,41] [,42] [,43] [,44] [,45] [,46] [,47] [,48] [,49] [,50]
+[1,]  6510  6938  1482  5130  6179  3499   327   193  1427  6843  7523  3147
+[2,]  6262  1755   318  5552  9282  3870  9750  3779   270  7090  7608  4525
+> Pathways.Full[1:51]
+ [1] 9403 2298 1900 3218 4905 2302 2496  159 8667 1013 8392 1455 8661 6143 5277
+[16] 4125 7428 5330 7290 5308 8919 2469 3400  960 4391 6969 1465  527 5872 9641
+[31] 3455 2762 8772 2986 3586 5430 1462 6739 6510 6938 1482 5130 6179 3499  327
+[46]  193 1427 6843 7523 3147 5575
+> Pathways.Full[1:55]
+ [1] 9403 2298 1900 3218 4905 2302 2496  159 8667 1013 8392 1455 8661 6143 5277
+[16] 4125 7428 5330 7290 5308 8919 2469 3400  960 4391 6969 1465  527 5872 9641
+[31] 3455 2762 8772 2986 3586 5430 1462 6739 6510 6938 1482 5130 6179 3499  327
+[46]  193 1427 6843 7523 3147 5575 8072  771 5471 2837
+> for (i in 1:5) { print(table(Pathways[i,] %in% Genome.AntiPathway.SNPs[i,])); };
+
+FALSE
+   50
+
+FALSE
+   50
+
+FALSE
+   50
+
+FALSE
+   50
+
+FALSE
+   50
+
+
+~~~
 
