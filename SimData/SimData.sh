@@ -91,10 +91,12 @@ Y.Epistasis <- 0;
 Data1.Epistasis <- list();
 Data1.Epistasis.Alphas <- c();
 for (k in 1:Pathways.Num.Selected) {
-	Data1.Epistasis.Pathway.SNPs <- c();
-	Data1.Epistasis.Genome.SNPs <- c();
+	Data1.Epistasis.temp1 <- c();
+#	Data1.Epistasis.Alphas.temp1 <- c();
 	for (l in 1:Pathways.SNPs) {
 		print(c(k,l));
+		Data1.Epistasis.Pathway.SNPs <- c();
+		Data1.Epistasis.Genome.SNPs <- c();
 		for (m in 1:Pathways.SNPs.Interaction) {
 #			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,Genome.AntiPathway.SNPs[k,m]]);
 #			Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
@@ -106,7 +108,7 @@ for (k in 1:Pathways.Num.Selected) {
 	};
 #	Epistasis1 <- Data1.Epistasis.Pathway.SNPs * Data1.Epistasis.Genome.SNPs;
 	Data1.Epistasis.Alphas.temp1 <- rnorm(Pathways.SNPs*Pathways.SNPs.Interaction,0,1);
-	Y.Epistasis <- Y.Epistasis + (Epistasis1 %*% Alpha1.temp1);
+	Y.Epistasis <- Y.Epistasis + (Data1.Epistasis.temp1 %*% Data1.Epistasis.Alphas.temp1);
 	Data1.Epistasis[[k]] <- Data1.Epistasis.temp1;
 #	Data1.Epistasis[[k]] <- Epistasis1;
 	Data1.Epistasis.Alphas <- cbind(Data1.Epistasis.Alphas, Data1.Epistasis.Alphas.temp1);
