@@ -87,18 +87,22 @@ for (j in 1:Pathways.Num.Selected) {
 
 #Pathway Epistasis
 Y.Epistasis <- 0;
-Data1.Epistasis <- c();
+Data1.Epistasis <- list();
 Data1.Epistasis.Alphas <- c();
 for (k in 1:Pathways.Num.Selected) {
+	Data1.Epistasis.temp1 <- c();
+	Data1.Epistasis.Alphas.temp1 <- c();
 	for (l in 1:Pathways.SNPs) {
 		for (m in 1:Pathways.SNPs.Interaction) {
 			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,SNPs.Genome[k,m]]);
 			Alpha1 <- rnorm(1,0,1);
 			Y.Epistasis <- Y.Epistasis + Alpha1 * Epistasis1; 
-			Data1.Epistasis <- cbind(Data1.Epistasis, Epistasis1);
-			Data1.Epistasis.Alphas <- c(Data1.Epistasis.Alphas, Alpha1);
+			Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
+			Data1.Epistasis.Alphas.temp1 <- c(Data1.Epistasis.Alphas.temp1, Alpha1);
 		};
 	};
+	Data1.Epistasis[[k]] <- Data1.Epistasis.temp1;
+	Data1.Epistasis.Alphas <- cbind(Data1.Epistasis.Alphas, Data1.Epistasis.Alphas.temp1);
 }; 
 Epistasis.PVE.Rescale <- sqrt((PVE * (1-rho)) / var(Y.Epistasis));
 Y.Epistasis <- 0;
@@ -121,7 +125,8 @@ Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")
 PVE.Check.Linear <- var(Y.Additive) / var(Y.Final)
 PVE.Check.Epistasis <- var(Y.Epistasis) / var(Y.Final)
 PVE.Check.Error <- var(Y.Error) / var(Y.Final)
-
+PVE.Check.Pathways <- c(); for (i in 1:length(Data1.Epistasis)) { PVE.Check.Pathways <- c(PVE.Check.Pathways, var(Data1.Epistasis[[i]] %*% Data1.Epistasis.Alphas[,i]) / var(Y.Final)); };
+print(c(PVE.Check.Linear, PVE.Check.Epistasis, PVE.Check.Error, PVE.Check.Pathways));
 
 	self.linear_pve = np.var(np.dot(self.X_additive,self.beta))/np.var(self.y)
         self.epistatic_pve = np.var(self.y_pathway)/np.var(self.y)
