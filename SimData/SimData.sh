@@ -88,37 +88,36 @@ for (j in 1:Pathways.Num.Selected) {
 
 #Pathway Epistasis
 Y.Epistasis <- 0;
-Data1.Epistasis <- list();
+Data1.Epistasis <- list(); Data1.Epistasis.Pathway.SNPs.Check <- list(); Data1.Epistasis.Genome.SNPs.Check <- list();
 Data1.Epistasis.Alphas <- c();
 for (k in 1:Pathways.Num.Selected) {
-	Data1.Epistasis.temp1 <- c();
-#	Data1.Epistasis.Alphas.temp1 <- c();
+	Data1.Epistasis.temp1 <- c(); Data1.Epistasis.Pathway.SNPs.Check.temp1 <- c(); Data1.Epistasis.Genome.SNPs.Check.temp1 <- c();
 	for (l in 1:Pathways.SNPs) {
 		print(c(k,l));
 		Data1.Epistasis.Pathway.SNPs <- c();
-		Data1.Epistasis.Genome.SNPs <- c();
+		Data1.Epistasis.Genome.SNPs <- c(); 
 		for (m in 1:Pathways.SNPs.Interaction) {
-#			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,Genome.AntiPathway.SNPs[k,m]]);
-#			Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
 			Data1.Epistasis.Pathway.SNPs <- cbind(Data1.Epistasis.Pathway.SNPs, Data1[,Pathways[k,l]]);
 			Data1.Epistasis.Genome.SNPs <- cbind(Data1.Epistasis.Genome.SNPs, Data1[,Genome.AntiPathway.SNPs[k,m]]);
 		};
 		Epistasis1 <- Data1.Epistasis.Pathway.SNPs * Data1.Epistasis.Genome.SNPs;
-		Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
+		Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1); Data1.Epistasis.Pathway.SNPs.Check.temp1 <- cbind(Data1.Epistasis.Pathway.SNPs.Check.temp1, Data1.Epistasis.Pathway.SNPs); Data1.Epistasis.Genome.SNPs.Check.temp1 <- cbind(Data1.Epistasis.Genome.SNPs.Check.temp1, Data1.Epistasis.Genome.SNPs); 
 	};
-#	Epistasis1 <- Data1.Epistasis.Pathway.SNPs * Data1.Epistasis.Genome.SNPs;
 	Data1.Epistasis.Alphas.temp1 <- rnorm(Pathways.SNPs*Pathways.SNPs.Interaction,0,1);
 	Y.Epistasis <- Y.Epistasis + (Data1.Epistasis.temp1 %*% Data1.Epistasis.Alphas.temp1);
-	Data1.Epistasis[[k]] <- Data1.Epistasis.temp1;
-#	Data1.Epistasis[[k]] <- Epistasis1;
+	Data1.Epistasis[[k]] <- Data1.Epistasis.temp1; Data1.Epistasis.Pathway.SNPs.Check[[k]] <- Data1.Epistasis.Pathway.SNPs.Check.temp1; Data1.Epistasis.Genome.SNPs.Check[[k]] <- Data1.Epistasis.Genome.SNPs.Check.temp1;
 	Data1.Epistasis.Alphas <- cbind(Data1.Epistasis.Alphas, Data1.Epistasis.Alphas.temp1);
 }; 
 Epistasis.PVE.Rescale <- sqrt((PVE * (1-rho)) / var(Y.Epistasis));
+#for (i in 1:length(Data1.Epistasis)) { print(dim(Data1.Epistasis[[i]])); }; print(dim(Data1.Epistasis.Alphas)); #Data check
+#Data1.Epistasis.Pathway.SNPs.Check[[1]][1:5,198:207]; Data1.Epistasis.Pathway.SNPs.Check[[1]][1:5,398:407]; Data1.Epistasis.Pathway.SNPs.Check[[1]][1:5,598:607]; Data1.Epistasis.Pathway.SNPs.Check[[1]][1:5,798:807]; #Data check
+#Data1.Epistasis.Pathway.SNPs.Check[[3]][1:5,198:207]; Data1.Epistasis.Pathway.SNPs.Check[[3]][1:5,398:407]; Data1.Epistasis.Pathway.SNPs.Check[[3]][1:5,598:607]; Data1.Epistasis.Pathway.SNPs.Check[[3]][1:5,798:807]; #Data check
+#Data1.Epistasis.Genome.SNPs.Check[[1]][1:5,c(1:5,200:205)]; Data1.Epistasis.Genome.SNPs.Check[[1]][1:5,c(6:10,406:410)]; Data1.Epistasis.Genome.SNPs.Check[[1]][1:5,c(11:15,611:615)]; Data1.Epistasis.Genome.SNPs.Check[[1]][1:5,c(16:20,816:820)]; #Data check
+#Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(1:5,200:205)]; Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(6:10,406:410)]; Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(11:15,611:615)]; Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(16:20,816:820)]; #Data check
 Y.Epistasis <- 0;
-Count2 <- 1; for (k in 1:Pathways.Num.Selected) { for (l in 1:Pathways.SNPs) { for (m in 1:Pathways.SNPs.Interaction) {
-			Y.Epistasis <- Y.Epistasis + Data1.Epistasis.Alphas[Count2] * Data1.Epistasis[Count2] * Epistasis.PVE.Rescale; #Normalize in respect to PVE 
-			Count2 <- Count2 + 1;
-}; }; }; 
+for (k in 1:Pathways.Num.Selected) { 
+	Y.Epistasis <- Y.Epistasis + (Data1.Epistasis[[k]] %*% Data1.Epistasis.Alphas[,k]) * Epistasis.PVE.Rescale;
+}; 
 
 #Error
 PVE.Error <- (1 - PVE) * (var(Y.Additive + Y.Epistasis) / PVE);
@@ -172,6 +171,15 @@ write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/Sim
 #			Alpha1 <- rnorm(1,0,1);
 #			Data1.Epistasis.Alphas.temp1 <- c(Data1.Epistasis.Alphas.temp1, Alpha1);
 #			Y.Epistasis <- Y.Epistasis + Alpha1 * Epistasis1; 
+#	Data1.Epistasis.Alphas.temp1 <- c();
+#			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,Genome.AntiPathway.SNPs[k,m]]);
+#			Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
+#	Epistasis1 <- Data1.Epistasis.Pathway.SNPs * Data1.Epistasis.Genome.SNPs;
+#	Data1.Epistasis[[k]] <- Epistasis1;
+#Count2 <- 1; for (k in 1:Pathways.Num.Selected) { for (l in 1:Pathways.SNPs) { for (m in 1:Pathways.SNPs.Interaction) {
+#			Y.Epistasis <- Y.Epistasis + Data1.Epistasis.Alphas[Count2] * Data1.Epistasis[Count2] * Epistasis.PVE.Rescale; #Normalize in respect to PVE 
+#			Count2 <- Count2 + 1;
+#}; }; }; 
 
 ##R -q -e"
 #library("devtools"); devtools::load_all();
@@ -323,6 +331,56 @@ FALSE
      [,1] [,2]
 [1,]    6   21
 [2,]   10   32
+> Data1.Epistasis.Pathway.SNPs.Check[[1]][1:5,198:207]; Data1.Epistasis.Pathway.SNPs.Check[[1]][1:5,398:407];  
+           [,1]       [,2]       [,3]       [,4]       [,5]       [,6]
+[1,] -0.6466086 -0.6466086 -0.6466086 -0.3680773 -0.3680773 -0.3680773
+[2,]  1.1722622  1.1722622  1.1722622  2.5531709  2.5531709  2.5531709
+[3,] -0.6466086 -0.6466086 -0.6466086  2.5531709  2.5531709  2.5531709
+[4,] -0.6466086 -0.6466086 -0.6466086 -0.3680773 -0.3680773 -0.3680773
+[5,] -0.6466086 -0.6466086 -0.6466086 -0.3680773 -0.3680773 -0.3680773
+           [,7]       [,8]       [,9]      [,10]
+[1,] -0.3680773 -0.3680773 -0.3680773 -0.3680773
+[2,]  2.5531709  2.5531709  2.5531709  2.5531709
+[3,]  2.5531709  2.5531709  2.5531709  2.5531709
+[4,] -0.3680773 -0.3680773 -0.3680773 -0.3680773
+[5,] -0.3680773 -0.3680773 -0.3680773 -0.3680773
+           [,1]       [,2]       [,3]       [,4]       [,5]       [,6]
+[1,] -0.3680773 -0.3680773 -0.3680773  1.2272088  1.2272088  1.2272088
+[2,]  2.5531709  2.5531709  2.5531709 -0.6680944 -0.6680944 -0.6680944
+[3,]  2.5531709  2.5531709  2.5531709 -0.6680944 -0.6680944 -0.6680944
+[4,] -0.3680773 -0.3680773 -0.3680773 -0.6680944 -0.6680944 -0.6680944
+[5,] -0.3680773 -0.3680773 -0.3680773 -0.6680944 -0.6680944 -0.6680944
+           [,7]       [,8]       [,9]      [,10]
+[1,]  1.2272088  1.2272088  1.2272088  1.2272088
+[2,] -0.6680944 -0.6680944 -0.6680944 -0.6680944
+[3,] -0.6680944 -0.6680944 -0.6680944 -0.6680944
+[4,] -0.6680944 -0.6680944 -0.6680944 -0.6680944
+[5,] -0.6680944 -0.6680944 -0.6680944 -0.6680944
+> Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(1:5,200:205)]; Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(6:10,406:410)]; 
+          [,1]      [,2]     [,3]       [,4]       [,5]      [,6]      [,7]
+[1,] -0.508133 1.6492337 -0.27114 -1.0218675 -1.2463003  1.393562 -0.508133
+[2,] -0.508133 0.2194689 -0.27114  1.9836252 -1.2463003 -0.590156 -0.508133
+[3,]  1.730338 0.2194689 -0.27114  0.4808788  0.1579817 -0.590156  1.730338
+[4,] -0.508133 0.2194689 -0.27114  0.4808788  1.5622638  1.393562 -0.508133
+[5,] -0.508133 0.2194689 -0.27114 -1.0218675  1.5622638 -0.590156 -0.508133
+          [,8]     [,9]      [,10]      [,11]
+[1,] 1.6492337 -0.27114 -1.0218675 -1.2463003
+[2,] 0.2194689 -0.27114  1.9836252 -1.2463003
+[3,] 0.2194689 -0.27114  0.4808788  0.1579817
+[4,] 0.2194689 -0.27114  0.4808788  1.5622638
+[5,] 0.2194689 -0.27114 -1.0218675  1.5622638
+           [,1]       [,2]       [,3]      [,4]       [,5]       [,6]
+[1,] -0.5145001 -0.1903977 -0.1979011  0.244801 -0.2859267 -0.5145001
+[2,] -0.5145001 -0.1903977 -0.1979011 -1.178461 -0.2859267 -0.5145001
+[3,] -0.5145001 -0.1903977 -0.1979011  0.244801 -0.2859267 -0.5145001
+[4,] -0.5145001 -0.1903977 -0.1979011  0.244801 -0.2859267 -0.5145001
+[5,]  1.5897949 -0.1903977 -0.1979011  0.244801 -0.2859267  1.5897949
+           [,7]       [,8]      [,9]      [,10]
+[1,] -0.1903977 -0.1979011  0.244801 -0.2859267
+[2,] -0.1903977 -0.1979011 -1.178461 -0.2859267
+[3,] -0.1903977 -0.1979011  0.244801 -0.2859267
+[4,] -0.1903977 -0.1979011  0.244801 -0.2859267
+[5,] -0.1903977 -0.1979011  0.244801 -0.2859267
 
 
 ~~~
