@@ -91,18 +91,21 @@ Y.Epistasis <- 0;
 Data1.Epistasis <- list();
 Data1.Epistasis.Alphas <- c();
 for (k in 1:Pathways.Num.Selected) {
-	Data1.Epistasis.temp1 <- c();
-	Data1.Epistasis.Alphas.temp1 <- c();
+	Data1.Epistasis.Pathway.SNPs <- c();
+	Data1.Epistasis.Genome.SNPs <- c();
 	for (l in 1:Pathways.SNPs) {
+		print(c(k,l));
 		for (m in 1:Pathways.SNPs.Interaction) {
-			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,Genome.AntiPathway.SNPs[k,m]]);
-			Alpha1 <- rnorm(1,0,1);
-			Y.Epistasis <- Y.Epistasis + Alpha1 * Epistasis1; 
-			Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
-			Data1.Epistasis.Alphas.temp1 <- c(Data1.Epistasis.Alphas.temp1, Alpha1);
+#			Epistasis1 <- (Data1[,Pathways[k,l]] * Data1[,Genome.AntiPathway.SNPs[k,m]]);
+#			Data1.Epistasis.temp1 <- cbind(Data1.Epistasis.temp1, Epistasis1);
+			Data1.Epistasis.Pathway.SNPs <- cbind(Data1.Epistasis.Pathway.SNPs, Data1[,Pathways[k,l]]);
+			Data1.Epistasis.Genome.SNPs <- cbind(Data1.Epistasis.Genome.SNPs, Data1[,Genome.AntiPathway.SNPs[k,m]]);
 		};
 	};
-	Data1.Epistasis[[k]] <- Data1.Epistasis.temp1;
+	Epistasis1 <- Data1.Epistasis.Pathway.SNPs * Data1.Epistasis.Genome.SNPs;
+	Data1.Epistasis.Alphas.temp1 <- rnorm(Pathways.SNPs*Pathways.SNPs.Interaction,0,1);
+	Y.Epistasis <- Y.Epistasis + (Epistasis1 %*% Alpha1.temp1);
+	Data1.Epistasis[[k]] <- Epistasis1;
 	Data1.Epistasis.Alphas <- cbind(Data1.Epistasis.Alphas, Data1.Epistasis.Alphas.temp1);
 }; 
 Epistasis.PVE.Rescale <- sqrt((PVE * (1-rho)) / var(Y.Epistasis));
@@ -161,6 +164,9 @@ write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/Sim
 #        for idx,alpha_i in enumerate(self.alpha):
 #            print(np.var(np.dot(self.get_W(idx),alpha_i))/np.var(self.y))
 #        print("error pve: ",np.var(self.y_err)/np.var(self.y))
+#			Alpha1 <- rnorm(1,0,1);
+#			Data1.Epistasis.Alphas.temp1 <- c(Data1.Epistasis.Alphas.temp1, Alpha1);
+#			Y.Epistasis <- Y.Epistasis + Alpha1 * Epistasis1; 
 
 ##R -q -e"
 #library("devtools"); devtools::load_all();
@@ -298,6 +304,20 @@ FALSE
 
 FALSE
    50
+> vals1 <- matrix(c(1,2,3,4), ncol=2)
+> vals2 <- matrix(c(6,5,7,8), ncol=2)
+> vals1
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+> vals2
+     [,1] [,2]
+[1,]    6    7
+[2,]    5    8
+> vals1 * vals2
+     [,1] [,2]
+[1,]    6   21
+[2,]   10   32
 
 
 ~~~
