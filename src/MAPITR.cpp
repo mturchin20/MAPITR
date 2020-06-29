@@ -29,7 +29,7 @@ List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
     const int p = regions.size();
     //const int q = Z.n_rows;
     
-//    Rcout << "nana1" << endl;
+//    Rcout << p << endl;
 
     //Set up the vectors to save the outputs
     NumericVector sigma_est(p);
@@ -48,7 +48,9 @@ List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
 
         //Pre-compute the Linear GSM
         uvec j = regions[i];
-        
+       
+	Rcout << y << endl;
+
         //Compute K covariance matrices
         mat K = (GSM*nsnp-GetLinearKernel(X.rows(j))*j.n_elem)/(nsnp-j.n_elem-1);
         mat G = GetLinearKernel(X.rows(j))%K;

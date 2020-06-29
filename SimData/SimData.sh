@@ -60,7 +60,7 @@ Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t
 PVE <- .8
 rho <- .2
 Pathways.Num <- 30
-Pathways.Num.Selected <- 5
+Pathways.Num.Selected <- 2
 Pathways.SNPs <- 50
 Pathways.SNPs.Interaction <- 200
 Genome.Additive.Prop <- .5
@@ -131,11 +131,11 @@ Y.Final <- Y.Additive + Y.Epistasis + Y.Error
 Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); }); Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits); Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits); Pathways.Edits.2 <- apply(Pathways.Edits[,1:2], 1, function(x) { return(paste(x, collapse="")); }); Pathways.Edits <- cbind(Pathways.Edits.2, Pathways.Edits[,3]); 
 
 #PVE Checks
-PVE.Check.Linear <- var(Y.Additive) / var(Y.Final)
+PVE.Check.Additive <- var(Y.Additive) / var(Y.Final)
 PVE.Check.Epistasis <- var(Y.Epistasis) / var(Y.Final)
 PVE.Check.Error <- var(Y.Error) / var(Y.Final)
 PVE.Check.Pathways <- c(); for (i in 1:length(Data1.Epistasis)) { PVE.Check.Pathways <- c(PVE.Check.Pathways, var(Data1.Epistasis[[i]] %*% Data1.Epistasis.Alphas[,i] * c(Epistasis.PVE.Rescale)) / var(Y.Final)); };
-print(c(PVE, rho, PVE * rho, 1 - PVE * rho)); print(c(PVE.Check.Linear, PVE.Check.Epistasis, PVE.Check.Error)); print(PVE.Check.Pathways);
+print(c(PVE, rho, PVE * rho, PVE - PVE * rho)); print(c(PVE.Check.Additive, PVE.Check.Epistasis, PVE.Check.Error)); print(PVE.Check.Pathways);
 
 #Output writing
 write.table(Y.Final, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
@@ -214,7 +214,7 @@ write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranL
 
 library("devtools"); devtools::load_all();
 library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel"); library("CompQuadForm");
-sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITRMAPITR.cpp")
+sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.cpp")
 set.seed(582724); 
 X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
