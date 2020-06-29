@@ -50,11 +50,12 @@ for (k in 1:4) { \
 #write.table(SNPs.Genome, file=\"/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Genome.txt\", quote=FALSE, row.names=FALSE, col.names=FALSE); \ 
 
 #R -q -e "
-#set.seed(973459); Data1 <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
-#R -q -e "
+##set.seed(973459); Data1 <- read.table("/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
+##R -q -e "
 ##set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz", header=T); 
 ##Data1 <- Data1[sample(1:nrow(Data1), 2000), sample(1:ncol(Data1), 10000)];
-set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
+##set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
+set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
 Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
 PVE <- .6
 rho <- .8
@@ -116,7 +117,7 @@ Epistasis.PVE.Rescale <- sqrt((PVE * (1-rho)) / var(Y.Epistasis));
 #Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(1:5,200:205)]; Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(6:10,406:410)]; Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(11:15,611:615)]; Data1.Epistasis.Genome.SNPs.Check[[4]][1:5,c(16:20,816:820)]; #Data check
 Y.Epistasis <- 0;
 for (k in 1:Pathways.Num.Selected) { 
-	Y.Epistasis <- Y.Epistasis + (Data1.Epistasis[[k]] %*% Data1.Epistasis.Alphas[,k]) * Epistasis.PVE.Rescale;
+	Y.Epistasis <- Y.Epistasis + ((Data1.Epistasis[[k]] %*% Data1.Epistasis.Alphas[,k]) * c(Epistasis.PVE.Rescale));
 }; 
 
 #Error
@@ -133,8 +134,8 @@ Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")
 PVE.Check.Linear <- var(Y.Additive) / var(Y.Final)
 PVE.Check.Epistasis <- var(Y.Epistasis) / var(Y.Final)
 PVE.Check.Error <- var(Y.Error) / var(Y.Final)
-PVE.Check.Pathways <- c(); for (i in 1:length(Data1.Epistasis)) { PVE.Check.Pathways <- c(PVE.Check.Pathways, var(Data1.Epistasis[[i]] %*% Data1.Epistasis.Alphas[,i]) / var(Y.Final)); };
-print(c(PVE.Check.Linear, PVE.Check.Epistasis, PVE.Check.Error, PVE.Check.Pathways));
+PVE.Check.Pathways <- c(); for (i in 1:length(Data1.Epistasis)) { PVE.Check.Pathways <- c(PVE.Check.Pathways, var(Data1.Epistasis[[i]] %*% Data1.Epistasis.Alphas[,i] * c(Epistasis.PVE.Rescale)) / var(Y.Final)); };
+print(c(PVE, rho, PVE * rho, 1 - PVE * rho)); print(c(PVE.Check.Linear, PVE.Check.Epistasis, PVE.Check.Error)); print(PVE.Check.Pathways);
 
 #Output writing
 write.table(Y.Final, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
