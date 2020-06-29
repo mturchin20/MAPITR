@@ -57,8 +57,8 @@ for (k in 1:4) { \
 ##set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
 set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
 Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
-PVE <- .6
-rho <- .8
+PVE <- .8
+rho <- .2
 Pathways.Num <- 30
 Pathways.Num.Selected <- 5
 Pathways.SNPs <- 50
@@ -214,25 +214,22 @@ write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranL
 
 library("devtools"); devtools::load_all();
 library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel"); library("CompQuadForm");
-sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.cpp")
+sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITRMAPITR.cpp")
 set.seed(582724); 
 X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
 Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
 Genome.AntiPathway.SNPs <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", header=F);
-Y2 <- cbind(Y,Y);
+#Y2 <- cbind(Y,Y);
 Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
-
-set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
-write.table(Y.Final, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
-write.table(Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
-write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
-write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 
 ##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 #MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
-Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
+#Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
+Y30 <- c();
+for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X[,Pathways.Full[[i]]]) - 1))); };
+
 Results.temp2 <- MAPITRBase(Y30, t(X), Pathways.Full, cores=1)
 #MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 Results.temp2.pValues <- GetMAPITRpValues(Results.temp2$Est, Results.temp2$Eigenvalues)
