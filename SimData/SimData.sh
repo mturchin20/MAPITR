@@ -138,10 +138,10 @@ PVE.Check.Pathways <- c(); for (i in 1:length(Data1.Epistasis)) { PVE.Check.Path
 print(c(PVE, rho, PVE * rho, 1 - PVE * rho)); print(c(PVE.Check.Linear, PVE.Check.Epistasis, PVE.Check.Error)); print(PVE.Check.Pathways);
 
 #Output writing
-write.table(Y.Final, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
-write.table(Pathways, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
-write.table(Pathways.Edits, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
-write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(Y.Final, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+write.table(Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 #"
 
 ##Y <- rnorm(nrow(Data1)); 
@@ -153,6 +153,10 @@ write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/Sim
 #write.table(Pathways.Edits, file="/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 #write.table(SNPs.Pathways, file="/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.SNPs_Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 #write.table(SNPs.Genome, file="/Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/SimData.SNPs_Genome.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+#write.table(Y.Final, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+#write.table(Pathways, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+#write.table(Pathways.Edits, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+#write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 #correction_factor = np.sqrt(self.pve*(1.0-self.rho)/np.var(self.y_pathway))
 #        eps = (1.0-self.pve)*np.var(self.y_additive+self.y_pathway)/self.pve
 #        self.y_err = np.random.normal(0,np.sqrt(eps),size=self.X.shape[0])
@@ -182,6 +186,11 @@ write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/Sim
 #			Count2 <- Count2 + 1;
 #}; }; }; 
 
+
+
+
+
+
 ##R -q -e"
 #library("devtools"); devtools::load_all();
 #set.seed(582724); 
@@ -205,15 +214,20 @@ write.table(Genome.AntiPathway.SNPs, file="/home/mturchin20/TempStuff/MAPITR/Sim
 
 library("devtools"); devtools::load_all();
 library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel"); library("CompQuadForm");
-sourceCpp("/home/mturchin20/TempStuff/MAPITR/src/MAPITR.cpp")
+sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.cpp")
 set.seed(582724); 
-X <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
-Y <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pheno.txt", header=F);
-Pathways <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
-SNPs.Pathways <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Pathways.txt", header=F);
-SNPs.Genome <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Genome.txt", header=F);
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
+Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
+Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
+Genome.AntiPathway.SNPs <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", header=F);
 Y2 <- cbind(Y,Y);
 Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
+
+set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
+write.table(Y.Final, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+write.table(Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 
 ##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 #MAPITR.Results <- MAPITRmain(Y, X, Pathways);
@@ -229,6 +243,18 @@ Results.temp2.pValues
 #4 true
 #each have 200 SNPs 
 #10 real SNPs each interacting with 10 other SNPs in the genome
+
+#SNPs.Pathways <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Pathways.txt", header=F);
+#SNPs.Genome <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Genome.txt", header=F);
+
+
+
+
+
+
+
+
+
 
 ~~~
 #20200627
