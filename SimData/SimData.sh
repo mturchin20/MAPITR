@@ -222,15 +222,16 @@ Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/S
 Genome.AntiPathway.SNPs <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", header=F);
 #Y2 <- cbind(Y,Y);
 Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
+X.mean <- apply(X, 2, mean); X.sd <- apply(X, 2, sd); X.adj <- t((t(X)-X.mean)/X.sd); 
 
 ##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 #MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
 #Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
 Y30 <- c();
-for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X[,Pathways.Full[[i]]]) - 1))); };
+for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X.adj[,Pathways.Full[[i]]]) - 1))); };
 
-Results.temp2 <- MAPITRBase(Y30, t(X), Pathways.Full, cores=1)
+Results.temp2 <- MAPITRBase(Y30, t(X.adj), Pathways.Full, cores=1)
 #MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 Results.temp2.pValues <- GetMAPITRpValues(Results.temp2$Est, Results.temp2$Eigenvalues)
 Results.temp2.pValues
