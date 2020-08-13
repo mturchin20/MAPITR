@@ -257,7 +257,7 @@ Results.temp2.pValues
 
 
 
-
+#20200813
 #mkdir /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1
 #scp -p /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/InterPath/Vs1/Simulations/Simulations.zip mturchin@ssh.ccv.brown.edu:/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/.
 #load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
@@ -266,6 +266,184 @@ Results.temp2.pValues
 #write.table(as.matrix(gene_snp_list), file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.txt", quote=FALSE, row.names=FALSE)
 #write.table(gene_ids, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
 #write.table(chromosome16_snps, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
+
+mkdir /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Temp1
+cd /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Temp1
+
+#R -q -e "
+set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
+load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
+load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.RData")
+load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.RData")
+
+sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.cpp")
+
+gene_list = list()
+
+for(i in 1:ncol(gene_snp_list)){
+  x = unlist(gene_snp_list[[i]])
+  gene_list[[i]] = x[!is.na(x)]
+  names(gene_list)[i] = colnames(gene_snp_list)[i]
+}
+
+X = chromosome16_snps; rm(chromosome16_snps)
+colnames(X) = sapply(colnames(X),function(x) unlist(strsplit(x,split = "_"))[1])
+unique.snps = apply(X,2,function(x) length(unique(x)))
+X = X[,unique.snps>1]; dim(X)
+Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
+
+ind = nrow(X); nsnp = ncol(X)
+
+### Make Sure that Gene List and Genotype SNPs Match Up ###
+for(i in 1:length(gene_list)){
+  x = gene_list[[i]]
+  gene_list[[i]] = x[x%in%colnames(X)]
+}
+
+### Remove Duplicate SNPs ###
+repeated_snps = unlist(gene_list)[duplicated(unlist(gene_list))]
+for(i in 1:length(gene_list)){
+  x = gene_list[[i]]
+  gene_list[[i]] = x[which(x%in%repeated_snps==FALSE)]
+}
+
+rm(repeated_snps)
+
+### Remove Any Gene with One or Fewer SNPs ###
+gene_list = gene_list[unlist(lapply(gene_list,function(x){length(x)}))>=2]
+
+npthwy = length(gene_list) #Final Number of Genes/Pathways
+
+### Define the Simulation Parameters ###
+n.datasets = 1 #Total Number of Simulations
+pve = 0.6; #Heritability of the trait
+rho = 0.5; #Proportion of the heritability caused by additive effects {0.8, 0.5}
+
+### Set Up Causal Pathways in Three Groups
+ncausal1 = 5; ncausal2 = 50 #Pathways in each group
+ncausal3 = 150-(ncausal1+ncausal2) #Total Pathways
+
+### Create a list to save the final Results ###
+pval_mat = matrix(nrow = npthwy,ncol = n.datasets); rownames(pval_mat) = names(gene_list)
+G1_snps = matrix(nrow = ncausal1,ncol = n.datasets)
+G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
+
+### Run the Analysis ###
+for(j in 1:n.datasets){
+
+  #Select Causal Pathways
+  pthwy.ids = 1:npthwy
+  s1=sample(pthwy.ids, ncausal1, replace=F)
+  s2=sample(pthwy.ids[-s1], ncausal2, replace=F)
+  s3=sample(pthwy.ids[-c(s1,s2)], ncausal3, replace=F)
+
+  ### Simulate the Additive Effects ###
+  snps = unlist(gene_list[c(s1,s2,s3)])
+  Xmarginal = X[,snps]
+  beta=rnorm(dim(Xmarginal)[2])
+  y_marginal=c(Xmarginal%*%beta)
+  beta=beta*sqrt(pve*rho/var(y_marginal))
+  y_marginal=Xmarginal%*%beta
+
+  ### Simulate Pairwise Interaction matrix ###
+  Xepi = c(); b = c()
+  causal_pthwys = gene_list[c(s1,s2,s3)]
+  for(i in 1:ncausal1){
+    snps = unlist(gene_list[s1[i]])
+    for(k in 1:length(snps)){
+      Xepi = cbind(Xepi,X[,snps[k]]*X[,unlist(gene_list[s2])])
+    }
+  }
+
+  ### Simulate the Pairwise Effects ###
+  beta=rnorm(dim(Xepi)[2])
+  y_epi=c(Xepi%*%beta)
+  beta=beta*sqrt(pve*(1-rho)/var(y_epi))
+  y_epi=Xepi%*%beta
+
+  ### Simulate the (Environmental) Error/Noise ###
+  y_err=rnorm(ind)
+  y_err=y_err*sqrt((1-pve)/var(y_err))
+
+  ### Simulate the Total Phenotypes ###
+  y=y_marginal+y_epi+y_err
+
+  ### Check dimensions ###
+  dim(X); dim(y)
+
+  ######################################################################################
+  ######################################################################################
+  ######################################################################################
+
+  ### Rewrite the Pathway List to Give Column IDs Instead of SNP Names ###
+  regions = list()
+  for(i in 1:length(gene_list)){
+    regions[[i]] = which(colnames(X)%in%gene_list[[i]])
+    names(regions)[i] = names(gene_list)[i]
+  }
+
+  ######################################################################################
+  ######################################################################################
+  ######################################################################################
+
+  ### Set the number of cores ###
+  cores = detectCores()
+
+  ### Run InterPath ###
+  ptm <- proc.time() #Start clock
+  vc.mod = InterPath(t(X),y,regions,cores = cores)
+  proc.time() - ptm #Stop clock
+
+  ### Apply Davies Exact Method ###
+  vc.ts = vc.mod$Est
+  names(vc.ts) = names(regions)
+
+  pvals = c()
+  for(i in 1:length(vc.ts)){
+    lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
+    Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
+    pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
+    names(pvals)[i] = names(vc.ts[i])
+  }
+                                                                                 
+  ### Find power for the first group of SNPs ###
+  Pthwys_1 = names(regions)[s1]
+
+  ### Find power for the second group of SNPs ###
+  Pthwys_2 = names(regions)[s2]
+
+  ######################################################################################
+  ######################################################################################
+  ######################################################################################
+
+  ### Save Results ###
+  pval_mat[,j] = pvals
+  G1_snps[,j] = Pthwys_1
+  G2_snps[,j] = Pthwys_2
+
+  ### Report Status ###
+  cat("Completed Dataset", j, "\n", sep = " ")
+}
+
+#Save final Results
+Final = list(pval_mat,G1_snps,G2_snps)
+
+ 
+
+
+
+
+
+
+#gene_snp_list <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.txt", header=T);
+#gene_ids
+
+
+
+
+
+
+
 
 
 
