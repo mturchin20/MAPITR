@@ -290,6 +290,9 @@ X = chromosome16_snps;
 colnames(X) = sapply(colnames(X),function(x) unlist(strsplit(x,split = "_"))[1])
 unique.snps = apply(X,2,function(x) length(unique(x)))
 X = X[,unique.snps>1]; dim(X)
+
+X.lines <- apply(X, 2, function(x) { return(paste(x, collapse=",")); });
+
 Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
 
 ind = nrow(X); nsnp = ncol(X)
@@ -334,6 +337,8 @@ G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
   s1=sample(pthwy.ids, ncausal1, replace=F)
   s2=sample(pthwy.ids[-s1], ncausal2, replace=F)
   s3=sample(pthwy.ids[-c(s1,s2)], ncausal3, replace=F)
+  s1=seq(1,ncausal1,by=1)
+  s2=seq(ncausal1+1,ncausal1+1+ncausal2,by=1)
 
   ### Simulate the Additive Effects ###
   snps = unlist(gene_list[c(s1,s2,s3)])
@@ -387,11 +392,16 @@ G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
   ### Set the number of cores ###
   cores = detectCores()
 
-	save.image("20200813_temp1.RData")
+#	save.image("20200813_temp1.RData")
+	save.image("20200813_temp2.RData")
 
 set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
-	load("20200813_temp1.RData")
+	load("20200813_temp2.RData")
 	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits1.cpp")
+	regions <- regions[1:10]
+
+#      b.cols(1,j.n_elem) = trans(X.rows(j-1));
+	X.t <- t(X);
 
 
   ### Run InterPath ###
