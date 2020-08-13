@@ -286,7 +286,7 @@ for(i in 1:ncol(gene_snp_list)){
   names(gene_list)[i] = colnames(gene_snp_list)[i]
 }
 
-X = chromosome16_snps; rm(chromosome16_snps)
+X = chromosome16_snps; 
 colnames(X) = sapply(colnames(X),function(x) unlist(strsplit(x,split = "_"))[1])
 unique.snps = apply(X,2,function(x) length(unique(x)))
 X = X[,unique.snps>1]; dim(X)
@@ -306,8 +306,6 @@ for(i in 1:length(gene_list)){
   x = gene_list[[i]]
   gene_list[[i]] = x[which(x%in%repeated_snps==FALSE)]
 }
-
-rm(repeated_snps)
 
 ### Remove Any Gene with One or Fewer SNPs ###
 gene_list = gene_list[unlist(lapply(gene_list,function(x){length(x)}))>=2]
@@ -329,7 +327,7 @@ G1_snps = matrix(nrow = ncausal1,ncol = n.datasets)
 G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
 
 ### Run the Analysis ###
-for(j in 1:n.datasets){
+#for(j in 1:n.datasets){
 
   #Select Causal Pathways
   pthwy.ids = 1:npthwy
@@ -389,6 +387,13 @@ for(j in 1:n.datasets){
   ### Set the number of cores ###
   cores = detectCores()
 
+	save.image("20200813_temp1.RData")
+
+set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
+	load("20200813_temp1.RData")
+	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits1.cpp")
+
+
   ### Run InterPath ###
   ptm <- proc.time() #Start clock
   vc.mod = InterPath(t(X),y,regions,cores = cores)
@@ -423,7 +428,7 @@ for(j in 1:n.datasets){
 
   ### Report Status ###
   cat("Completed Dataset", j, "\n", sep = " ")
-}
+#}
 
 #Save final Results
 Final = list(pval_mat,G1_snps,G2_snps)
