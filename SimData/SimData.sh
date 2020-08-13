@@ -4,6 +4,14 @@
 
 mkdir /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations 
 mkdir /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations/MAPITR 
+#scp -p /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/InterPath/Vs1/Simulations/Simulations.zip mturchin@ssh.ccv.brown.edu:/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/.
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.RData")
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.RData")
+#write.table(gene_snp_list, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.txt", quote=FALSE, row.names=FALSE)
+#write.table(gene_ids, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
+#write.table(chromosome16_snps, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
+
 
 #zcat /users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz | R -q -e "set.seed(68361); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 10000); Rows <- sample(1:nrow(Data1), 2000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations/MAPITR/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz
 
@@ -59,7 +67,7 @@ set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/M
 Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
 PVE <- .8
 rho <- .2
-Pathways.Num <- 30
+Pathways.Num <- 2
 #Pathways.Num.Selected <- 2
 Pathways.Num.Selected <- 1
 Pathways.SNPs <- 50
@@ -192,6 +200,7 @@ write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranL
 
 
 
+
 ##R -q -e"
 #library("devtools"); devtools::load_all();
 #set.seed(582724); 
@@ -215,7 +224,7 @@ write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranL
 
 library("devtools"); devtools::load_all();
 library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel"); library("CompQuadForm");
-sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.Orig.cpp")
+sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.cpp")
 set.seed(582724); 
 X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
@@ -232,8 +241,8 @@ Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
 #Y30 <- c();
 #for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X.adj[,Pathways.Full[[i]]]) - 1))); };
 
-#Results.temp2 <- MAPITRBase(Y30, t(X.adj), Pathways.Full, cores=1)
-Results.temp2 <- MAPITRBaseOrig(Y30, t(X.adj), Pathways.Full, cores=1)
+Results.temp2 <- MAPITRBase(Y30, t(X.adj), Pathways.Full, cores=1)
+#Results.temp2 <- MAPITRBaseOrig(Y30, t(X.adj), Pathways.Full, cores=1)
 #MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 Results.temp2.pValues <- GetMAPITRpValues(Results.temp2$Est, Results.temp2$Eigenvalues)
 Results.temp2.pValues
@@ -246,6 +255,12 @@ Results.temp2.pValues
 
 #SNPs.Pathways <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Pathways.txt", header=F);
 #SNPs.Genome <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/SimData.SNPs_Genome.txt", header=F);
+
+
+
+
+
+
 
 
 
