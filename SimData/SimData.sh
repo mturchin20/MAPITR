@@ -4,14 +4,6 @@
 
 mkdir /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations 
 mkdir /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations/MAPITR 
-#scp -p /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/InterPath/Vs1/Simulations/Simulations.zip mturchin@ssh.ccv.brown.edu:/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/.
-#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
-#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.RData")
-#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.RData")
-#write.table(gene_snp_list, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.txt", quote=FALSE, row.names=FALSE)
-#write.table(gene_ids, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
-#write.table(chromosome16_snps, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
-
 
 #zcat /users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz | R -q -e "set.seed(68361); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 10000); Rows <- sample(1:nrow(Data1), 2000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations/MAPITR/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz
 
@@ -21,6 +13,8 @@ mkdir /users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulati
 
 #cat /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit | R -q -e "set.seed(68361); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 10000); Rows <- sample(1:nrow(Data1), 2000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz 
 cat /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit | head -n 5000 | perl -lane 'print join("\t", @F[0..99999]);' | R -q -e "set.seed(68361); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 10000); Rows <- sample(1:nrow(Data1), 2000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz 
+#zcat /users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz | R -q -e "set.seed(248573); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 20000); Rows <- sample(1:nrow(Data1), 4000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs2.gz
+zcat /users/mturchin/data/ukbiobank_jun17/subsets/British/British.Ran10000/Imputation/mturchin20/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz | head -n 5000 | perl -lane 'print join("\t", @F[0..99999]);' | R -q -e "set.seed(248573); Data1 <- read.table(file('stdin'), header=T); Columns <- sample(1:ncol(Data1), 20000); Rows <- sample(1:nrow(Data1), 4000); Data2 <- Data1[Rows,Columns]; write.table(Data2, file=\"\", quote=FALSE, row.names=FALSE, col.names=TRUE);" | grep -v ^\> | gzip > /users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz
 
 ##R -q -e "set.seed(973459); Data1 <- read.table(\"/users/mturchin/data/mturchin/InterPath/Analyses/Rnd2AdditiveMdls/Simulations/MAPITR/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz\", header=T); \
 ##R -q -e "set.seed(973459); Data1 <- read.table(\"/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz\", header=T); \
@@ -63,15 +57,16 @@ for (k in 1:4) { \
 ##set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.gz", header=T); 
 ##Data1 <- Data1[sample(1:nrow(Data1), 2000), sample(1:ncol(Data1), 10000)];
 ##set.seed(973459); Data1 <- read.table("/home/mturchin20/TempStuff/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T); 
-set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
+#set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
+set.seed(973459); Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
 PVE <- .8
 rho <- .2
 Pathways.Num <- 2
 #Pathways.Num.Selected <- 2
 Pathways.Num.Selected <- 1
-Pathways.SNPs <- 50
-Pathways.SNPs.Interaction <- 200
+Pathways.SNPs <- 100
+Pathways.SNPs.Interaction <- 1000
 Genome.Additive.Prop <- .5
 
 #Additive SNPs
@@ -226,7 +221,7 @@ library("devtools"); devtools::load_all();
 library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel"); library("CompQuadForm");
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.cpp")
 set.seed(582724); 
-X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
 Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
 Genome.AntiPathway.SNPs <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", header=F);
@@ -237,9 +232,9 @@ X.mean <- apply(X, 2, mean); X.sd <- apply(X, 2, sd); X.adj <- t((t(X)-X.mean)/X
 ##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 #MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
-Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
-#Y30 <- c();
-#for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X.adj[,Pathways.Full[[i]]]) - 1))); };
+#Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
+Y30 <- c();
+for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X.adj[,Pathways.Full[[i]]]) - 1))); };
 
 Results.temp2 <- MAPITRBase(Y30, t(X.adj), Pathways.Full, cores=1)
 #Results.temp2 <- MAPITRBaseOrig(Y30, t(X.adj), Pathways.Full, cores=1)
@@ -258,6 +253,19 @@ Results.temp2.pValues
 
 
 
+
+
+
+
+
+#mkdir /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1
+#scp -p /Users/mturchin20/Documents/Work/LabMisc/RamachandranLab/InterPath/Vs1/Simulations/Simulations.zip mturchin@ssh.ccv.brown.edu:/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/.
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.RData")
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.RData")
+#write.table(as.matrix(gene_snp_list), file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.txt", quote=FALSE, row.names=FALSE)
+#write.table(gene_ids, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
+#write.table(chromosome16_snps, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.txt", quote=FALSE, row.names=FALSE, col.names=FALSE)
 
 
 
