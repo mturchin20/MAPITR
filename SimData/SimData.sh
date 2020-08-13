@@ -270,6 +270,9 @@ Results.temp2.pValues
 mkdir /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Temp1
 cd /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Temp1
 
+#cp -p ../../MAPITR_temp1/Simulations/Code/InterPath.cpp ../../MAPITR_temp1/Simulations/Code/InterPath.edits1.cpp
+#cp -p /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.cpp /users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp
+
 #R -q -e "
 set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
 load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
@@ -327,8 +330,8 @@ npthwy = length(gene_list) #Final Number of Genes/Pathways
 
 ### Define the Simulation Parameters ###
 n.datasets = 1 #Total Number of Simulations
-pve = 0.6; #Heritability of the trait
-rho = 0.5; #Proportion of the heritability caused by additive effects {0.8, 0.5}
+pve = 0.8; #Heritability of the trait
+rho = 0.2; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
 ### Set Up Causal Pathways in Three Groups
 ncausal1 = 5; ncausal2 = 50 #Pathways in each group
@@ -405,11 +408,14 @@ G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
 #	save.image("20200813_temp1.RData")
 #	save.image("20200813_temp2.RData")
 	save.image("20200813_temp3.RData")
+	save.image("20200813_temp4.RData") #diff pve/rho vals
 
 set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
-	load("20200813_temp3.RData")
-	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits1.cpp")
-	regions <- regions[1:10]
+	load("20200813_temp4.RData")
+#	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits1.cpp")
+	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
+#	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.cpp")
+	regions <- regions[1:50]
 
 #      b.cols(1,j.n_elem) = trans(X.rows(j-1));
 #	X.t <- t(X);
@@ -430,7 +436,8 @@ set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); 
     pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
     names(pvals)[i] = names(vc.ts[i])
   }
-                                                                                 
+  pvals
+ 
   ### Find power for the first group of SNPs ###
   Pthwys_1 = names(regions)[s1]
 
@@ -453,6 +460,31 @@ set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); 
 #Save final Results
 Final = list(pval_mat,G1_snps,G2_snps)
 
+```
+>   proc.time() - ptm #Stop clock
+    user   system  elapsed 
+1662.400   41.025 1703.461 
+> pvals
+        AARS         ABAT        ABCA3        ABCC1       ABCC11       ABCC12 
+4.951986e-03 4.533479e-07 7.384488e-01 3.207512e-08 5.443513e-03 1.210351e-01 
+       ABCC6        ACSF3        ACSM1       ACSM2A       ACSM2B        ACSM3 
+3.571622e-02 1.828907e-03 3.114093e-01 3.372007e-01 7.752575e-01 6.586091e-01 
+       ACSM5        ADAD2     ADAMTS18        ADAT1        ADCY7        ADCY9 
+1.086930e-01 7.224191e-01 5.661781e-03 4.238015e-01 8.849778e-01 6.350021e-01 
+      ADGRG1       ADGRG3       ADGRG5        AKTIP        ALDOA         ALG1 
+1.511630e-02 9.641417e-04 6.753311e-01 4.773866e-02 8.054788e-01 8.621856e-01 
+        AMFR      ANKRD11        ANKS3       ANKS4B        AP1G1        APOBR 
+3.613904e-01 3.422696e-03 1.783861e-02 8.824898e-01 4.812328e-01 2.280406e-02 
+      APOOP5         APRT         AQP8     ARHGAP17      ARL6IP1        ARMC5 
+7.915088e-02 7.618808e-03 2.109255e-02 1.416500e-01 3.896289e-01 5.333194e-01 
+     ATF7IP2        ATMIN       ATP2A1       ATP2C2     ATP6V0D1       ATXN1L 
+8.343987e-01 9.534180e-01 8.267568e-01 4.671650e-05 5.826754e-01 9.069548e-01 
+      ATXN2L        AXIN1       BAIAP3         BANP         BBS2        BCAR1 
+5.068331e-01 6.661920e-01 1.898870e-01 2.785836e-02 3.677133e-01 4.780869e-01 
+       BCL7C         BCO1 
+3.490812e-02 4.476724e-01 
+
+```
  
 
 
