@@ -60,7 +60,8 @@ Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t
 PVE <- .8
 rho <- .2
 Pathways.Num <- 30
-Pathways.Num.Selected <- 2
+#Pathways.Num.Selected <- 2
+Pathways.Num.Selected <- 1
 Pathways.SNPs <- 50
 Pathways.SNPs.Interaction <- 200
 Genome.Additive.Prop <- .5
@@ -214,7 +215,7 @@ write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranL
 
 library("devtools"); devtools::load_all();
 library("Rcpp"); library("RcppArmadillo"); library("RcppParallel"); library("doParallel"); library("CompQuadForm");
-sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.cpp")
+sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR/src/MAPITR.Orig.cpp")
 set.seed(582724); 
 X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.gz", header=T);
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
@@ -227,11 +228,12 @@ X.mean <- apply(X, 2, mean); X.sd <- apply(X, 2, sd); X.adj <- t((t(X)-X.mean)/X
 ##MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) 
 #MAPITR.Results <- MAPITRmain(Y, X, Pathways);
 
-#Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
-Y30 <- c();
-for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X.adj[,Pathways.Full[[i]]]) - 1))); };
+Y30 <- matrix(unlist(rep(Y, 30)), ncol=30)
+#Y30 <- c();
+#for (i in 1:nrow(Pathways)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X.adj[,Pathways.Full[[i]]]) - 1))); };
 
-Results.temp2 <- MAPITRBase(Y30, t(X.adj), Pathways.Full, cores=1)
+#Results.temp2 <- MAPITRBase(Y30, t(X.adj), Pathways.Full, cores=1)
+Results.temp2 <- MAPITRBaseOrig(Y30, t(X.adj), Pathways.Full, cores=1)
 #MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 Results.temp2.pValues <- GetMAPITRpValues(Results.temp2$Est, Results.temp2$Eigenvalues)
 Results.temp2.pValues
