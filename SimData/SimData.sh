@@ -290,9 +290,7 @@ X = chromosome16_snps;
 colnames(X) = sapply(colnames(X),function(x) unlist(strsplit(x,split = "_"))[1])
 unique.snps = apply(X,2,function(x) length(unique(x)))
 X = X[,unique.snps>1]; dim(X)
-
-X.lines <- apply(X, 2, function(x) { return(paste(x, collapse=",")); });
-
+#X.lines <- apply(X, 2, function(x) { return(paste(x, collapse=",")); });
 Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
 
 ind = nrow(X); nsnp = ncol(X)
@@ -309,6 +307,18 @@ for(i in 1:length(gene_list)){
   x = gene_list[[i]]
   gene_list[[i]] = x[which(x%in%repeated_snps==FALSE)]
 }
+
+### Remove Duplicate SNPs (based on geno) ###
+X.lines <- apply(X, 2, function(x) { return(paste(x, collapse=",")); });
+duplicated_snps <- names(X.lines[duplicated(X.lines)]) 
+for(i in 1:length(gene_list)){
+  x = gene_list[[i]]
+  gene_list[[i]] = x[which(x%in%duplicated_snps==FALSE)]
+}
+#dim(X)
+#X <- X[,!colnames(X)%in%names(X.lines[duplicated(X.lines)])]
+#dim(X)
+rm(X.lines)
 
 ### Remove Any Gene with One or Fewer SNPs ###
 gene_list = gene_list[unlist(lapply(gene_list,function(x){length(x)}))>=2]
@@ -393,16 +403,16 @@ G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
   cores = detectCores()
 
 #	save.image("20200813_temp1.RData")
-	save.image("20200813_temp2.RData")
+#	save.image("20200813_temp2.RData")
+	save.image("20200813_temp3.RData")
 
 set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
-	load("20200813_temp2.RData")
+	load("20200813_temp3.RData")
 	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits1.cpp")
 	regions <- regions[1:10]
 
 #      b.cols(1,j.n_elem) = trans(X.rows(j-1));
-	X.t <- t(X);
-
+#	X.t <- t(X);
 
   ### Run InterPath ###
   ptm <- proc.time() #Start clock
@@ -624,6 +634,32 @@ FALSE
 [3,] -0.1903977 -0.1979011  0.244801 -0.2859267
 [4,] -0.1903977 -0.1979011  0.244801 -0.2859267
 [5,] -0.1903977 -0.1979011  0.244801 -0.2859267
+#20200813
+> length(X.lines[duplicated(X.lines)])
+[1] 104
+> names(X.lines[duplicated(X.lines)])
+  [1] "16:180529"   "16:188768"   "16:633354"   "16:670964"   "16:783865"
+  [6] "16:1129384"  "16:1536499"  "16:1634385"  "16:1890373"  "16:1918125"
+ [11] "16:2018650"  "16:2026986"  "16:3640784"  "16:3656625"  "16:4487486"
+ [16] "16:7772926"  "16:9382304"  "16:11541896" "16:11876203" "16:15131974"
+ [21] "16:15962510" "16:16276292" "16:16278869" "16:18961444" "16:20435314"
+ [26] "16:20446192" "16:20791506" "16:20966362" "16:20975505" "16:20976360"
+ [31] "16:22038566" "16:22059169" "16:23227396" "16:23811872" "16:24801468"
+ [36] "16:24802325" "16:28865042" "16:28867804" "16:29830829" "16:29835588"
+ [41] "16:29857316" "16:29860685" "16:30010475" "16:30094180" "16:34864943"
+ [46] "16:48177220" "16:49671218" "16:52738113" "16:56861444" "16:56930251"
+ [51] "16:57101373" "16:57474687" "16:57927121" "16:57927336" "16:57928156"
+ [56] "16:57953715" "16:57954986" "16:57955613" "16:57955692" "16:57956231"
+ [61] "16:58061026" "16:58064274" "16:58072153" "16:58093750" "16:58095031"
+ [66] "16:58096591" "16:58100228" "16:58101230" "16:58314598" "16:58629135"
+ [71] "16:62369902" "16:63283562" "16:66586189" "16:66589440" "16:66593067"
+ [76] "16:66604604" "16:67114330" "16:67304915" "16:67320223" "16:67409180"
+ [81] "16:68261092" "16:70978985" "16:74750351" "16:75261647" "16:75262639"
+ [86] "16:75266918" "16:75283093" "16:75288237" "16:75288674" "16:75301196"
+ [91] "16:75301232" "16:75388731" "16:75434558" "16:75438777" "16:75493481"
+ [96] "16:75534058" "16:75536272" "16:77930075" "16:81128230" "16:81161569"
+[101] "16:81187709" "16:83246883" "16:88116843" "16:88973220"
+
 
 
 ~~~
