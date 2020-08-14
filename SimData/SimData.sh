@@ -425,8 +425,8 @@ for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.
 
   ### Run InterPath ###
   ptm <- proc.time() #Start clock
-  vc.mod = InterPath(t(X),y,regions,cores = cores)
-#  vc.mod = InterPath(t(X),matrix(Y30, ncol=length(regions), byrow=FALSE),regions,cores = cores)
+#  vc.mod = InterPath(t(X),y,regions,cores = cores)
+  vc.mod = InterPath(t(X),Y30,regions,cores = cores)
   proc.time() - ptm #Stop clock
 
   ### Apply Davies Exact Method ###
@@ -528,6 +528,63 @@ Final = list(pval_mat,G1_snps,G2_snps)
 5.068331e-01 6.661920e-01 1.898870e-01 2.785836e-02 3.677133e-01 4.780869e-01 
        BCL7C         BCO1 
 3.490812e-02 4.476724e-01 
+#no covars/corrct
+> #  vc.mod = InterPath(t(X),matrix(Y30, ncol=length(regions), byrow=FALSE),regions,cores = cores)
+>   proc.time() - ptm #Stop clock
+    user   system  elapsed
+1474.966   42.586 1517.611
+>
+>   ### Apply Davies Exact Method ###
+>   vc.ts = vc.mod$Est
+>   names(vc.ts) = names(regions)
+>
+>   pvals = c()
+>   for(i in 1:length(vc.ts)){
++     lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
++     Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
++     pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
++     names(pvals)[i] = names(vc.ts[i])
++   }
+>   pvals
+        AARS         ABAT        ABCA3        ABCC1       ABCC11       ABCC12
+9.075350e-03 1.332589e-07 7.269296e-01 8.315985e-09 8.904773e-04 7.395582e-02
+       ABCC6        ACSF3        ACSM1       ACSM2A       ACSM2B        ACSM3
+4.724206e-02 1.221150e-03 3.537905e-01 3.758361e-01 8.866383e-01 7.561057e-01
+       ACSM5        ADAD2     ADAMTS18        ADAT1        ADCY7        ADCY9
+1.835457e-01 8.593086e-01 4.683992e-03 2.367160e-01 7.598773e-01 4.633264e-01
+      ADGRG1       ADGRG3       ADGRG5        AKTIP        ALDOA         ALG1
+8.094992e-03 7.423545e-04 5.489022e-01 4.195427e-02 6.875581e-01 9.103729e-01
+        AMFR      ANKRD11        ANKS3       ANKS4B        AP1G1        APOBR
+3.975499e-01 9.669478e-04 1.572000e-02 9.477620e-01 4.750039e-01 2.166131e-02
+      APOOP5         APRT         AQP8     ARHGAP17      ARL6IP1        ARMC5
+3.922667e-02 2.086286e-02 2.057187e-02 1.623535e-01 3.846440e-01 2.715451e-01
+     ATF7IP2        ATMIN       ATP2A1       ATP2C2     ATP6V0D1       ATXN1L
+9.739844e-01 9.879812e-01 8.828891e-01 9.662260e-05 7.345508e-01 7.031548e-01
+      ATXN2L        AXIN1       BAIAP3         BANP         BBS2        BCAR1
+6.785574e-01 7.652838e-01 1.987019e-01 3.239428e-02 3.443410e-01 5.144689e-01
+       BCL7C         BCO1
+4.128038e-02 3.706294e-01
+#with regress out before
+>   pvals
+        AARS         ABAT        ABCA3        ABCC1       ABCC11       ABCC12 
+1.069194e-02 2.052235e-06 8.588981e-01 9.648794e-08 1.368308e-02 2.240554e-01 
+       ABCC6        ACSF3        ACSM1       ACSM2A       ACSM2B        ACSM3 
+5.389115e-02 6.202295e-03 2.422489e-01 3.721679e-01 6.374053e-01 7.814415e-01 
+       ACSM5        ADAD2     ADAMTS18        ADAT1        ADCY7        ADCY9 
+6.661380e-02 6.291496e-01 1.482319e-02 5.528941e-01 9.797160e-01 8.027934e-01 
+      ADGRG1       ADGRG3       ADGRG5        AKTIP        ALDOA         ALG1 
+2.129916e-02 1.458324e-03 7.566949e-01 6.699238e-02 8.698268e-01 9.038601e-01 
+        AMFR      ANKRD11        ANKS3       ANKS4B        AP1G1        APOBR 
+4.557393e-01 1.116736e-02 3.273128e-02 9.573315e-01 6.185752e-01 1.745093e-02 
+      APOOP5         APRT         AQP8     ARHGAP17      ARL6IP1        ARMC5 
+1.200981e-01 2.040583e-02 2.766836e-02 1.940421e-01 4.164473e-01 6.224320e-01 
+     ATF7IP2        ATMIN       ATP2A1       ATP2C2     ATP6V0D1       ATXN1L 
+6.005474e-01 8.230449e-01 8.874864e-01 1.022908e-04 9.108130e-01 9.659642e-01 
+      ATXN2L        AXIN1       BAIAP3         BANP         BBS2        BCAR1 
+4.662691e-01 5.283394e-01 2.597461e-01 3.938402e-02 4.056004e-01 7.111617e-01 
+       BCL7C         BCO1 
+5.787721e-02 3.685350e-01 
+
 
 
 ```
@@ -538,8 +595,6 @@ Final = list(pval_mat,G1_snps,G2_snps)
 
 
 
-#gene_snp_list <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.txt", header=T);
-#gene_ids
 
 
 
