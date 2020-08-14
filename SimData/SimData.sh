@@ -635,8 +635,28 @@ n.datasets = 1 #Total Number of Simulations
 pve = 0.8; #Heritability of the trait
 rho = 0.2; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
-### Set Up Causal Pathways in Three Groups
-ncausal1 = 5; ncausal2 = 50 #Pathways in each group
+### Set Up Causal SNPs
+ncausal1a = 100; ncausal1b = 1000 #
+ncausal2a = 100; ncausal2b = 1000 #
+
+  #Select Causal Pathways
+  snp.ids = 1:ncol(X)
+  s1a=sample(snp.ids, ncausal1a, replace=F)
+  s1b=sample(snp.ids[-s1a], ncausal1b, replace=F)
+  s2a=sample(snp.ids, ncausal2a, replace=F)
+  s2b=sample(snp.ids[-s2a], ncausal2b, replace=F)
+
+  #Additive Effects
+  snps = c(s1a,s1b,s2a,s2b); 
+  Xmarginal = X[,snps]
+  beta=rnorm(dim(Xmarginal)[2])
+  y_marginal=c(Xmarginal%*%beta)
+  beta=beta*sqrt(pve*rho/var(y_marginal))
+  y_marginal=Xmarginal%*%beta
+
+
+
+
 
 #Pathways & Genome Partners Make
 Pathways <- c(); 
