@@ -407,8 +407,8 @@ G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
 
 #	save.image("20200813_temp1.RData")
 #	save.image("20200813_temp2.RData")
-	save.image("20200813_temp3.RData")
-	save.image("20200813_temp4.RData") #diff pve/rho vals
+#	save.image("20200813_temp3.RData")
+#	save.image("20200813_temp4.RData") #diff pve/rho vals
 
 set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
 	load("20200813_temp4.RData")
@@ -420,9 +420,13 @@ set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); 
 #      b.cols(1,j.n_elem) = trans(X.rows(j-1));
 #	X.t <- t(X);
 
+Y30 <- c();
+for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
+
   ### Run InterPath ###
   ptm <- proc.time() #Start clock
   vc.mod = InterPath(t(X),y,regions,cores = cores)
+#  vc.mod = InterPath(t(X),matrix(Y30, ncol=length(regions), byrow=FALSE),regions,cores = cores)
   proc.time() - ptm #Stop clock
 
   ### Apply Davies Exact Method ###
