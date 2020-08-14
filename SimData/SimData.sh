@@ -483,6 +483,48 @@ Final = list(pval_mat,G1_snps,G2_snps)
 5.068331e-01 6.661920e-01 1.898870e-01 2.785836e-02 3.677133e-01 4.780869e-01 
        BCL7C         BCO1 
 3.490812e-02 4.476724e-01 
+...
+>         sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
+>         regions <- regions[1:50]
+>
+>   ### Run InterPath ###
+>   ptm <- proc.time() #Start clock
+>   vc.mod = InterPath(t(X),y,regions,cores = cores)
+>   proc.time() - ptm #Stop clock
+    user   system  elapsed 
+1661.762   40.384 1702.187 
+> 
+>   ### Apply Davies Exact Method ###
+>   vc.ts = vc.mod$Est  
+>   names(vc.ts) = names(regions)
+> 
+>   pvals = c()
+>   for(i in 1:length(vc.ts)){
++     lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
++     Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
++     pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
++     names(pvals)[i] = names(vc.ts[i])
++   }
+>   pvals
+        AARS         ABAT        ABCA3        ABCC1       ABCC11       ABCC12 
+4.951986e-03 4.533479e-07 7.384488e-01 3.207512e-08 5.443513e-03 1.210351e-01 
+       ABCC6        ACSF3        ACSM1       ACSM2A       ACSM2B        ACSM3 
+3.571622e-02 1.828907e-03 3.114093e-01 3.372007e-01 7.752575e-01 6.586091e-01 
+       ACSM5        ADAD2     ADAMTS18        ADAT1        ADCY7        ADCY9 
+1.086930e-01 7.224191e-01 5.661781e-03 4.238015e-01 8.849778e-01 6.350021e-01 
+      ADGRG1       ADGRG3       ADGRG5        AKTIP        ALDOA         ALG1 
+1.511630e-02 9.641417e-04 6.753311e-01 4.773866e-02 8.054788e-01 8.621856e-01 
+        AMFR      ANKRD11        ANKS3       ANKS4B        AP1G1        APOBR 
+3.613904e-01 3.422696e-03 1.783861e-02 8.824898e-01 4.812328e-01 2.280406e-02 
+      APOOP5         APRT         AQP8     ARHGAP17      ARL6IP1        ARMC5 
+7.915088e-02 7.618808e-03 2.109255e-02 1.416500e-01 3.896289e-01 5.333194e-01 
+     ATF7IP2        ATMIN       ATP2A1       ATP2C2     ATP6V0D1       ATXN1L 
+8.343987e-01 9.534180e-01 8.267568e-01 4.671650e-05 5.826754e-01 9.069548e-01 
+      ATXN2L        AXIN1       BAIAP3         BANP         BBS2        BCAR1 
+5.068331e-01 6.661920e-01 1.898870e-01 2.785836e-02 3.677133e-01 4.780869e-01 
+       BCL7C         BCO1 
+3.490812e-02 4.476724e-01 
+
 
 ```
  
