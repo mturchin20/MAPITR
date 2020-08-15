@@ -603,7 +603,10 @@ set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); li
 Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
 
-Data2 <- apply(Data1, 2, function(x) { return(sample(x)); });
+MAFs <- colSums(Data1)/(2*nrow(Data1));
+Data2 <- c(); for (i in 1:ncol(Data1)) { Data2 <- cbind(Data2, rbinom(nrow(Data1), 2, MAFs[i])); };
+Data3 <- apply(Data1, 2, function(x) { MAF <- sum(x)/(2*length(x)); return(rbinom(length(x), 2, MAF)); }); 
+#Data2 <- apply(Data1, 2, function(x) { return(sample(x)); });
 X = Data2; 
 Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
 
