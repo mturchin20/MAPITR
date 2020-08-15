@@ -597,13 +597,14 @@ Final = list(pval_mat,G1_snps,G2_snps)
 
 
 
-
+Data2 <- Data1
 
 set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
 Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
 
-X = Data1; 
+Data2 <- apply(Data1, 2, function(x) { return(sample(x)); });
+X = Data2; 
 Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
 
 ind = nrow(X); nsnp = ncol(X)
@@ -956,6 +957,52 @@ FALSE
  [91] "16:75301232" "16:75388731" "16:75434558" "16:75438777" "16:75493481"
  [96] "16:75534058" "16:75536272" "16:77930075" "16:81128230" "16:81161569"
 [101] "16:81187709" "16:83246883" "16:88116843" "16:88973220"
+> Data1[1:10,1:10]
+   X1.10759741_T X2.63375893_G X1.82944926_C X2.142291951_C X1.89628674_G
+1              1             0             0              1             0
+2              0             0             1              0             0
+3              0             0             0              2             0
+4              0             0             0              0             0
+5              0             0             2              0             1
+6              0             0             1              2             0
+7              0             0             0              1             0
+8              0             0             1              1             0
+9              0             0             0              0             0
+10             0             0             0              1             0
+   X1.238625898_T X1.30113436_G X2.70564002_A X1.171543747_C X1.192618028_C
+1               0             1             1              0              0
+2               1             1             0              0              1
+3               1             0             2              0              0
+4               1             0             0              0              0
+5               0             1             1              0              0
+6               0             0             1              0              0
+7               2             0             0              0              0
+8               1             2             0              0              0
+9               1             0             1              0              0
+10              0             0             1              0              0
+> Data2[1:10,1:10]
+      X1.10759741_T X2.63375893_G X1.82944926_C X2.142291951_C X1.89628674_G
+ [1,]             0             0             0              1             0
+ [2,]             0             0             1              0             0
+ [3,]             0             0             0              0             1
+ [4,]             0             0             0              1             0
+ [5,]             1             0             2              1             0
+ [6,]             0             0             0              1             0
+ [7,]             0             0             0              0             0
+ [8,]             0             0             0              0             0
+ [9,]             0             0             0              1             0
+[10,]             0             0             0              1             0
+      X1.238625898_T X1.30113436_G X2.70564002_A X1.171543747_C X1.192618028_C
+ [1,]              0             1             1              0              0
+ [2,]              1             0             1              0              0
+ [3,]              1             0             2              0              0
+ [4,]              2             0             0              0              0
+ [5,]              1             0             0              0              0
+ [6,]              0             1             0              0              0
+ [7,]              1             2             0              0              0
+ [8,]              0             0             0              0              0
+ [9,]              2             1             1              0              0
+[10,]              2             1             1              0              0
 
 
 
