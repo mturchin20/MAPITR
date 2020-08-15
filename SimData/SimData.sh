@@ -632,8 +632,8 @@ ind = nrow(X); nsnp = ncol(X)
 
 ### Define the Simulation Parameters ###
 n.datasets = 1 #Total Number of Simulations
-pve = 0.8; #Heritability of the trait
-rho = 0.2; #Proportion of the heritability caused by additive effects {0.8, 0.5}
+pve = 0.7; #Heritability of the trait
+rho = 0.4; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
 ### Set Up Causal SNPs
 n.pathways = 2 #Number of Pathways
@@ -647,9 +647,15 @@ ncausal2a = 100; ncausal2b = 1000 #
 #  s2a=sample(snp.ids, ncausal2a, replace=F)
 #  s2b=sample(snp.ids[-s2a], ncausal2b, replace=F)
 
+  regions <- list(); regions[[1]] <- s1a;
+  for (i in 2:5) {
+	regions[[i]] <- sample(snp.ids, 100, replace=F);
+  }
+
   #Additive Effects
 #  snps = c(s1a,s1b,s2a,s2b); 
-  snps1 = c(s1a,s1b); 
+  snps1 = unlist(regions[c(1,2,3,4,5)])
+#  snps1 = c(s1a,s1b); 
   Xmarginal = X[,snps1]
   beta=rnorm(dim(Xmarginal)[2])
   y_marginal=c(Xmarginal%*%beta)
@@ -682,7 +688,7 @@ ncausal2a = 100; ncausal2b = 1000 #
 
   cores = detectCores()
 
-  regions <- list(); regions[[1]] <- s1a;
+#  regions <- list(); regions[[1]] <- s1a;
 
 Y30 <- c();
 for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
