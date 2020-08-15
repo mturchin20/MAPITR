@@ -597,24 +597,22 @@ Final = list(pval_mat,G1_snps,G2_snps)
 
 
 
-Data2 <- Data1
-
 set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
 Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
 
-MAFs <- colSums(Data1)/(2*nrow(Data1));
-Data2 <- c(); for (i in 1:ncol(Data1)) { Data2 <- cbind(Data2, rbinom(nrow(Data1), 2, MAFs[i])); };
+#MAFs <- colSums(Data1)/(2*nrow(Data1));
+#Data2 <- c(); for (i in 1:ncol(Data1)) { Data2 <- cbind(Data2, rbinom(nrow(Data1), 2, MAFs[i])); };
 Data3 <- apply(Data1, 2, function(x) { MAF <- sum(x)/(2*length(x)); return(rbinom(length(x), 2, MAF)); }); 
 #Data2 <- apply(Data1, 2, function(x) { return(sample(x)); });
-X = Data2; 
+X = Data3; 
 Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
 
 ind = nrow(X); nsnp = ncol(X)
 
 ### Define the Simulation Parameters ###
 n.datasets = 1 #Total Number of Simulations
-pve = 0.6; #Heritability of the trait
+pve = 0.5; #Heritability of the trait
 rho = 0.7; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
 ### Set Up Causal SNPs
@@ -667,6 +665,27 @@ ncausal2a = 100; ncausal2b = 1000 #
 
   ### Check dimensions ###
   dim(X); dim(y)
+
+#Pathway Formatting
+Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); }); Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits); Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits); Pathways.Edits.2 <- apply(Pathways.Edits[,1:2], 1, function(x) { return(paste(x, collapse="")); }); Pathways.Edits <- cbind(Pathways.Edits.2, Pathways.Edits[,3]); 
+
+#Output writing
+write.table(Y.Final, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+write.table(Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+#"
+
+set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
+sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
+X <- read.table("
+/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
+Y <- read.table("
+/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
+Pathways <- read.table("
+/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
+Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
+
 
   cores = detectCores()
 
