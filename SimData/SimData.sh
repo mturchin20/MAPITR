@@ -603,41 +603,19 @@ set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); li
 Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
 
-#Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
-#
-#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
-#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.RData")
-#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.RData")
-#
-#gene_list = list()
-#
-#for(i in 1:ncol(gene_snp_list)){
-#  x = unlist(gene_snp_list[[i]])
-#  gene_list[[i]] = x[!is.na(x)]
-#  names(gene_list)[i] = colnames(gene_snp_list)[i]
-#}
-
 X = Data1; 
 Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
 
 ind = nrow(X); nsnp = ncol(X)
 
-#### Remove Duplicate SNPs (based on geno) ###
-#X.lines <- apply(X, 2, function(x) { return(paste(x, collapse=",")); });
-#duplicated_snps <- names(X.lines[duplicated(X.lines)]) 
-#for(i in 1:length(gene_list)){
-#  x = gene_list[[i]]
-#  gene_list[[i]] = x[which(x%in%duplicated_snps==FALSE)]
-#}
-
 ### Define the Simulation Parameters ###
 n.datasets = 1 #Total Number of Simulations
-pve = 0.7; #Heritability of the trait
-rho = 0.4; #Proportion of the heritability caused by additive effects {0.8, 0.5}
+pve = 0.6; #Heritability of the trait
+rho = 0.7; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
 ### Set Up Causal SNPs
 n.pathways = 2 #Number of Pathways
-ncausal1a = 100; ncausal1b = 1000 #
+ncausal1a = 50; ncausal1b = 750 #
 ncausal2a = 100; ncausal2b = 1000 #
 
   #Select Causal Pathways
@@ -690,6 +668,8 @@ ncausal2a = 100; ncausal2b = 1000 #
 
 #  regions <- list(); regions[[1]] <- s1a;
 
+#	save.image("20200814_vs2_temp1.RData") #diff pve/rho vals
+
 Y30 <- c();
 for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
 
@@ -710,35 +690,59 @@ for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.
   }
   pvals
 
-
-  
-
-
-
-
-### Find power for the first group of SNPs ###
-  Pthwys_1 = names(regions)[s1]
-
-  ### Find power for the second group of SNPs ###
-  Pthwys_2 = names(regions)[s2]
-
-  ######################################################################################
-  ######################################################################################
-  ######################################################################################
-
-  ### Save Results ###
-  pval_mat[,j] = pvals
-  G1_snps[,j] = Pthwys_1
-  G2_snps[,j] = Pthwys_2
-
-  ### Report Status ###
-  cat("Completed Dataset", j, "\n", sep = " ")
+#Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
+#
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.RData")
+#load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.RData")
+#
+#gene_list = list()
+#
+#for(i in 1:ncol(gene_snp_list)){
+#  x = unlist(gene_snp_list[[i]])
+#  gene_list[[i]] = x[!is.na(x)]
+#  names(gene_list)[i] = colnames(gene_snp_list)[i]
 #}
 
-#Save final Results
-Final = list(pval_mat,G1_snps,G2_snps)
-
 ```
+#.7, .4, 100/1000
+>   proc.time() - ptm #Stop clock
+   user  system elapsed
+176.399   4.990 181.396
+>
+>
+>
+>   ### Apply Davies Exact Method ###
+>   vc.ts = vc.mod$Est
+>   names(vc.ts) = names(regions)
+>
+>   pvals = c()
+>   for(i in 1:length(vc.ts)){
++     lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
++     Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
++     pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
++     names(pvals)[i] = names(vc.ts[i])
++   }
+>   pvals
+[1] 7.466439e-09 1.523614e-01 4.545533e-01 5.005918e-01 6.321546e-01
+#.6, .7, 50/750
+>   proc.time() - ptm #Stop clock
+   user  system elapsed
+176.636   4.929 181.572
+>
+>   ### Apply Davies Exact Method ###
+>   vc.ts = vc.mod$Est
+>   names(vc.ts) = names(regions)
+>
+>   pvals = c()
+>   for(i in 1:length(vc.ts)){
++     lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
++     Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
++     pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
++     names(pvals)[i] = names(vc.ts[i])
++   }
+>   pvals
+[1] 3.647303e-06 8.572264e-01 2.054071e-01 7.735247e-01 7.712807e-01
 
 ```
 
