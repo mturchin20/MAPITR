@@ -636,6 +636,7 @@ pve = 0.8; #Heritability of the trait
 rho = 0.2; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
 ### Set Up Causal SNPs
+n.pathways = 2 #Number of Pathways
 ncausal1a = 100; ncausal1b = 1000 #
 ncausal2a = 100; ncausal2b = 1000 #
 
@@ -643,18 +644,44 @@ ncausal2a = 100; ncausal2b = 1000 #
   snp.ids = 1:ncol(X)
   s1a=sample(snp.ids, ncausal1a, replace=F)
   s1b=sample(snp.ids[-s1a], ncausal1b, replace=F)
-  s2a=sample(snp.ids, ncausal2a, replace=F)
-  s2b=sample(snp.ids[-s2a], ncausal2b, replace=F)
+#  s2a=sample(snp.ids, ncausal2a, replace=F)
+#  s2b=sample(snp.ids[-s2a], ncausal2b, replace=F)
 
   #Additive Effects
-  snps = c(s1a,s1b,s2a,s2b); 
-  Xmarginal = X[,snps]
+#  snps = c(s1a,s1b,s2a,s2b); 
+  snps1 = c(s1a,s1b); 
+  Xmarginal = X[,snps1]
   beta=rnorm(dim(Xmarginal)[2])
   y_marginal=c(Xmarginal%*%beta)
   beta=beta*sqrt(pve*rho/var(y_marginal))
   y_marginal=Xmarginal%*%beta
+ 
+  ### Simulate Pairwise Interaction matrix ###
+  Xepi = c(); b = c()
+  snps2 = s1a; 
+  for(k in 1:length(snps2)){
+    Xepi = cbind(Xepi,X[,snps2[k]]*X[,s1b])
+  }
 
+  ### Simulate the Pairwise Effects ###
+  beta=rnorm(dim(Xepi)[2])
+  y_epi=c(Xepi%*%beta)
+  beta=beta*sqrt(pve*(1-rho)/var(y_epi))
+  y_epi=Xepi%*%beta
 
+  ### Simulate the (Environmental) Error/Noise ###
+  y_err=rnorm(ind)
+  y_err=y_err*sqrt((1-pve)/var(y_err))
+
+  ### Simulate the Total Phenotypes ###
+  y=y_marginal+y_epi+y_err
+
+  ### Check dimensions ###
+  dim(X); dim(y)
+
+  cores = detectCores()
+
+  regions <- list(); regions[[1]] <- s1a;
 
 
 
@@ -675,30 +702,6 @@ for (j in 1:Pathways.Num.Selected) {
 
 
 
-
-### Create a list to save the final Results ###
-pval_mat = matrix(nrow = npthwy,ncol = n.datasets); rownames(pval_mat) = names(gene_list)
-G1_snps = matrix(nrow = ncausal1,ncol = n.datasets)
-G2_snps = matrix(nrow = ncausal2,ncol = n.datasets)
-
-### Run the Analysis ###
-#for(j in 1:n.datasets){
-
-  #Select Causal Pathways
-  pthwy.ids = 1:npthwy
-  s1=sample(pthwy.ids, ncausal1, replace=F)
-  s2=sample(pthwy.ids[-s1], ncausal2, replace=F)
-  s3=sample(pthwy.ids[-c(s1,s2)], ncausal3, replace=F)
-  s1=seq(1,ncausal1,by=1)
-  s2=seq(ncausal1+1,ncausal1+1+ncausal2,by=1)
-
-  ### Simulate the Additive Effects ###
-  snps = unlist(gene_list[c(s1,s2,s3)])
-  Xmarginal = X[,snps]
-  beta=rnorm(dim(Xmarginal)[2])
-  y_marginal=c(Xmarginal%*%beta)
-  beta=beta*sqrt(pve*rho/var(y_marginal))
-  y_marginal=Xmarginal%*%beta
 
   ### Simulate Pairwise Interaction matrix ###
   Xepi = c(); b = c()
