@@ -604,18 +604,18 @@ Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
 
 #Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
-
+#
 #load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_snp_list.RData")
 #load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/gene_ids.RData")
 #load("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Data/chromosome16_snps.RData")
-
-gene_list = list()
-
-for(i in 1:ncol(gene_snp_list)){
-  x = unlist(gene_snp_list[[i]])
-  gene_list[[i]] = x[!is.na(x)]
-  names(gene_list)[i] = colnames(gene_snp_list)[i]
-}
+#
+#gene_list = list()
+#
+#for(i in 1:ncol(gene_snp_list)){
+#  x = unlist(gene_snp_list[[i]])
+#  gene_list[[i]] = x[!is.na(x)]
+#  names(gene_list)[i] = colnames(gene_snp_list)[i]
+#}
 
 X = Data1; 
 Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
@@ -660,6 +660,7 @@ ncausal2a = 100; ncausal2b = 1000 #
   Xepi = c(); b = c()
   snps2 = s1a; 
   for(k in 1:length(snps2)){
+    print(k)
     Xepi = cbind(Xepi,X[,snps2[k]]*X[,s1b])
   }
 
@@ -683,91 +684,13 @@ ncausal2a = 100; ncausal2b = 1000 #
 
   regions <- list(); regions[[1]] <- s1a;
 
-
-
-#Pathways & Genome Partners Make
-Pathways <- c(); 
-Pathways.Full <- sample(1:ncol(Data1), Pathways.Num * Pathways.SNPs); 
-Count1 <- 1; for (i in 1:Pathways.Num) { 
-	Pathways <- rbind(Pathways, Pathways.Full[Count1:(Count1+Pathways.SNPs-1)]); 
-	Count1 <- Count1 + Pathways.SNPs - 1; 
-}; 
-Genome.AntiPathway.SNPs <- c(); 
-Genome.Total.SNPs <- 1:ncol(Data1); 
-for (j in 1:Pathways.Num.Selected) { 
-	Genome.AntiPathway.SNPs <- rbind(Genome.AntiPathway.SNPs, sample(Genome.Total.SNPs[! Genome.Total.SNPs %in% Pathways[j,]], Pathways.SNPs.Interaction)); 
-};
-#for (i in 1:5) { print(table(Pathways[i,] %in% Genome.AntiPathway.SNPs[i,])); }; #Data check
-
-
-
-
-
-  ### Simulate Pairwise Interaction matrix ###
-  Xepi = c(); b = c()
-  causal_pthwys = gene_list[c(s1,s2,s3)]
-  for(i in 1:ncausal1){
-    snps = unlist(gene_list[s1[i]])
-    for(k in 1:length(snps)){
-      Xepi = cbind(Xepi,X[,snps[k]]*X[,unlist(gene_list[s2])])
-    }
-  }
-
-  ### Simulate the Pairwise Effects ###
-  beta=rnorm(dim(Xepi)[2])
-  y_epi=c(Xepi%*%beta)
-  beta=beta*sqrt(pve*(1-rho)/var(y_epi))
-  y_epi=Xepi%*%beta
-
-  ### Simulate the (Environmental) Error/Noise ###
-  y_err=rnorm(ind)
-  y_err=y_err*sqrt((1-pve)/var(y_err))
-
-  ### Simulate the Total Phenotypes ###
-  y=y_marginal+y_epi+y_err
-
-  ### Check dimensions ###
-  dim(X); dim(y)
-
-  ######################################################################################
-  ######################################################################################
-  ######################################################################################
-
-  ### Rewrite the Pathway List to Give Column IDs Instead of SNP Names ###
-  regions = list()
-  for(i in 1:length(gene_list)){
-    regions[[i]] = which(colnames(X)%in%gene_list[[i]])
-    names(regions)[i] = names(gene_list)[i]
-  }
-
-  ######################################################################################
-  ######################################################################################
-  ######################################################################################
-
-  ### Set the number of cores ###
-  cores = detectCores()
-
-#	save.image("20200813_temp1.RData")
-
-set.seed(11151990); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
-	load("20200813_temp4.RData")
-#	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits1.cpp")
-	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
-#	sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.cpp")
-	regions <- regions[1:50]
-
-#      b.cols(1,j.n_elem) = trans(X.rows(j-1));
-#	X.t <- t(X);
-
 Y30 <- c();
 for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
 
-  ### Run InterPath ###
   ptm <- proc.time() #Start clock
-#  vc.mod = InterPath(t(X),y,regions,cores = cores)
   vc.mod = InterPath(t(X),Y30,regions,cores = cores)
   proc.time() - ptm #Stop clock
-
+  
   ### Apply Davies Exact Method ###
   vc.ts = vc.mod$Est
   names(vc.ts) = names(regions)
@@ -780,8 +703,14 @@ for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.
     names(pvals)[i] = names(vc.ts[i])
   }
   pvals
- 
-  ### Find power for the first group of SNPs ###
+
+
+  
+
+
+
+
+### Find power for the first group of SNPs ###
   Pthwys_1 = names(regions)[s1]
 
   ### Find power for the second group of SNPs ###
