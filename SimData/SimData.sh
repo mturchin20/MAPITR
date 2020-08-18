@@ -670,8 +670,28 @@ ncausal2a = 100; ncausal2b = 1000 #
 Pathways <- matrix(unlist(regions), nrow=5, byrow=5)
 Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); }); Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits); Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits); Pathways.Edits.2 <- apply(Pathways.Edits[,1:2], 1, function(x) { return(paste(x, collapse="")); }); Pathways.Edits <- cbind(Pathways.Edits.2, Pathways.Edits[,3]); 
 
+Y30 <- c();
+for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
+
+  ptm <- proc.time() #Start clock
+  vc.mod = InterPath(t(X),Y30,regions,cores = cores)
+  proc.time() - ptm #Stop clock
+  
+  ### Apply Davies Exact Method ###
+  vc.ts = vc.mod$Est
+  names(vc.ts) = names(regions)
+
+  pvals = c()
+  for(i in 1:length(vc.ts)){
+    lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
+    Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
+    pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
+    names(pvals)[i] = names(vc.ts[i])
+  }
+  pvals
+
 #Output writing
-write.table(X, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
+write.table(Data3, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
 write.table(y, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Phenotype.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
 write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
 system("gzip -f /users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt");
@@ -683,11 +703,12 @@ X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Phenotype.txt", header=F);
 Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Pathways.txt", header=F);
 Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
-
-  cores = detectCores()
+regions <- Pathways.Full;
+Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
+cores = detectCores()
 
 Y30 <- c();
-for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
+for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
 
   ptm <- proc.time() #Start clock
   vc.mod = InterPath(t(X),Y30,regions,cores = cores)
