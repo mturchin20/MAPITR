@@ -629,7 +629,7 @@ ncausal2a = 100; ncausal2b = 1000 #
 
   regions <- list(); regions[[1]] <- s1a;
   for (i in 2:5) {
-	regions[[i]] <- sample(snp.ids, 100, replace=F);
+	regions[[i]] <- sample(snp.ids, 50, replace=F);
   }
 
   #Additive Effects
@@ -667,31 +667,24 @@ ncausal2a = 100; ncausal2b = 1000 #
   dim(X); dim(y)
 
 #Pathway Formatting
+Pathways <- matrix(unlist(regions), nrow=5, byrow=5)
 Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); }); Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits); Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits); Pathways.Edits.2 <- apply(Pathways.Edits[,1:2], 1, function(x) { return(paste(x, collapse="")); }); Pathways.Edits <- cbind(Pathways.Edits.2, Pathways.Edits[,3]); 
 
 #Output writing
-write.table(Y.Final, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
-write.table(Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
-write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
-write.table(Genome.AntiPathway.SNPs, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Genome_AntiPathway_SNPs.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+write.table(X, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
+write.table(y, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Phenotype.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+system("gzip -f /users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt");
 #"
 
 set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
-X <- read.table("
-/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
-Y <- read.table("
-/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pheno.txt", header=F);
-Pathways <- read.table("
-/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData.Pathways.Edits.txt", header=F);
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt.gz", header=T);
+Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Phenotype.txt", header=F);
+Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Pathways.txt", header=F);
 Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
 
-
   cores = detectCores()
-
-#  regions <- list(); regions[[1]] <- s1a;
-
-#	save.image("20200814_vs2_temp1.RData") #diff pve/rho vals
 
 Y30 <- c();
 for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
@@ -726,6 +719,10 @@ for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.
 #  gene_list[[i]] = x[!is.na(x)]
 #  names(gene_list)[i] = colnames(gene_snp_list)[i]
 #}
+#  regions <- list(); regions[[1]] <- s1a;
+#
+#	save.image("20200814_vs2_temp1.RData") #diff pve/rho vals
+
 
 ```
 #.7, .4, 100/1000
