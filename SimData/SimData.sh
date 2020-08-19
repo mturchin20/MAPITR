@@ -597,7 +597,7 @@ Final = list(pval_mat,G1_snps,G2_snps)
 
 
 
-set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
+set.seed(686234); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
 Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
 
@@ -612,8 +612,8 @@ ind = nrow(X); nsnp = ncol(X)
 
 ### Define the Simulation Parameters ###
 n.datasets = 1 #Total Number of Simulations
-pve = 0.5; #Heritability of the trait
-rho = 0.7; #Proportion of the heritability caused by additive effects {0.8, 0.5}
+pve = 0.6; #Heritability of the trait
+rho = 0.6; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
 ### Set Up Causal SNPs
 n.pathways = 2 #Number of Pathways
@@ -670,6 +670,7 @@ ncausal2a = 100; ncausal2b = 1000 #
 Pathways <- matrix(unlist(regions), nrow=5, byrow=5)
 Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); }); Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits); Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits); Pathways.Edits.2 <- apply(Pathways.Edits[,1:2], 1, function(x) { return(paste(x, collapse="")); }); Pathways.Edits <- cbind(Pathways.Edits.2, Pathways.Edits[,3]); 
 
+cores = detectCores()
 Y30 <- c();
 for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
 
@@ -697,7 +698,7 @@ write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR
 system("gzip -f /users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt");
 #"
 
-set.seed(379583); library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
+library(doParallel); library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
 sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
 X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt.gz", header=T);
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Phenotype.txt", header=F);
@@ -744,6 +745,44 @@ for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.
 #
 #	save.image("20200814_vs2_temp1.RData") #diff pve/rho vals
 
+#library(Rcpp); library(RcppArmadillo); library(RcppParallel); library(CompQuadForm); library(Matrix); library(MASS); library(truncnorm)
+library("devtools"); devtools::load_all();
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt.gz", header=T);
+Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Phenotype.txt", header=F);
+Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Pathways.txt", header=F);
+Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
+regions <- Pathways.Full;
+Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
+cores = detectCores()
+
+Y30 <- c();
+for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
+
+  ptm <- proc.time() #Start clock
+  vc.mod = MAPITRBase(Y30,t(X),regions,cores = cores)
+  proc.time() - ptm #Stop clock
+  
+  ### Apply Davies Exact Method ###
+  vc.ts = vc.mod$Est
+  names(vc.ts) = names(regions)
+
+  pvals = c()
+  for(i in 1:length(vc.ts)){
+    lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
+    Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
+    pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
+    names(pvals)[i] = names(vc.ts[i])
+  }
+  pvals
+
+#Data1.mean <- apply(Data1, 2, mean); Data1.sd <- apply(Data1, 2, sd); Data1 <- t((t(Data1)-Data1.mean)/Data1.sd); 
+
+
+
+
+
+
+
 
 ```
 #.7, .4, 100/1000
@@ -784,6 +823,40 @@ for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.
 +   }
 >   pvals
 [1] 3.647303e-06 8.572264e-01 2.054071e-01 7.735247e-01 7.712807e-01
+#.6, .6, 50/750 -- using input files from sim output
+> sourceCpp("/users/mturchin/LabMisc/RamachandranLab/MAPITR_temp1/Simulations/Code/InterPath.edits2.cpp")
+> X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Genotypes.txt.gz", header=T);
+> Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Phenotype.txt", header=F);
+> Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData2.Pathways.txt", header=F);
+> Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric);
+> regions <- Pathways.Full;
+> Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
+> cores = detectCores()
+>
+> Y30 <- c();
+> for (i in 1:length(regions)) { Y30 <- cbind(Y30, residuals(lm(as.matrix(Y) ~ as.matrix(X[,regions[[i]]]) - 1))); };
+>
+>   ptm <- proc.time() #Start clock
+>   vc.mod = InterPath(t(X),Y30,regions,cores = cores)
+>   proc.time() - ptm #Stop clock
+   user  system elapsed
+237.176   8.100 245.310
+>
+>   ### Apply Davies Exact Method ###
+>   vc.ts = vc.mod$Est
+>   names(vc.ts) = names(regions)
+>
+>   pvals = c()
+>   for(i in 1:length(vc.ts)){
++     lambda = sort(vc.mod$Eigenvalues[,i],decreasing = T)
++     Davies_Method = davies(vc.mod$Est[i], lambda = lambda, acc=1e-8)
++     pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
++     names(pvals)[i] = names(vc.ts[i])
++   }
+>   pvals
+[1] 5.137639e-07 1.932025e-01 5.878403e-01 8.407904e-01 9.580596e-01
+
+
 
 ```
 
