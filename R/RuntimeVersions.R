@@ -3,16 +3,15 @@
 #' @import Rcpp
 #' @import RcppArmadillo
 #' @import RcppParallel
-RunMAPITR.Base <- function (PhenotypesMatrix, Genotypes, Pathways.Full, cores, LogFile) {
+RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, LogFile) {
 
 	RunMAPITR.Base.Output <- list()
 
-	print("yaya1b")
-
-	print(head(Pathways.Full))
+#	print(head(Pathways.Full))
+#	print(c(dim(Genotypes),dim(PhenotypeMatrix)))
 
 	#MAPITR expects a n x r phenotype matrix, a p x n genotype matrix, and a list of SNP indices for each pathway
-	RunMAPITR.Base.Output.temp1 <- MAPITRBase(t(as.matrix(Genotypes)),as.matrix(PhenotypesMatrix),Pathways.Full,cores=cores)
+	RunMAPITR.Base.Output.temp1 <- MAPITRBase(t(as.matrix(Genotypes)),as.matrix(PhenotypeMatrix),Pathways.Full,cores=cores)
 
 	print(summary(RunMAPITR.Base.Output.temp1)) 
 
@@ -20,12 +19,12 @@ RunMAPITR.Base <- function (PhenotypesMatrix, Genotypes, Pathways.Full, cores, L
 
 }
 
-RunMAPITR.wCovs <- function (Phenotypes, Genotypes, Pathways.Full, Covariates, CenterStandardize) {
+RunMAPITR.wCovs <- function (PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, CenterStandardize) {
 
 	RunMAPITR.wCovs.Output <- list()
 	
 	#MAPITR.wCovs expects a n x r phenotype matrix, a p x n genotype matrix, a z x n covariate matrix, and a list of SNP indices for each pathway
-	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseWCovs(t(as.matrix(Genotypes.Pathway)),as.matrix(PhenotypesMatrix),Pathways.Full,t(as.matrix(Covariates)),cores=cores)
+	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseWCovs(t(as.matrix(Genotypes.Pathway)),as.matrix(PhenotypeMatrix),Pathways.Full,t(as.matrix(Covariates)),cores=cores)
 
 	return(list(Est=RunMAPITR.wCovs.Output.temp2$Est, Eigenvalues=RunMAPITR.wCovs.Output.temp2$Eigenvalues, PVE=RunMAPITR.wCovs.Output.temp2$PVE, LogFile=LogFile))
 

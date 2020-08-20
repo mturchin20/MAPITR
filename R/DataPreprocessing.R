@@ -26,7 +26,7 @@ DataChecks <- function (PhenotypesVector, Genotypes, Pathways, Covariates, LogFi
 PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, LogFile) {
 
 	PreprocessData.Output <- list();
-	PhenotypesMatrix <- c();
+	PhenotypeMatrix <- c();
 
 	#Setup file for indices of each pathway
 	#unit test
@@ -46,18 +46,18 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 	if (RegressPhenotypes == TRUE) { 
 		for (i in 1:nrow(Pathways)) { 
 			Genotypes.Pathway <- Genotypes[,as.numeric(unlist(Pathways.Full[i]))];
-			PhenotypesMatrix <- cbind(PhenotypesMatrix, residuals(lm(as.matrix(PhenotypesVector) ~ as.matrix(Genotypes.Pathway) - 1)))	
+			PhenotypeMatrix <- cbind(PhenotypeMatrix, residuals(lm(as.matrix(PhenotypesVector) ~ as.matrix(Genotypes.Pathway) - 1)))	
 		}
 	} else {
 		for (i in 1:nrow(Pathways)) { 
-			PhenotypesMatrix <- cbind(PhenotypesMatrix, PhenotypesVector);
+			PhenotypeMatrix <- cbind(PhenotypeMatrix, PhenotypesVector);
 		}
 	}
 
-	print(c(nrow(PhenotypesMatrix), ncol(PhenotypesMatrix))) 
-	print(PhenotypesMatrix[1:5,1:5])
-	#print(c(nrow(PhenotypesMatrix), ncol(PhenotypesMatrix))) 
+#	print(c(nrow(PhenotypeMatrix), ncol(PhenotypeMatrix))) 
+#	print(PhenotypeMatrix[1:5,1:5])
+#	print(c(nrow(PhenotypeMatrix), ncol(PhenotypeMatrix))) 
 
-	return(list(PhenotypesMatrix=PhenotypesMatrix, Genotypes=Genotypes, Pathways.Full=Pathways.Full, LogFile=LogFile))
+	return(list(PhenotypeMatrix=PhenotypeMatrix, Genotypes=Genotypes, Pathways.Full=Pathways.Full, LogFile=LogFile))
 
 }
