@@ -834,9 +834,26 @@ GRM_Grand = NULL; GRM_Pathway = NULL; Covariates = NULL; CenterStandardize = TRU
         print("yaya2")
 
 #	save.image("20200820_temp1.RData")
+library("devtools"); 
+devtools::load_all(); 
 	load("20200820_temp1.RData")
 
 	RunMAPITR.Base.Output.temp1 <- MAPITRBase(t(as.matrix(Genotypes)),as.matrix(PhenotypeMatrix),Pathways.Full,cores=cores)
+#	RunMAPITR.Base.Output.temp2 <- MAPITRBase2(t(Genotypes),PhenotypeMatrix,Pathways.Full,cores=cores)
+#	RunMAPITR.Base.Output.temp3 <- MAPITRBase3(t(Genotypes),PhenotypeMatrix,Pathways.Full,cores=cores)
+#	RunMAPITR.Base.Output.temp4 <- MAPITRBase4(t(Genotypes))
+
+  vc.ts = RunMAPITR.Base.Output.temp1$Est
+  names(vc.ts) = names(Pathways.Full)
+  pvals = c()
+  for(i in 1:length(vc.ts)){
+    lambda = sort(RunMAPITR.Base.Output.temp1$Eigenvalues[,i],decreasing = T)
+    Davies_Method = CompQuadForm::davies(RunMAPITR.Base.Output.temp1$Est[i], lambda = lambda, acc=1e-8)
+    pvals[i] = 2*min(1-Davies_Method$Qq,Davies_Method$Qq)
+    names(pvals)[i] = names(vc.ts[i])
+  }
+  pvals
+
 
 
 
