@@ -218,3 +218,32 @@ List MAPITRBase2(arma::mat X,arma::mat Y,List regions,int cores = 1){
     //Return a list of the arguments
     return Rcpp::List::create(Rcpp::Named("Est") = sigma_est, Rcpp::Named("Eigenvalues") = Lambda,Rcpp::Named("PVE") = pve);
 }
+
+// [[Rcpp::export]]
+List MAPITRBase3(arma::mat X,arma::mat Y,List regions,int cores = 1){
+    int i;
+    const int n = X.n_cols;
+    const int nsnp = X.n_rows;
+    const int p = regions.size();
+    //const int q = Z.n_rows;
+    
+    //Set up the vectors to save the outputs
+    NumericVector sigma_est(p);
+    NumericVector pve(p);
+    
+    //Pre-compute the Linear GSM
+
+    return Rcpp::List::create(Rcpp::Named("Est") = nsnp, Rcpp::Named("Eigenvalues") = i);
+}
+
+// [[Rcpp::export]]
+List MAPITRBase4(arma::mat X){
+    int i;
+    const int n = X.n_cols;
+    const int nsnp = X.n_rows;
+    //const int p = regions.size();
+    //const int q = Z.n_rows;
+   
+    return Rcpp::List::create(Rcpp::Named("Est") = nsnp, Rcpp::Named("Eigenvalues") = i);
+}
+
