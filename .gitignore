@@ -8,3 +8,4 @@ doc
 inst/doc
 vignettes/my-vignette.Rmd
 vignettes/*html
+temp1/

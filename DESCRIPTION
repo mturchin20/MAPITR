@@ -1,6 +1,6 @@
 Package: MAPITR
-Title: MArginal ePIstasus Test for Regions
-Version: 0.0.0.9000
+Title: MArginal ePIstasis Test for Regions
+Version: 0.1.0
 Authors@R: c(person("Michael","Turchin",email = "michael_turchin@brown.edu",
                     role=c("aut","cre"), comment=c(ORCID="0000-0003-3569-1529")),
              person("Lorin","Crawford",email = "lcrawford@brown.edu",

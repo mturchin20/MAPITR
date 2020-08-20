@@ -22,7 +22,7 @@ arma::mat GetLinearKernel(arma::mat X){
 ////////////////////////////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
+List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
     int i;
     const int n = X.n_cols;
     const int nsnp = X.n_rows;
@@ -34,38 +34,38 @@ List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
     //Set up the vectors to save the outputs
     NumericVector sigma_est(p);
     NumericVector pve(p);
-    mat Lambda(n,p);
+    arma::mat Lambda(n,p);
     
     //Pre-compute the Linear GSM
-    mat GSM = GetLinearKernel(X);
+    arma::mat GSM = GetLinearKernel(X);
   
 
     omp_set_num_threads(cores);
 #pragma omp parallel for schedule(dynamic)
     for(i=0; i<p; i++){
 	//Extract phenotype
-	vec y = Y.col(i);
+	arma::vec y = Y.col(i);
 
         //Pre-compute the Linear GSM
-        uvec j = regions[i];
+        arma::uvec j = regions[i];
        
-	Rcout << y << endl;
+//	Rcout << y << endl;
 
         //Compute K covariance matrices
-        mat K = (GSM*nsnp-GetLinearKernel(X.rows(j))*j.n_elem)/(nsnp-j.n_elem-1);
-        mat G = GetLinearKernel(X.rows(j))%K;
+        arma::mat K = (GSM*nsnp-GetLinearKernel(X.rows(j-1))*j.n_elem)/(nsnp-j.n_elem-1);
+        arma::mat G = GetLinearKernel(X.rows(j-1))%K;
         
         //Transform K and G using projection M
-        mat b = zeros(n);
+        arma::mat b = zeros(n);
 	b.col(0) = ones<vec>(n); 
-        mat btb_inv = inv(b.t()*b);
-        mat Kc = K-b*btb_inv*(b.t()*K)-(K*b)*btb_inv*b.t()+b*btb_inv*(b.t()*(K*b))*btb_inv*b.t();
-        mat Gc = G-b*btb_inv*(b.t()*G)-(G*b)*btb_inv*b.t()+b*btb_inv*(b.t()*(G*b))*btb_inv*b.t();
-        vec yc = (eye<mat>(n,n)-(b*btb_inv)*b.t())*y;
+        arma::mat btb_inv = inv(b.t()*b);
+        arma::mat Kc = K-b*btb_inv*(b.t()*K)-(K*b)*btb_inv*b.t()+b*btb_inv*(b.t()*(K*b))*btb_inv*b.t();
+        arma::mat Gc = G-b*btb_inv*(b.t()*G)-(G*b)*btb_inv*b.t()+b*btb_inv*(b.t()*(G*b))*btb_inv*b.t();
+        arma::vec yc = (eye<mat>(n,n)-(b*btb_inv)*b.t())*y;
         
         //Compute the quantities q and S
-        vec q = zeros(3); //Create k-vector q to save
-        mat S = zeros(3,3); //Create kxk-matrix S to save
+        arma::vec q = zeros(3); //Create k-vector q to save
+        arma::mat S = zeros(3,3); //Create kxk-matrix S to save
         
         q(0) = as_scalar(yc.t()*Kc*yc);
         q(1) = as_scalar(yc.t()*Gc*yc);
@@ -84,12 +84,12 @@ List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
         S(2,2) = as_scalar(accu((eye<mat>(n,n)-(b*btb_inv)*b.t())%(eye<mat>(n,n)-(b*btb_inv)*b.t())));
         
         //Compute delta and Sinv
-        mat Sinv = inv(S);
-        vec delta = Sinv*q;
+        arma::mat Sinv = inv(S);
+        arma::vec delta = Sinv*q;
         
         //Record nu^2, and tau^2 under the null hypothesis
-        vec q_sub = zeros(2);
-        mat S_sub = zeros(2,2);
+        arma::vec q_sub = zeros(2);
+        arma::mat S_sub = zeros(2,2);
         
         q_sub(0)=q(0);
         q_sub(1)=q(2);
@@ -101,15 +101,15 @@ List MAPITRBase(arma::mat Y,arma::mat X,List regions,int cores = 1){
         S_sub(1,1)=S(2,2);
         
         //Compute P and P^{1/2} matrix
-        vec delta_null = inv(S_sub)*q_sub;
+        arma::vec delta_null = inv(S_sub)*q_sub;
         
         vec eigval;
-        mat eigvec;
+        arma::mat eigvec;
         
         eig_sym(eigval,eigvec,delta_null(0)*Kc+delta_null(1)*(eye<mat>(n,n)-(b*btb_inv)*b.t()));
         
         //Find the eigenvalues of the projection matrix
-        vec evals;
+        arma::vec evals;
         
         eig_sym(evals, (eigvec.cols(find(eigval>0))*diagmat(sqrt(eigval(find(eigval>0))))*trans(eigvec.cols(find(eigval>0))))*(Sinv(1,0)*Kc+Sinv(1,1)*Gc+Sinv(1,2)*(eye<mat>(n,n)-(b*btb_inv)*b.t()))*(eigvec.cols(find(eigval>0))*diagmat(sqrt(eigval(find(eigval>0))))*trans(eigvec.cols(find(eigval>0)))));
         Lambda.col(i) = evals;
