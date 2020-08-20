@@ -12,7 +12,7 @@ RunMAPITR.Base <- function (PhenotypesMatrix, Genotypes, Pathways.Full, cores, L
 	print(head(Pathways.Full))
 
 	#MAPITR expects a n x r phenotype matrix, a p x n genotype matrix, and a list of SNP indices for each pathway
-	RunMAPITR.Base.Output.temp1 <- MAPITRBase(as.matrix(PhenotypesMatrix),t(as.matrix(Genotypes)),Pathways.Full,cores=cores)
+	RunMAPITR.Base.Output.temp1 <- MAPITRBase(t(as.matrix(Genotypes)),as.matrix(PhenotypesMatrix),Pathways.Full,cores=cores)
 
 	print(summary(RunMAPITR.Base.Output.temp1)) 
 
@@ -25,7 +25,7 @@ RunMAPITR.wCovs <- function (Phenotypes, Genotypes, Pathways.Full, Covariates, C
 	RunMAPITR.wCovs.Output <- list()
 	
 	#MAPITR.wCovs expects a n x r phenotype matrix, a p x n genotype matrix, a z x n covariate matrix, and a list of SNP indices for each pathway
-	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseWCovs(as.matrix(PhenotypesMatrix),t(as.matrix(Genotypes.Pathway)),Pathways.Full,t(as.matrix(Covariates)),cores=cores)
+	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseWCovs(t(as.matrix(Genotypes.Pathway)),as.matrix(PhenotypesMatrix),Pathways.Full,t(as.matrix(Covariates)),cores=cores)
 
 	return(list(Est=RunMAPITR.wCovs.Output.temp2$Est, Eigenvalues=RunMAPITR.wCovs.Output.temp2$Eigenvalues, PVE=RunMAPITR.wCovs.Output.temp2$PVE, LogFile=LogFile))
 

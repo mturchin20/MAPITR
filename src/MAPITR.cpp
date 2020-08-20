@@ -29,8 +29,6 @@ List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
     const int p = regions.size();
     //const int q = Z.n_rows;
     
-//    Rcout << p << endl;
-
     //Set up the vectors to save the outputs
     NumericVector sigma_est(p);
     NumericVector pve(p);
@@ -38,7 +36,6 @@ List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
     
     //Pre-compute the Linear GSM
     arma::mat GSM = GetLinearKernel(X);
-  
 
     omp_set_num_threads(cores);
 #pragma omp parallel for schedule(dynamic)
@@ -49,8 +46,6 @@ List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
         //Pre-compute the Linear GSM
         arma::uvec j = regions[i];
        
-//	Rcout << y << endl;
-
         //Compute K covariance matrices
         arma::mat K = (GSM*nsnp-GetLinearKernel(X.rows(j-1))*j.n_elem)/(nsnp-j.n_elem-1);
         arma::mat G = GetLinearKernel(X.rows(j-1))%K;
@@ -103,7 +98,7 @@ List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
         //Compute P and P^{1/2} matrix
         arma::vec delta_null = inv(S_sub)*q_sub;
         
-        vec eigval;
+        arma::vec eigval;
         arma::mat eigvec;
         
         eig_sym(eigval,eigvec,delta_null(0)*Kc+delta_null(1)*(eye<mat>(n,n)-(b*btb_inv)*b.t()));

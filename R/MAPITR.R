@@ -48,19 +48,19 @@
 #'
 #' @export
 #' 
-MAPITR <- function (Phenotype, Genotypes, Pathways, Covariates = NULL, CenterStandardize = TRUE) {
-	return(MAPITRmain(Phenotype, Genotypes, Pathways, Covariates, CenterStandardize, ...))
+MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterStandardize = TRUE) {
+	return(MAPITRmain(Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, ...))
 }
 
-#' @importFrom doParallel detectCores
-MAPITRmain <- function (Phenotype, Genotypes, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
+#' @importFrom parallel detectCores
+MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
         MAPITRprocessing <- list()
 	MAPITRoutput <- list()
 	MAPITRoutput$LogFile <- c()
 	MAPITRoutput$pValues <- NULL
 	MAPITRoutput$PVE <- NULL
-	cores = detectCores()
+	cores = parallel::detectCores()
 
         MAPITRoutput$LogFile <- rbind(MAPITRoutput$LogFile, paste(format(Sys.time()), " -- beginning MAPITR.", sep=""))
         if (PrintProgress == TRUE) {
