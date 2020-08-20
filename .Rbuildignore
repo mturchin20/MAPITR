@@ -1,0 +1,10 @@
+^.*\.Rproj$         
+^README\.Rmd$       
+^cran-comments\.md$ 
+^NEWS\.md$          
+^\.travis\.yml$     
+^doc$
+^docs$
+^LICENSE$
+^temp1$
+^SimData.sh$
