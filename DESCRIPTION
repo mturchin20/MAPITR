@@ -1,12 +1,12 @@
 Package: MAPITR
 Title: MArginal ePIstasis Test for Regions
 Version: 0.1.0
-Authors@R: c(person("Michael","Turchin",email = "michael_turchin@brown.edu",
+Authors@R: c(person(given="Michael",family="Turchin",email = "michael_turchin@brown.edu",
                     role=c("aut","cre"), comment=c(ORCID="0000-0003-3569-1529")),
-             person("Lorin","Crawford",email = "lcrawford@brown.edu",
-	            role = "aut","ctb"),
-             person("Sohini","Ramachandran",email="sramachandran@brown.edu", 
-	     	    role="aut"))
+             person(given="Lorin",family="Crawford",email = "lcrawford@brown.edu",
+	            role=c("aut","ctb"), comment=c(ORCID="0000-0003-0178-8242")),
+             person(given="Sohini",family="Ramachandran",email="sramachandran@brown.edu", 
+	     	    role="aut", comment=c(ORCID="0000-0002-9588-7964")))
 Description: What the package does (one paragraph).
 License: GPL (>= 3)
 URL: https://github.com/mturchin20/MAPITR
