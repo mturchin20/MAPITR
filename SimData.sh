@@ -870,7 +870,97 @@ regions <- Pathways.Full;
 
 #Output1 <- MAPITR(X, Y, regions); 
 Output1 <- MAPITRmain(X, Y, Pathways); 
+Output2 <- MAPITR(X, Y, Pathways); 
 
+
+
+
+
+
+
+
+# Trying to create a unit test 'sized' simulated dataset
+
+set.seed(173463); 
+library("devtools"); devtools::load_all(); 
+Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
+
+Data3 <- apply(Data1, 2, function(x) { MAF <- sum(x)/(2*length(x)); return(rbinom(length(x), 2, MAF)); }); 
+X = Data3; 
+Xmean=apply(X, 2, mean); Xsd=apply(X, 2, sd); X=t((t(X)-Xmean)/Xsd)
+
+ind = nrow(X); nsnp = ncol(X)
+
+### Define the Simulation Parameters ###
+n.datasets = 1 #Total Number of Simulations
+pve = 0.8; #Heritability of the trait
+rho = 0.2; #Proportion of the heritability caused by additive effects {0.8, 0.5}
+
+### Set Up Causal SNPs
+n.pathways = 2 #Number of Pathways
+ncausal1a = 50; ncausal1b = 750 #
+ncausal2a = 100; ncausal2b = 1000 #
+
+  #Select Causal Pathways
+  snp.ids = 1:ncol(X)
+  s1a=sample(snp.ids, ncausal1a, replace=F)
+  s1b=sample(snp.ids[-s1a], ncausal1b, replace=F)
+
+  regions <- list(); regions[[1]] <- s1a;
+  for (i in 2:5) {
+	regions[[i]] <- sample(snp.ids, 50, replace=F);
+  }
+
+  #Additive Effects
+  snps1 = unlist(regions[c(1,2,3,4,5)])
+  Xmarginal = X[,snps1]
+  beta=rnorm(dim(Xmarginal)[2])
+  y_marginal=c(Xmarginal%*%beta)
+  beta=beta*sqrt(pve*rho/var(y_marginal))
+  y_marginal=Xmarginal%*%beta
+ 
+  ### Simulate Pairwise Interaction matrix ###
+  Xepi = c(); b = c()
+  snps2 = s1a; 
+  for(k in 1:length(snps2)){
+    print(k)
+    Xepi = cbind(Xepi,X[,snps2[k]]*X[,s1b])
+  }
+
+  ### Simulate the Pairwise Effects ###
+  beta=rnorm(dim(Xepi)[2])
+  y_epi=c(Xepi%*%beta)
+  beta=beta*sqrt(pve*(1-rho)/var(y_epi))
+  y_epi=Xepi%*%beta
+
+  ### Simulate the (Environmental) Error/Noise ###
+  y_err=rnorm(ind)
+  y_err=y_err*sqrt((1-pve)/var(y_err))
+
+  ### Simulate the Total Phenotypes ###
+  y=y_marginal+y_epi+y_err
+
+  ### Check dimensions ###
+  dim(X); dim(y)
+
+#Pathway Formatting
+Pathways <- matrix(unlist(regions), nrow=5, byrow=5)
+
+Output1 <- MAPITRmain(X, Y, Pathways); 
+
+#Output writing
+write.table(Data3, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData3.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
+write.table(y, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData3.Phenotype.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData3.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+system("gzip -f /users/mturchin/LabMisc/RamachandranLab/MAPITR/SimData/SimData3.Genotypes.txt");
+
+library("devtools"); devtools::load_all(); 
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt.gz", header=T);
+Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Phenotype.txt", header=F);
+Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Pathways.txt", header=F);
+
+Output1 <- MAPITRmain(X, Y, Pathways); 
+Output1$results
 
 
 

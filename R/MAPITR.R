@@ -11,7 +11,7 @@
 #' all p SNPs across all n individuals. No default value.
 #'
 #' @param Pathways A r x 2 matrix containing the pathway names and then
-#' a comma-separated list of each \code{Genotypes} column index
+#' a comma-separated list of the \code{Genotypes} column indices
 #' representing each SNP in the associated pathway. Note, this second 
 #' column of comma-separated indices are the numeric positions for each 
 #' SNP in \code{Genotypes} and not the SNP IDs or column names. No
@@ -19,7 +19,7 @@
 #'
 #' @param Covariates A n x q matrix containing any q additional covariates
 #' that should be included in the M-projection matrix of the model. 
-#' See Turchin et al. 2019 for details. Note that these are covariates
+#' See Turchin et al. 2020 for details. Note that these are covariates
 #' which are applied to both sides of the model, ie the phenotype as well
 #' as the genotypes. A y-intercept term is automatically included and does
 #' not need to be part of this n x q matrix. No default value.
@@ -97,7 +97,8 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pa
 	Pathway.Names <- Pathways[,1] 
 
 	MAPITRoutput.Final <- list();
-	MAPITRoutput.Final[["Results"]] <- cbind(Pathway.Names, MAPITRoutput$pValues, MAPITRoutput$Est, MAPITRoutput$PVE); MAPITRoutput.Final[["Eigenvalues"]] <- MAPITRoutput$Eigenvalues; 
+	MAPITRoutput.Final.Sub1 <- cbind(Pathway.Names, MAPITRoutput$pValues, MAPITRoutput$Est, MAPITRoutput$PVE); colnames(MAPITRoutput.Final.Sub1) <- c("Pathways", "pValues", "Est", "PVE"); 
+	MAPITRoutput.Final[["Results"]] <- MAPITRoutput.Final.Sub1; MAPITRoutput.Final[["Eigenvalues"]] <- MAPITRoutput$Eigenvalues; 
 
 	return(MAPITRoutput.Final) 
 
