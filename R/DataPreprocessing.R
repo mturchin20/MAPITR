@@ -30,7 +30,7 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 
 	#Setup file for indices of each pathway
 	#unit test
-	Pathways.Full <- strsplit(as.character(Pathways[,2]), ",")
+	Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric)
 
 	#Center and standardize genotype matrix (n x p) if flagged
 	#unit test this

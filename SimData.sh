@@ -858,6 +858,21 @@ devtools::load_all();
 
 
 
+#Going from main MAPITR functions
+
+#From: https://stackoverflow.com/questions/733926/openmp-coding-warning-ignoring-pragma-omp-parallel
+library("devtools"); devtools::load_all(); 
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData2.Genotypes.txt.gz", header=T);
+Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData2.Phenotype.txt", header=F);
+Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData2.Pathways.txt", header=F);
+Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric); 
+regions <- Pathways.Full;
+
+#Output1 <- MAPITR(X, Y, regions); 
+Output1 <- MAPITRmain(X, Y, Pathways); 
+
+
+
 
 
 

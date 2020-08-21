@@ -119,34 +119,3 @@ List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
     //Return a list of the arguments
     return Rcpp::List::create(Rcpp::Named("Est") = sigma_est, Rcpp::Named("Eigenvalues") = Lambda,Rcpp::Named("PVE") = pve);
 }
-
-// [[Rcpp::export]]
-List MAPITRBase2(arma::mat X,arma::mat Y,List regions,int cores = 1){
-    int i;
-    const int n = X.n_cols;
-    const int nsnp = X.n_rows;
-    const int p = regions.size();
-    //const int q = Z.n_rows;
-    
-    //Set up the vectors to save the outputs
-    NumericVector sigma_est(p);
-    NumericVector pve(p);
-    arma::mat Lambda(n,p);
-    
-    //Pre-compute the Linear GSM
-    arma::mat GSM = GetLinearKernel(X);
-    
-    omp_set_num_threads(cores);
-#pragma omp parallel for schedule(dynamic)
-    for(i=0; i<p; i++){
-	//Extract phenotype
-	arma::vec y = Y.col(i);
-
-        //Pre-compute the Linear GSM
-        arma::uvec j = regions[i];
-    
-    }
-
-    //Return a list of the arguments
-    return Rcpp::List::create(Rcpp::Named("Est") = nsnp, Rcpp::Named("Eigenvalues") = i);
-}
