@@ -1,27 +1,20 @@
-DataChecks <- function (PhenotypesVector, Genotypes, Pathways, Covariates, LogFile) {
-
-	#Checking for NAs in phenotype vector
-	#unit test
-	if (is.na(PhenotypesVector)) {
-		stop(Sys.time(), " -- there are NAs in the phenotype vector. Please remove and align the remaining files (eg genotype matrix).");
-	}
-	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- PhenotypesVector passed NA check.", sep=""))
-
-	#Checking for missingness in genotype matrix
-	#unit test
-	if (apply(Genotypes, 2, is.na)) {
-		stop(Sys.time(), " -- there are NAs in the genotype matrix. There must be zero missingness in the genotype matrix. Please correct and rerun.");
-	}
-	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- Genotypes passed NA check.", sep=""))
-
-#	#Checking for NAs in pathways file (?)
-#	if (apply(Pathways, 1, 
-
-#	#If using covariates, checking for NAs in covariate matrix (?)
-
-	return(LogFile)
-
-}
+#DataChecks <- function (PhenotypesVector, Genotypes, Pathways, Covariates, LogFile) {
+#
+#	#Checking for NAs in phenotype vector
+#	if (TRUE %in% sapply(PhenotypesVector, is.na)) {
+#		stop(Sys.time(), " -- there are NAs in the phenotype vector. Please remove and align the remaining files (eg genotype matrix).");
+#	}
+#	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- PhenotypesVector passed NA check.", sep=""))
+#
+#	#Checking for missingness in genotype matrix
+#	if (apply(Genotypes, c(1,2), is.na)) {
+#		stop(Sys.time(), " -- there are NAs in the genotype matrix. There must be zero missingness in the genotype matrix. Please correct and rerun.");
+#	}
+#	LogFile <- rbind(LogFile, paste(format(Sys.time()), " -- Genotypes passed NA check.", sep=""))
+#
+#	return(LogFile)
+#
+#}
 
 PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, LogFile) {
 
@@ -53,10 +46,6 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 			PhenotypeMatrix <- cbind(PhenotypeMatrix, PhenotypesVector);
 		}
 	}
-
-#	print(c(nrow(PhenotypeMatrix), ncol(PhenotypeMatrix))) 
-#	print(PhenotypeMatrix[1:5,1:5])
-#	print(c(nrow(PhenotypeMatrix), ncol(PhenotypeMatrix))) 
 
 	return(list(PhenotypeMatrix=PhenotypeMatrix, Genotypes=Genotypes, Pathways.Full=Pathways.Full, LogFile=LogFile))
 

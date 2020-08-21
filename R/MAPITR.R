@@ -68,7 +68,7 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pa
         }
 
 	#Data Checks
-	MAPITRoutput$LogFile <- DataChecks(Phenotype, Genotypes, Pathways, Covariates, MAPITRoutput$LogFile)
+	#MAPITRoutput$LogFile <- DataChecks(Phenotype, Genotypes, Pathways, Covariates, MAPITRoutput$LogFile)
 
 	#Preprocessing Data
 	MAPITRoutput.temp1 <- PreprocessData(Phenotype, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, MAPITRoutput$LogFile)
@@ -81,10 +81,12 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pa
 	#Running appropriate version of MAPITR
 	if (is.null(Covariates)) {
 		MAPITRoutput.temp2 <- RunMAPITR.Base(PhenotypeMatrix, Genotypes, Pathways.Full, cores, MAPITRoutput$LogFile) 
+		MAPITRoutput$Est <- MAPITRoutput.temp2$Est; MAPITRoutput$PVE <- MAPITRoutput.temp2$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp2$Eigenvalues;
 		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 		rm(MAPITRoutput.temp2)
 	} else if (!is.null(Covariates)) { 
 		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Covariates, Pathways.Full, cores, MAPITRoutput$LogFile) 
+		MAPITRoutput$Est <- MAPITRoutput.temp3$Est; MAPITRoutput$PVE <- MAPITRoutput.temp3$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp3$Eigenvalues;
 		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
 		rm(MAPITRoutput.temp3)
 	} else {
@@ -93,7 +95,9 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pa
 		
 	#Postprocessing of results (if needed)
 	Pathway.Names <- Pathways[,1] 
-	MAPITRoutput.Final <- cbind(Pathway.Names, MAPITRoutput$pValues, MAPITRoutput$PVE) 
+
+	MAPITRoutput.Final <- list();
+	MAPITRoutput.Final[["Results"]] <- cbind(Pathway.Names, MAPITRoutput$pValues, MAPITRoutput$Est, MAPITRoutput$PVE); MAPITRoutput.Final[["Eigenvalues"]] <- MAPITRoutput$Eigenvalues; 
 
 	return(MAPITRoutput.Final) 
 
