@@ -8,17 +8,17 @@ Authors@R: c(person(given="Michael",family="Turchin",email = "michael_turchin@br
              person(given="Sohini",family="Ramachandran",email="sramachandran@brown.edu", 
 	     	    role="aut", comment=c(ORCID="0000-0002-9588-7964")))
 Description: MAPITR is a genetic analysis tool for 
-identifying marginal epistasis between pathways and the 
-rest of the genome. MAPITR uses as input a matrix of 
-genotypes, a vector of phenotypes, and a list of pathways, 
-and iteratively tests each pathway for epistasis between 
-any variants within the pathway versus any variants 
-remaining in the rest of the genome. MAPITR is based on 
-a variance component model and returns results in form 
-of p-values for every pathway indicating whether the 
-null model of there being no epistatic interactions 
-between a pathway and the rest of the genome can be 
-rejected.
+    identifying marginal epistasis between pathways and the 
+    rest of the genome. MAPITR uses as input a matrix of 
+    genotypes, a vector of phenotypes, and a list of pathways, 
+    and iteratively tests each pathway for epistasis between 
+    any variants within the pathway versus any variants 
+    remaining in the rest of the genome. MAPITR is based on 
+    a variance component model and returns results in form 
+    of p-values for every pathway indicating whether the 
+    null model of there being no epistatic interactions 
+    between a pathway and the rest of the genome can be 
+    rejected.
 License: GPL (>= 3)
 URL: https://github.com/mturchin20/MAPITR
 BugReports: https://github.com/mturchin20/MAPITR/issues
