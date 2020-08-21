@@ -22,11 +22,9 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 	PhenotypeMatrix <- c();
 
 	#Setup file for indices of each pathway
-	#unit test
 	Pathways.Full <- lapply(strsplit(as.character(Pathways[,2]), ","), as.numeric)
 
 	#Center and standardize genotype matrix (n x p) if flagged
-	#unit test this
 	if (CenterStandardize == TRUE) {
 		Genotypes.Mean <- apply(Genotypes, 2, mean); 
 		Genotypes.SD <- apply(Genotypes, 2, sd); 
@@ -35,7 +33,6 @@ PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, C
 	}
 
 	#Regress out additive effects from phenotype if flagged
-	#unit test??
 	if (RegressPhenotypes == TRUE) { 
 		for (i in 1:nrow(Pathways)) { 
 			Genotypes.Pathway <- Genotypes[,as.numeric(unlist(Pathways.Full[i]))];

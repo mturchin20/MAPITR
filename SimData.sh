@@ -974,9 +974,10 @@ X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/Si
 Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Phenotype.txt", header=F);
 Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Pathways.txt", header=F);
 
-Output1 <- MAPITRmain(X, Y, Pathways); 
-Output1$Results
+#Output1 <- MAPITRmain(X, Y, Pathways); 
+#Output1$Results
 Output2 <- MAPITR(X, Y, Pathways); 
+Output2$Results
 
 MAPITR_TestData_Genotypes <- X;
 MAPITR_TestData_Phenotype <- Y;
