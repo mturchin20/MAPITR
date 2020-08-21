@@ -1,11 +1,12 @@
 context("Tests for DataPreprocessing.R")
 
-
-
-
-assign("MarginalSNPs_logBFs_Stacked", matrix(replicate(3, sample(c(1,2,3,4,5,6,7,8,9))), nrow=9, byrow=TRUE), envir = .GlobalEnv)
-assign("CollapseTest_wPriors", c(6.000000,6.544502,2.176091,2.698970,0.544068,4.217484,1.000000,1.845098,2.217484), envir = .GlobalEnv)
-assign("CollapseTest_wPriors_Basic1", c(1,3,5,7,9,11), envir = .GlobalEnv)
+assign("Pathways_Example", c(1,2,3,4), envir = .GlobalEnv)
+assign("CenterStandardize_Orig", matrix(c(1,2,0,1,0,0,2,1,1,1,2,1), ncol=3, byrow=FALSE), envir = .GlobalEnv)
+assign("CenterStandardize_Mean", c(1.00,0.75,1.25), envir = .GlobalEnv)
+assign("CenterStandardize_SD", c(0.8164966,0.9574271,0.5000000), envir = .GlobalEnv)
+assign("CenterStandardize_Final", matrix(c(0.0000000,1.2247449,-1.2247449,0.0000000,-0.7833495,-0.7833495,1.3055824,0.2611165,-0.5000000,-0.5000000,1.5000000,-0.5000000), ncol=3, byrow=FALSE), envir = .GlobalEnv)
+assign("Residuals_Example",
+envir = .GlobalEnv)
 
 
 
@@ -15,6 +16,20 @@ Genotypes.Mean <- apply(Genotypes, 2, mean);
                 Genotypes <- t((t(Genotypes)-Genotypes.Mean)/Genotypes.SD);
  Genotypes.Pathway <- Genotypes[,as.numeric(unlist(Pathways.Full[i]))];
                         PhenotypeMatrix <- cbind(PhenotypeMatrix, residuals(lm(as.matrix(PhenotypesVector) ~ as.matrix(Genotypes.Pathway) - 1)))
+
+test_that("Checking behavior of pathway format splitting and setup", {
+	 expect_equal(lapply(strsplit(as.character("1,2,3,4"), ","), as.numeric)[[1]], Pathways_Example)
+})
+
+test_that("Checking behavior of centering and standardizing genotypes procedure", {
+	expect_equal(apply(CenterStandardize_Orig, 2, mean), CenterStandardize_Mean)
+	expect_equal(apply(CenterStandardize_Orig, 2, sd), CenterStandardize_SD, tolerance=1e-6)
+	expect_equal(t((t(CenterStandardize_Orig) - CenterStandardize_Mean)/CenterStandardize_SD), CenterStandardize_Final, tolerance=1e-6)
+}
+
+test_that("Checking behavior of linear regression residuals extraction", {
+
+}
 
 
 test_that("CollapseSigmaAlphasTogether sums multiple entries of the same 'model' over different sigma_alpha hyperparameter values", {
