@@ -5,13 +5,17 @@ Version updates will be tracked and explained here. Major updates & releases wil
 ## MAPITR v0.1.0
 
 ###### Summary
+* Minimal working example now running
 
 ###### Since previous version (v#.#.#)
 
 ###### Notes
 
 ###### Next steps (if applicable)
-
+* Finish off rest of wrapper functions
+* Implement 'with covariate' and 'without OpenMP' options
+* Build up unit tests
+* Build up vignette
 
 
 <!---

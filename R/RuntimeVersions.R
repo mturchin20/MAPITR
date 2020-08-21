@@ -44,7 +44,7 @@ GetMAPITRpValues <- function (Est, Eigenvalues, acc=1e-8) {
 	pValues <- c()
 	for (i in 1:length(Est)) { 
 		Lambda <- sort(Eigenvalues[,i], decreasing=TRUE)
-		Davies.Output <- davies(Est[i], lambda=Lambda, acc=acc)
+		Davies.Output <- CompQuadForm::davies(Est[i], lambda=Lambda, acc=acc)
 		pValues <- c(pValues, 2*min(1-Davies.Output$Qq, Davies.Output$Qq))
 	}
 
