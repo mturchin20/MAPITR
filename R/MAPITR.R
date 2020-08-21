@@ -39,16 +39,15 @@
 #' associated \code{MAPITR} PVEs for each pathway.
 #' 
 #' @examples
-#' Phenotype <- c("MAPITR_SimulatedPhenotype")
-#' Genotypes <- c("MAPITR_SimulatedGenotypes")
-#' Pathways <- c("MAPITR_SimulatedPathways")
-#' MAPITROutput <- bmass(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
-#' summary(MAPITROutput)
-#' MAPITR[MAPITR$pValues < 1e-4,1]
+#' Genotypes <- c("MAPITR_TestData_Genotypes")
+#' Phenotype <- c("MAPITR_TestData_Phenotype")
+#' Pathways <- c("MAPITR_TestData_Pathways")
+#' MAPITROutput <- MAPITR(Genotypes, Phenotype, Pathways)
+#' MAPITROutput$Results
 #'
 #' @export
 #' 
-MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterStandardize = TRUE) {
+MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterStandardize = TRUE, ...) {
 	return(MAPITRmain(Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, ...))
 }
 

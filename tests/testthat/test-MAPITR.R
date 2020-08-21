@@ -1,15 +1,11 @@
 context("Tests for MAPITR.R") 
 
-#library("devtools"); devtools::load_all("/home/mturchin20/project/Lab_Stuff/StephensLab/bmass"); Sys.setenv(TZ='America/Chicago');
-#bmass_TestData1 <- read.table("bmass_TestData1.txt", header=T)
-#bmass_TestData2 <- read.table("bmass_TestData2.txt", header=T)
-#bmass_TestSigSNPs <- read.table("bmass_TestSigSNPs.txt", header=T)
-#load("/home/mturchin20/project/Lab_Stuff/StephensLab/bmass/data/bmass_TestData1.rda")
-#load("/home/mturchin20/project/Lab_Stuff/StephensLab/bmass/data/bmass_TestData2.rda")
-#load("/home/mturchin20/project/Lab_Stuff/StephensLab/bmass/data/bmass_TestSigSNPs.rda")
-#DataSources <- c("bmass_TestData1", "bmass_TestData2")
-#bmass_Output <- bmass(DataSources, bmass_TestSigSNPs) 
-#bmass_Output2 <- bmass(DataSources, bmass_TestSigSNPs, SigmaAlphas=c(.5,.7)) 
+data(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, MAPITR_TestData_Pathways)
+
+assign("MAPITR_TestData_Genotypes", MAPITR_TestData_Genotypes, envir = .GlobalEnv)
+assign("MAPITR_TestData_Phenotype", MAPITR_TestData_Phenotype, envir = .GlobalEnv)
+assign("MAPITR_TestData_Pathways", MAPITR_TestData_Pathways, envir = .GlobalEnv)
+assign("MAPITR_Output", MAPITRmain(
 
 data(bmass_TestData1, bmass_TestData2, bmass_TestSigSNPs)
 DataSources <- c("bmass_TestData1", "bmass_TestData2")
@@ -38,3 +34,10 @@ test_that("bmass runs the main bmass function", {
 })
 
 rm(bmass_TestData1, bmass_TestData2, bmass_TestSigSNPs, bmass_Output, bmass_Output_ZScoresCorMatrix, bmass_Output_GWASlogBFMinThreshold, bmass_Output_PreviousSNPs_SNP1, bmass_Output_MarginalSNPs_SNP1, bmass_Output2, bmass_Output2_ModelPriors_Length, bmass_Output2_MarginalSNPs_logBFWAvg, envir = .GlobalEnv)
+
+
+
+
+
+rm(MAPITR_TestData_Genotypes,
+envir = .GlobalEnv)

@@ -872,6 +872,13 @@ regions <- Pathways.Full;
 Output1 <- MAPITRmain(X, Y, Pathways); 
 Output2 <- MAPITR(X, Y, Pathways); 
 
+MAPITR_SimData_Genotypes <- X;
+MAPITR_SimData_Phenotype <- Y;
+MAPITR_SimData_Pathways <- Pathways;
+
+save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda");
+save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
+save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
 
 
 
@@ -969,7 +976,15 @@ Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/Sim
 
 Output1 <- MAPITRmain(X, Y, Pathways); 
 Output1$Results
+Output2 <- MAPITR(X, Y, Pathways); 
 
+MAPITR_TestData_Genotypes <- X;
+MAPITR_TestData_Phenotype <- Y;
+MAPITR_TestData_Pathways <- Pathways;
+
+save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Genotypes.rda");
+save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Phenotype.rda");
+save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
 
 
 
