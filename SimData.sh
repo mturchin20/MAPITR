@@ -989,6 +989,14 @@ save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAP
 
 
 
+# Sim data for unit tests
+
+set.seed(183474)
+vals1 <- rnorm(10,0,1)
+vals2 <- rbinom(10,2,.75)
+vals3 <- vals1 + (runif(10,0,4) * vals2)
+resids <- residuals(lm(vals3 ~ vals2))
+summary(lm(vals3 ~ vals2))
 
 
 
@@ -1132,6 +1140,32 @@ The following object is masked from 'package:devtools':
 [3,]        3 0.4745897324 0.2039635 0.2295905
 [4,]        4 0.4314853397 0.2232131 0.2545830
 [5,]        5 0.5693362759 0.1596100 0.1858096
+# Sim data for PreProcessing functionality unit tests
+> set.seed(183474)
+> vals1 <- rnorm(10,0,1)
+> vals2 <- rbinom(10,2,.75)
+> vals3 <- vals1 + (runif(10,0,4) * vals2)
+> resids <- residuals(lm(vals3 ~ vals2))
+> summary(lm(vals3 ~ vals2))
+
+Call:
+lm(formula = vals3 ~ vals2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max
+-3.0887 -0.9650  0.2395  0.8895  3.0852
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)  -0.8156     1.3002  -0.627   0.5480
+vals2         2.8065     0.8573   3.274   0.0113 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.117 on 8 degrees of freedom
+Multiple R-squared:  0.5726,    Adjusted R-squared:  0.5191
+F-statistic: 10.72 on 1 and 8 DF,  p-value: 0.0113
+
 
 ```
 
