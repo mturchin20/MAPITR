@@ -1013,6 +1013,7 @@ library("pkgdown");
 #Note -- R data object documention needs to be comlpete before the `install()` process can properly finish
 devtools::install()
 pkgdown::build_site()
+devtools::build_vignettes()
 
 #add the following to '.travis.yml':
 ```

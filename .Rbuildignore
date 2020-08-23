@@ -10,3 +10,4 @@
 ^SimData\.sh$
 ^_pkgdown\.yml$
 ^pkgdown$
+^Meta$
