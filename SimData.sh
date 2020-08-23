@@ -1006,6 +1006,19 @@ devtools::build();
 
 
 
+# Final steps for building package, webpage, and misc work for eventual CRAN upload
+#From: https://pkgdown.r-lib.org/
+library("devtools"); 
+library("pkgdown");
+devtools::install()
+pkgdown::build_site()
+
+
+
+
+
+
+
 ```
 #.7, .4, 100/1000
 >   proc.time() - ptm #Stop clock
