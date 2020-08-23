@@ -7,6 +7,7 @@ Version updates will be tracked and explained here. Major updates & releases wil
 ###### Summary
 * Added unit tests
 * Added vignette
+* Finished Roxygen2 comments
 
 ###### Since previous version (v0.1.0)
 * Pausing within-code data check lines for now (only covering obvious cases, and most important check -- the genotype matrix -- too time intensive as a specific, internal step for the main function)
@@ -14,9 +15,10 @@ Version updates will be tracked and explained here. Major updates & releases wil
 * Finished vignette
 
 ###### Notes
+* Added Roxygen2 comments for .rda files in '/data'
 
 ###### Next steps (if applicable)
-
+* Add in 'with covariate' version and possible 'no OpenMP' versions
 
 ## MAPITR v0.1.0
 

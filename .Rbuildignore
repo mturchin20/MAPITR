@@ -8,3 +8,5 @@
 ^LICENSE$
 ^temp1$
 ^SimData\.sh$
+^_pkgdown\.yml$
+^pkgdown$
