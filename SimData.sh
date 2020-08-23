@@ -1168,7 +1168,35 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Residual standard error: 2.117 on 8 degrees of freedom
 Multiple R-squared:  0.5726,    Adjusted R-squared:  0.5191
 F-statistic: 10.72 on 1 and 8 DF,  p-value: 0.0113
+# unit tests test
+> library("devtools");
+Loading required package: usethis
+> devtools::load_all();
+Loading MAPITR
 
+Attaching package: 'testthat'
+
+The following object is masked from 'package:devtools':
+
+    test_file
+
+> devtools::test();
+Loading MAPITR
+Testing MAPITR
+v |  OK F W S | Context
+v |  26       | Basic R Functionality
+v |   5       | Tests for DataPreprocessing.R
+v |   5       | Tests for MAPITR.R [2.0 s]
+
+== Results =====================================================================
+Duration: 2.1 s
+
+OK:       36
+Failed:   0
+Warnings: 0
+Skipped:  0
+
+You are a coding rockstar!
 
 ```
 

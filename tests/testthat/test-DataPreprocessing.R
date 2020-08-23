@@ -14,9 +14,6 @@ test_that("Checking behavior of pathway format splitting and setup", {
 	 expect_equal(lapply(strsplit(as.character("1,2,3,4"), ","), as.numeric)[[1]], Pathways_Example)
 })
 
-
-
-
 test_that("Checking behavior of centering and standardizing genotypes procedure", {
 	expect_equal(apply(CenterStandardize_Orig, 2, mean), CenterStandardize_Mean)
 	expect_equal(apply(CenterStandardize_Orig, 2, sd), CenterStandardize_SD, tolerance=1e-6)
@@ -24,7 +21,7 @@ test_that("Checking behavior of centering and standardizing genotypes procedure"
 })
 
 test_that("Checking behavior of linear regression residuals extraction", {
-	expect_equal(residuals(lm(AdjPhenos ~ OrigGenos)), Residuals, tolerance=1e-6)
+	expect_equal(unname(residuals(lm(AdjPhenos ~ OrigGenos))), Residuals, tolerance=1e-6)
 })
 
 rm(Pathways_Example, CenterStandardize_Orig, CenterStandardize_Mean, CenterStandardize_SD, CenterStandardize_Final, OrigPhenos, OrigGenos, AdjPhenos, Residuals, envir = .GlobalEnv)
