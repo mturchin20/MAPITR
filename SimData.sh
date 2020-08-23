@@ -1007,13 +1007,20 @@ devtools::build();
 
 
 # Final steps for building package, webpage, and misc work for eventual CRAN upload
-#From: https://pkgdown.r-lib.org/
+#From: https://pkgdown.r-lib.org/, https://sahirbhatnagar.com/blog/2020/03/03/creating-a-website-for-your-r-package/
 library("devtools"); 
 library("pkgdown");
+#Note -- R data object documention needs to be comlpete before the `install()` process can properly finish
 devtools::install()
 pkgdown::build_site()
 
-
+#add the following to '.travis.yml':
+```
+language: R
+cache: packages
+latex: false
+r_check_args: --as-cran
+```
 
 
 
