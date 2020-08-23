@@ -991,6 +991,7 @@ save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAP
 
 # Sim data for unit tests
 
+#From: https://stackoverflow.com/questions/54056594/cran-acceptable-way-of-linking-to-openmp-some-c-code-called-from-rcpp
 set.seed(183474)
 vals1 <- rnorm(10,0,1)
 vals2 <- rbinom(10,2,.75)

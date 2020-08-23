@@ -14,6 +14,9 @@ test_that("Checking behavior of pathway format splitting and setup", {
 	 expect_equal(lapply(strsplit(as.character("1,2,3,4"), ","), as.numeric)[[1]], Pathways_Example)
 })
 
+
+
+
 test_that("Checking behavior of centering and standardizing genotypes procedure", {
 	expect_equal(apply(CenterStandardize_Orig, 2, mean), CenterStandardize_Mean)
 	expect_equal(apply(CenterStandardize_Orig, 2, sd), CenterStandardize_SD, tolerance=1e-6)
