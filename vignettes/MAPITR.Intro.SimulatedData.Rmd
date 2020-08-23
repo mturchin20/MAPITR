@@ -9,11 +9,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This is a simple introductory vignette on how to run `MAPITR`. In this introductory example, we will use a simulated dataset to run `MAPITR` and explore some basic output. The dataset is provided with the package.
+This is a simple introductory vignette to the `MAPITR` package. In this introductory example, we will use a simulated dataset to run `MAPITR` and explore some basic output. The dataset is provided with the package.
 
 ## Running `MAPITR`
 
-For this introductory vignette, we will be using `MAPITR_SimData_Phenotype`, `MAPITR_SimData_Genotypes`, and `MAPITR_SimData_Pathways`. These are simulated datasets created for the purposes of unit testing and this vignette. To load up 'MAPITR' and the datasets, run the following:
+For this introductory vignette, we will be using `MAPITR_SimData_Phenotype`, `MAPITR_SimData_Genotypes`, and `MAPITR_SimData_Pathways`. These are simulated datasets created for the purposes of unit testing and this vignette. To load 'MAPITR' and the datasets, run the following:
 
 ```{r}
 library("MAPITR");
@@ -29,44 +29,39 @@ MAPITR_SimData_Genotypes[1:10,1:10]
 
 Here you should see the first ten rows and columns of our genotype matrix. The genotype matrix is n x p, so the rows are our n individuals and the columns are our p SNPs. SNP genotypes, the entry of each column, are assumed to be 0, 1, or 2 -- so note, diploid information is assumed to have been collaspsed into a single value for each SNP. For example, the typical diploid setup of 0/0, 0/1, and 1/1, representing either reference allele (0) or alternative allele (1) for both chromosomal copies in an individual, is now instead represented as 0 (0/0), 1 (0/1), or 2 (1/1).
 
-Also note that it is required there be zero genotype missingness. This is necessary for the current form of constructing the genetic relatedness matrices (GRMs). For each entry in the genotype matrix, the only acceptable values are 0, 1, and 2. 
+Also note that there can be no genotype missingness present in the genotype matrix. This is necessary due to how the genetic relatedness matrices (GRMs), required components for the MAPITR variance component model, are constructed. For each entry in the genotype matrix, the only acceptable values are 0, 1, and 2. 
 
 ```{r}
 head(MAPITR_SimData_Phenotype)
 ```
 
-Here you should a vector of our input phenotypic values. `MAPITR` currently only runs on one phenotype as a time, so this requires only a single vector of phenotypic values as proper input. 
+Here you should see the first ten values of our input phenotype. `MAPITR` only runs on one phenotype at a time currently, so the main function only requires a single vector of phenotypic values as input. 
 
 
 ```{r}
 head(MAPITR_SimData_Pathways)
 ```
 
-Here you should see a matrix with two columns. The first column should list the name of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by `MAPITR` to extract the proper SNPs per pathway to conduct the marginal epistasis analysis. Note that the values for this second collumn are not the SNP IDs (eg rsID#s) or are they column headers (if your genotype matrix has them). They are the specific column locations for each SNP in the input genotype matrix.
+Here you should see a matrix with two columns. The first column should list the name of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by `MAPITR` to extract the proper SNPs per pathway from the input genotype matrix to conduct the marginal epistasis analysis. Note that the values for this second column are not the SNP IDs (eg rsID#s) or column headers (if your genotype matrix has them), they are the specific column locations in the input genotype matrix for each SNP.
 
 Now to run `MAPITR`, we use the following code:
 
 ```{r}
-MAPITRresults <- MAPITR(MAPITR_SimData_Phenotype, MAPITR_SimData_Genotypes, MAPITR_SimData_Pathways)
+MAPITR_Output <- MAPITR(MAPITR_SimData_Phenotype, MAPITR_SimData_Genotypes, MAPITR_SimData_Pathways)
 ```
 
 And to see the output `MAPITR()` provides, we can run the following:
 
 ```{r}
-head(MAPITRresults)
+head(MAPITR_Output$Results)
 ```
 
-The output shown from `MAPITRresults` should be a matrix with three columns. The first column should be the same list of pathway names as the input pathways file, the second column should contain `MAPITR` p-values, and the third column should contain `MAPITR` PVE estimates. In this example, there should be 3 pathways that have p-values below the Bonferonni-corrected threshold of XXX (.05 / XX, the number of pathways tested):
+The output shown from `MAPITR_Output$Results` should be a matrix with three columns. The first column should be the same list of pathway names as the input pathways file, the second column should contain `MAPITR` p-values, and the third column should contain `MAPITR` PVE estimates. In this example, there should be 3 pathways that have p-values below the Bonferonni-corrected threshold of XXX (.05 / XX, the number of pathways tested):
 
 ```{r}
 MAPITRresults[MAPITRresults[,2] , XXX,]
 ```
 
+For further details on the `MAPITR` model, please see the associated [manuscript][MAPITR-paper]. 
 
-
-For further details of the model underlying `MAPITR`, please see the associated [manuscript][MAPITR-paper]. 
-second introductory vignette.
-
-[MAPITR-paper]:
-[bmass-vignette2]: http://mturchin20.github.io/bmass/articles/bmassIntro.2.RealData.html
-[biorxiv-paper]: https://www.biorxiv.org/content/10.1101/638882v1
+[MAPITR-paper]: http://biorxiv.org/
