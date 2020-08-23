@@ -998,7 +998,9 @@ vals3 <- vals1 + (runif(10,0,4) * vals2)
 resids <- residuals(lm(vals3 ~ vals2))
 summary(lm(vals3 ~ vals2))
 
-
+library("devtools"); 
+devtools::load_all(); 
+devtools::test();
 
 
 
