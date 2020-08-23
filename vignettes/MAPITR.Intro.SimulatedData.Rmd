@@ -9,32 +9,22 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This is a simple introductory vignette on how to run `MAPITR`. In this introductory example, we will use a simulated dataset to run `MAPITR` and explore some basic output. The purpose of this vignette is to get users up and running the `MAPIT`. The dataset is provided with the package.
+This is a simple introductory vignette on how to run `MAPITR`. In this introductory example, we will use a simulated dataset to run `MAPITR` and explore some basic output. The dataset is provided with the package.
 
 ## Running `MAPITR`
 
-For this introductory vignette, we will be using `MAPITR_SimulatedPhenotype`, `MAPITR_SimulatedGenotypes`, and `MAPITR_SimulatedPathways`. These are simulated datasets created for the purposes of unit testing and this vignette. To load up 'MAPITR' and the datasets, run the following:
+For this introductory vignette, we will be using `MAPITR_SimData_Phenotype`, `MAPITR_SimData_Genotypes`, and `MAPITR_SimData_Pathways`. These are simulated datasets created for the purposes of unit testing and this vignette. To load up 'MAPITR' and the datasets, run the following:
 
 ```{r}
 library("MAPITR");
 
-data(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
-
-data(bmass_SimulatedData1, bmass_SimulatedData2, bmass_SimulatedSigSNPs)
-Phenotypes <- c("bmass_SimulatedData1", "bmass_SimulatedData2")
+data(MAPITR_SimData_Phenotype, MAPITR_SimData_Genotypes, MAPITR_SimData_Pathways)
 ```
 
 First, we'll take a look at the formats of our simulated input data:
 
 ```{r}
-head(bmass_SimulatedData1)
-head(MAPITR_SimulatedPhenotype)
-```
-
-Here you should a vector of our input phenotypic values. `MAPITR` currently only runs on one phenotype as a time, so this requires only a single vector of phenotypic values as proper input. 
-
-```{r}
-MAPITR_SimulatedGenotypes[1:10,1:10]
+MAPITR_SimData_Genotypes[1:10,1:10]
 ```
 
 Here you should see the first ten rows and columns of our genotype matrix. The genotype matrix is n x p, so the rows are our n individuals and the columns are our p SNPs. SNP genotypes, the entry of each column, are assumed to be 0, 1, or 2 -- so note, diploid information is assumed to have been collaspsed into a single value for each SNP. For example, the typical diploid setup of 0/0, 0/1, and 1/1, representing either reference allele (0) or alternative allele (1) for both chromosomal copies in an individual, is now instead represented as 0 (0/0), 1 (0/1), or 2 (1/1).
@@ -42,7 +32,14 @@ Here you should see the first ten rows and columns of our genotype matrix. The g
 Also note that it is required there be zero genotype missingness. This is necessary for the current form of constructing the genetic relatedness matrices (GRMs). For each entry in the genotype matrix, the only acceptable values are 0, 1, and 2. 
 
 ```{r}
-head(MAPITR_SimulatedPathways)
+head(MAPITR_SimData_Phenotype)
+```
+
+Here you should a vector of our input phenotypic values. `MAPITR` currently only runs on one phenotype as a time, so this requires only a single vector of phenotypic values as proper input. 
+
+
+```{r}
+head(MAPITR_SimData_Pathways)
 ```
 
 Here you should see a matrix with two columns. The first column should list the name of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by `MAPITR` to extract the proper SNPs per pathway to conduct the marginal epistasis analysis. Note that the values for this second collumn are not the SNP IDs (eg rsID#s) or are they column headers (if your genotype matrix has them). They are the specific column locations for each SNP in the input genotype matrix.
@@ -50,7 +47,7 @@ Here you should see a matrix with two columns. The first column should list the 
 Now to run `MAPITR`, we use the following code:
 
 ```{r}
-MAPITRresults <- MAPITR(MAPITR_SimulatedPhenotype, MAPITR_SimulatedGenotypes, MAPITR_SimulatedPathways)
+MAPITRresults <- MAPITR(MAPITR_SimData_Phenotype, MAPITR_SimData_Genotypes, MAPITR_SimData_Pathways)
 ```
 
 And to see the output `MAPITR()` provides, we can run the following:
