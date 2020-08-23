@@ -39,7 +39,7 @@ Encoding: UTF-8
 LazyData: true
 NeedsCompilation: NA
 RoxygenNote: NA
-VignetteBuilder: NA
+VignetteBuilder: knitr
 LinkingTo: 
     Rcpp,
     RcppArmadillo

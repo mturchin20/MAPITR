@@ -2,6 +2,22 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
+## MAPITR v0.1.1
+
+###### Summary
+* Added unit tests
+* Added vignette
+
+###### Since previous version (v0.1.0)
+* Pausing within-code data check lines for now (only covering obvious cases, and most important check -- the genotype matrix -- too time intensive as a specific, internal step for the main function)
+* Finished unit tests
+* Finished vignette
+
+###### Notes
+
+###### Next steps (if applicable)
+
+
 ## MAPITR v0.1.0
 
 ###### Summary
@@ -19,7 +35,7 @@ Version updates will be tracked and explained here. Major updates & releases wil
 
 
 <!---
-## bmass v#.#.#
+## MAPITR v#.#.#
 
 ###### Summary
 
