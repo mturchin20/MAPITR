@@ -12,6 +12,7 @@
 #' \describe{
 #'   \item{SNPs}{SNP genotype, 0,
 #'      1, or 2}
+#'   ...
 #' }
 #'
 #' @source Manually created
@@ -78,6 +79,7 @@ NULL
 #' \describe{
 #'   \item{SNPs}{SNP genotype, 0,
 #'      1, or 2}
+#'   ...
 #' }
 #'
 #' @source Manually created

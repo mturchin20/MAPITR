@@ -1014,6 +1014,9 @@ library("pkgdown");
 devtools::install()
 pkgdown::build_site()
 devtools::build_vignettes()
+devtools::document()
+devtools::build()
+devtools::check()
 
 #add the following to '.travis.yml':
 ```
@@ -1022,6 +1025,50 @@ cache: packages
 latex: false
 r_check_args: --as-cran
 ```
+
+
+
+   PreprocessData: no visible binding for global variable 'sd'
+   PreprocessData: no visible global function definition for 'residuals'
+   PreprocessData: no visible global function definition for 'lm'
+   RunMAPITR.wCovs: no visible global function definition for
+     'MAPITRBaseCovs'
+   RunMAPITR.wCovs: no visible binding for global variable
+     'Genotypes.Pathway'
+   Undefined global functions or variables:
+     Genotypes.Pathway MAPITRBaseCovs lm residuals sd
+   Consider adding
+     importFrom("stats", "lm", "residuals", "sd")
+   to your NAMESPACE file.
+v  checking Rd files ...
+v  checking Rd metadata ...
+v  checking Rd line widths ...
+v  checking Rd cross-references (336ms)
+v  checking for missing documentation entries (1.4s)
+W  checking for code/documentation mismatches (3.8s)
+   Data codoc mismatches from documentation object 'MAPITR_SimData_Genotypes':
+   Variables in data frame 'MAPITR_SimData_Genotypes'
+
+ Data codoc mismatches from documentation object 'MAPITR_TestData_Genotypes':
+   Variables in data frame 'MAPITR_TestData_Genotypes'
+
+     Note: significantly better compression could be obtained
+           by using R CMD build --resave-data
+                                   old_size new_size compress
+     MAPITR_SimData_Genotypes.rda    15.3Mb    9.2Mb    bzip2
+     MAPITR_TestData_Genotypes.rda    266Kb    162Kb       xz
+v  checking line endings in C/C++/Fortran sources/headers
+v  checking line endings in Makefiles
+W  checking compilation flags in Makevars ...
+   Non-portable flags in variable 'PKG_CXXFLAGS':
+     -Wall -fopenmp
+
+ Found the following hidden files and directories:
+    .travis.yml
+  These were most likely included in error. See section 'Package
+  structure' in the 'Writing R Extensions' manual.
+  
+
 
 
 

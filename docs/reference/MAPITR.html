@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • MAPITR</title>
+<title>MArginal ePIstasis Test for Regions
+(<code>MAPITR</code>) — MAPITR • MAPITR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,7 +37,13 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="MArginal ePIstasis Test for Regions
+(<code>MAPITR</code>) — MAPITR" />
+
+<meta property="og:description" content="Run MAPITR for a group of pathways on a single
+phenotype and a set of genome-wide SNPs" />
+
+
 
 
 
@@ -54,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -117,79 +124,91 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>MArginal ePIstasis Test for Regions
+(<code>MAPITR</code>)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mturchin20/MAPITR/blob/master/R/MAPITR.R'><code>R/MAPITR.R</code></a></small>
+    <div class="hidden name"><code>MAPITR.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Run <code>MAPITR</code> for a group of pathways on a single
+phenotype and a set of genome-wide SNPs</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="MAPITR.html">MAPITR()</a></code> </p>
-        </td>
-        <td><p>MArginal ePIstasis Test for Regions
-(<code>MAPITR</code>)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="MAPITR_SimData_Genotypes.html">MAPITR_SimData_Genotypes</a></code> </p>
-        </td>
-        <td><p>MAPITR SimData Genotypes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="MAPITR_SimData_Pathways.html">MAPITR_SimData_Pathways</a></code> </p>
-        </td>
-        <td><p>MAPITR SimData Pathways</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="MAPITR_SimData_Phenotype.html">MAPITR_SimData_Phenotype</a></code> </p>
-        </td>
-        <td><p>MAPITR SimData Phenotype</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="MAPITR_TestData_Genotypes.html">MAPITR_TestData_Genotypes</a></code> </p>
-        </td>
-        <td><p>MAPITR TestData Genotypes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="MAPITR_TestData_Pathways.html">MAPITR_TestData_Pathways</a></code> </p>
-        </td>
-        <td><p>MAPITR TestData Pathways</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="MAPITR_TestData_Phenotype.html">MAPITR_TestData_Phenotype</a></code> </p>
-        </td>
-        <td><p>MAPITR TestData Phenotype</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>MAPITR</span>(
+  <span class='no'>Genotypes</span>,
+  <span class='no'>Phenotype</span>,
+  <span class='no'>Pathways</span>,
+  <span class='kw'>Covariates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>CenterStandardize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>Genotypes</th>
+      <td><p>A n x p matrix containing the genotypes (0/1/2) for
+all p SNPs across all n individuals. No default value.</p></td>
+    </tr>
+    <tr>
+      <th>Phenotype</th>
+      <td><p>A vector containing phenotypic values for all
+individuals being analyzed. No default value.</p></td>
+    </tr>
+    <tr>
+      <th>Pathways</th>
+      <td><p>A r x 2 matrix containing the pathway names and then
+a comma-separated list of the <code>Genotypes</code> column indices
+representing each SNP in the associated pathway. Note, this second 
+column of comma-separated indices are the numeric positions for each 
+SNP in <code>Genotypes</code> and not the SNP IDs or column names. No
+default value.</p></td>
+    </tr>
+    <tr>
+      <th>Covariates</th>
+      <td><p>A n x q matrix containing any q additional covariates
+that should be included in the M-projection matrix of the model. 
+See Turchin et al. 2020 for details. Note that these are covariates
+which are applied to both sides of the model, ie the phenotype as well
+as the genotypes. A y-intercept term is automatically included and does
+not need to be part of this n x q matrix. No default value.</p></td>
+    </tr>
+    <tr>
+      <th>CenterStandardize</th>
+      <td><p>A logical <code>TRUE</code>/<code>FALSE</code> flag that
+indicates whether the genotype matrix <code>Genotypes</code> should be
+centered and standardized before analysis. This is a recommended step.
+Indicate <code>FALSE</code> if this is a preprocessing step that has
+already been done prior to running <code>MAPITR</code>. The default value 
+is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional optional arguments.</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A matrix containing in the first column the list of pathways
+that were analyzed, in the second column the associated 
+<code>MAPITR</code> p-values for each pathway, and in the third column the
+associated <code>MAPITR</code> PVEs for each pathway.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>Genotypes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MAPITR_TestData_Genotypes"</span>)
+<span class='no'>Phenotype</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MAPITR_TestData_Phenotype"</span>)
+<span class='no'>Pathways</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MAPITR_TestData_Pathways"</span>)
+<span class='no'>MAPITROutput</span> <span class='kw'>&lt;-</span> <span class='fu'>MAPITR</span>(<span class='no'>Genotypes</span>, <span class='no'>Phenotype</span>, <span class='no'>Pathways</span>)</div><div class='output co'>#&gt; <span class='error'>Error in Pathways[, 2]: incorrect number of dimensions</span></div><div class='input'><span class='no'>MAPITROutput</span>$<span class='no'>Results</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'MAPITROutput' not found</span></div><div class='input'>
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

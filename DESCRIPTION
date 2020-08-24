@@ -37,8 +37,8 @@ Suggests:
     rmarkdown
 Encoding: UTF-8
 LazyData: true
-NeedsCompilation: NA
-RoxygenNote: NA
+NeedsCompilation: yes
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp,
