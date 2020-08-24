@@ -16,9 +16,8 @@ RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, Lo
 }
 
 #' @useDynLib MAPITR
+#' 
 #' @import doParallel
-#' @import Rcpp
-#' @import RcppArmadillo
 #' 
 #RunMAPITR.wCovs <- function (PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, cores, LogFile) {
 #
