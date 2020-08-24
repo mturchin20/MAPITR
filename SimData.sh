@@ -1016,7 +1016,7 @@ devtools::build();
 
 
 # Final steps for building package, webpage, and misc work for eventual CRAN upload
-#From: https://pkgdown.r-lib.org/, https://sahirbhatnagar.com/blog/2020/03/03/creating-a-website-for-your-r-package/, https://stackoverflow.com/questions/34585560/travis-ci-r-package-error-in-documentation
+#From: https://pkgdown.r-lib.org/, https://sahirbhatnagar.com/blog/2020/03/03/creating-a-website-for-your-r-package/, https://stackoverflow.com/questions/34585560/travis-ci-r-package-error-in-documentation, http://r-pkgs.had.co.nz/src.html#cpp
 library("devtools"); 
 library("pkgdown");
 #Note -- R data object documention needs to be comlpete before the `install()` process can properly finish
@@ -1041,9 +1041,11 @@ r_packages:
  - RcppArmadillo
  - RcppParallel
  - CompQuadForm
-r_build_args: "--no-build-vignettes"
-r_check_args: "--no-build-vignettes --as-cran" 
+r_check_args: --as-cran 
 ```
+
+#r_build_args: "--no-build-vignettes"
+#r_check_args: "--no-build-vignettes --as-cran" 
 
 #couldn't get any of this to work, use travis ci build and do local build on mac
 #cd /users/mturchin/Software

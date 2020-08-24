@@ -21,6 +21,14 @@ arma::mat GetLinearKernel(arma::mat X){
 
 ////////////////////////////////////////////////////////////////////////////
 
+//' Main MAPITR cpp code
+//' 
+//' @param X a p x n genotype matrix
+//' @param Y a 1 x n phenotype vector
+//' @param regions a list of q pathways
+//' @param cores an integer for the number of cores
+//'
+//' @export
 // [[Rcpp::export]]
 List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
     int i;
