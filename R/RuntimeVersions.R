@@ -3,6 +3,7 @@
 #' @import Rcpp
 #' @import RcppArmadillo
 #' @import RcppParallel
+#' @exportPattern("^[[:alpha:]]+")
 RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, LogFile) {
 
 	RunMAPITR.Base.Output <- list()
