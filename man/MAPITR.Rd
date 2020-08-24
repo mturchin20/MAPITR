@@ -55,8 +55,10 @@ Run \code{MAPITR} for a group of pathways on a single
 phenotype and a set of genome-wide SNPs
 }
 \examples{
-data(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, MAPITR_TestData_Pathways)
-MAPITROutput <- MAPITR(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, MAPITR_TestData_Pathways)
+data(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, 
+MAPITR_TestData_Pathways)
+MAPITROutput <- MAPITR(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, 
+MAPITR_TestData_Pathways)
 MAPITROutput$Results
 
 }

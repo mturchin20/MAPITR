@@ -16,6 +16,7 @@
 #
 #}
 
+#' @importFrom stats sd lm residuals
 PreprocessData <- function (PhenotypesVector, Genotypes, Pathways, Covariates, CenterStandardize, RegressPhenotypes, LogFile) {
 
 	PreprocessData.Output <- list();

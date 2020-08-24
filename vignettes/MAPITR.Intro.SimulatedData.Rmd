@@ -64,6 +64,8 @@ In this example, there should be 1 pathway that has a p-value below the Bonferon
 MAPITR_Output$Results[MAPITR_Output$Results[,2] < .01,]
 ```
 
+Also note this is a simulated dataset made to run quickly for this vignette -- you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be > 1 in real data.
+
 For further details on the `MAPITR` model, please see the associated [manuscript][MAPITR-paper]. 
 
 [MAPITR-paper]: http://biorxiv.org/
