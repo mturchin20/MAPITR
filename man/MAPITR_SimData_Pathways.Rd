@@ -5,12 +5,8 @@
 \alias{MAPITR_SimData_Pathways}
 \title{MAPITR SimData Pathways}
 \format{
-A list with 5 entries, vectors of 50 variables each:
-
-\describe{
-  \item{Pathway}{Simulated
-     pathway number}
-}
+A data frame with 5 rows (pathways) and 2 variables 
+(pathway name, comma-separated list of pathway column indices)
 }
 \source{
 Manually created

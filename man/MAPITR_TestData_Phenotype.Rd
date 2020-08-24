@@ -5,12 +5,8 @@
 \alias{MAPITR_TestData_Phenotype}
 \title{MAPITR TestData Phenotype}
 \format{
-A vector with 750 rows and 1 variables:
-
-\describe{
-  \item{Phenotype}{Simulated
-     phenotype values}
-}
+A data frame with 750 rows (individuals) and 1 
+variables (phenotype)
 }
 \source{
 Manually created

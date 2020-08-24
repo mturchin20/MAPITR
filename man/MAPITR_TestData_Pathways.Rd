@@ -5,12 +5,8 @@
 \alias{MAPITR_TestData_Pathways}
 \title{MAPITR TestData Pathways}
 \format{
-A list with 5 entries, vectors of 75 variables each:
-
-\describe{
-  \item{Pathway}{Simulated
-     pathway number}
-}
+A data frame with 5 rows (pathways) and 2 variables 
+(pathway name, comma-separated list of pathway column indices)
 }
 \source{
 Manually created

@@ -39,10 +39,8 @@
 #' associated \code{MAPITR} PVEs for each pathway.
 #' 
 #' @examples
-#' Genotypes <- c("MAPITR_TestData_Genotypes")
-#' Phenotype <- c("MAPITR_TestData_Phenotype")
-#' Pathways <- c("MAPITR_TestData_Pathways")
-#' MAPITROutput <- MAPITR(Genotypes, Phenotype, Pathways)
+#' data(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, MAPITR_TestData_Pathways)
+#' MAPITROutput <- MAPITR(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, MAPITR_TestData_Pathways)
 #' MAPITROutput$Results
 #'
 #' @export

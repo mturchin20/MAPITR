@@ -5,13 +5,8 @@
 \alias{MAPITR_TestData_Genotypes}
 \title{MAPITR TestData Genotypes}
 \format{
-A data frame with 750 rows and 10000 variables (SNPs):
-
-\describe{
-  \item{SNPs}{SNP genotype, 0,
-     1, or 2}
-  ...
-}
+A data frame with 750 rows (individuals) and 10000 
+variables (SNPs)
 }
 \source{
 Manually created

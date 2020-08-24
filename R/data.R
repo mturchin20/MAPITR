@@ -7,13 +7,8 @@
 #' @description A simulated dataset of genotypes for use in unit
 #' tests.
 #'
-#' @format A data frame with 750 rows and 10000 variables (SNPs):
-#'
-#' \describe{
-#'   \item{SNPs}{SNP genotype, 0,
-#'      1, or 2}
-#'   ...
-#' }
+#' @format A data frame with 750 rows (individuals) and 10000 
+#' variables (SNPs)
 #'
 #' @source Manually created
 #'
@@ -30,12 +25,8 @@ NULL
 #' @description A simulated set of phenotypes for use in unit
 #' tests.
 #'
-#' @format A vector with 750 rows and 1 variables:
-#'
-#' \describe{
-#'   \item{Phenotype}{Simulated
-#'      phenotype values}
-#' }
+#' @format A data frame with 750 rows (individuals) and 1 
+#' variables (phenotype)
 #'
 #' @source Manually created
 #'
@@ -52,12 +43,8 @@ NULL
 #' @description A simulated set of pathways for use in unit
 #' tests.
 #'
-#' @format A list with 5 entries, vectors of 75 variables each:
-#'
-#' \describe{
-#'   \item{Pathway}{Simulated
-#'      pathway number}
-#' }
+#' @format A data frame with 5 rows (pathways) and 2 variables 
+#' (pathway name, comma-separated list of pathway column indices)
 #'
 #' @source Manually created
 #'
@@ -74,13 +61,8 @@ NULL
 #' @description A simulated dataset of genotypes for use in unit
 #' tests.
 #'
-#' @format A data frame with 4000 rows and 20000 variables (SNPs):
-#'
-#' \describe{
-#'   \item{SNPs}{SNP genotype, 0,
-#'      1, or 2}
-#'   ...
-#' }
+#' @format A data frame with 40000 rows (individuals) and 20000 
+#' variables (SNPs)
 #'
 #' @source Manually created
 #'
@@ -97,12 +79,8 @@ NULL
 #' @description A simulated set of phenotypes for use in unit
 #' tests.
 #'
-#' @format A vector with 4000 rows and 1 variables:
-#'
-#' \describe{
-#'   \item{Phenotype}{Simulated
-#'      phenotype values}
-#' }
+#' @format A data frame with 4000 rows (individuals) and 1 variables 
+#' (phenotype)
 #'
 #' @source Manually created
 #'
@@ -119,12 +97,8 @@ NULL
 #' @description A simulated set of pathways for use in unit
 #' tests.
 #'
-#' @format A list with 5 entries, vectors of 50 variables each:
-#'
-#' \describe{
-#'   \item{Pathway}{Simulated
-#'      pathway number}
-#' }
+#' @format A data frame with 5 rows (pathways) and 2 variables 
+#' (pathway name, comma-separated list of pathway column indices)
 #'
 #' @source Manually created
 #'

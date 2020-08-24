@@ -876,7 +876,8 @@ MAPITR_SimData_Genotypes <- X;
 MAPITR_SimData_Phenotype <- Y;
 MAPITR_SimData_Pathways <- Pathways;
 
-save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda");
+saveCompress1 <- "bzip2"
+save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda", compresss=saveCompress1);
 save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
 save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
 
@@ -983,7 +984,8 @@ MAPITR_TestData_Genotypes <- X;
 MAPITR_TestData_Phenotype <- Y;
 MAPITR_TestData_Pathways <- Pathways;
 
-save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Genotypes.rda");
+saveCompress2 <- "xz"
+save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Genotypes.rda", compress=saveCompress2);
 save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Phenotype.rda");
 save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
 
@@ -1016,6 +1018,9 @@ pkgdown::build_site()
 devtools::build_vignettes()
 devtools::document()
 devtools::build()
+devtools::check()
+
+library("devtools"); 
 devtools::check()
 
 #add the following to '.travis.yml':

@@ -5,13 +5,8 @@
 \alias{MAPITR_SimData_Genotypes}
 \title{MAPITR SimData Genotypes}
 \format{
-A data frame with 4000 rows and 20000 variables (SNPs):
-
-\describe{
-  \item{SNPs}{SNP genotype, 0,
-     1, or 2}
-  ...
-}
+A data frame with 40000 rows (individuals) and 20000 
+variables (SNPs)
 }
 \source{
 Manually created
