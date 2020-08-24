@@ -1,6 +1,7 @@
 Package: MAPITR
 Title: MArginal ePIstasis Test for Regions
-Version: 0.1.1
+Version: 0.1.2
+Date: 2020-08-24
 Authors@R: c(person(given="Michael",family="Turchin",email = "michael_turchin@brown.edu",
                     role=c("aut","cre"), comment=c(ORCID="0000-0003-3569-1529")),
              person(given="Lorin",family="Crawford",email = "lcrawford@brown.edu",
@@ -27,9 +28,8 @@ Imports:
     utils,
     stats,
     doParallel,
-    Rcpp,
-    RcppArmadillo,
-    RcppParallel,
+    Rcpp (>= 1.0.5),
+    RcppParallel (>= 5.0.2),
     CompQuadForm
 Suggests:
     testthat,
@@ -42,4 +42,5 @@ RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp,
-    RcppArmadillo
+    RcppArmadillo,
+    RcppParallel
