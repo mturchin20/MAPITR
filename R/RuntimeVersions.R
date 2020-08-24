@@ -1,4 +1,4 @@
-#' @useDynLib MAPITR
+#' @useDynLib MAPITR, .registration = TRUE
 #' @import doParallel
 #' @import Rcpp
 #' @import RcppArmadillo
@@ -14,7 +14,7 @@ RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, Lo
 
 }
 
-##' @useDynLib MAPITR
+##' @useDynLib MAPITR, .registration = TRUE
 ##' @import doParallel
 ##' @import Rcpp
 ##' @import RcppArmadillo
