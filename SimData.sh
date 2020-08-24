@@ -984,14 +984,17 @@ Output2$Results
 MAPITR_TestData_Genotypes <- X;
 MAPITR_TestData_Phenotype <- Y;
 MAPITR_TestData_Pathways <- Pathways;
+MAPITR_SimData_Genotypes <- MAPITR_TestData_Genotypes
+MAPITR_SimData_Phenotype <- MAPITR_TestData_Phenotype
+MAPITR_SimData_Pathways <- MAPITR_TestData_Pathways
 
 saveCompress2 <- "xz"
 save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Genotypes.rda", compress=saveCompress2);
 save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Phenotype.rda");
 save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
-save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda", compress=saveCompress2);
-save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
-save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
+save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda", compress=saveCompress2);
+save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
+save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
 
 
 
@@ -1035,7 +1038,23 @@ latex: false
 r_check_args: --as-cran
 ```
 
-
+#couldn't get any of this to work, use travis ci build and do local build on mac
+#cd /users/mturchin/Software
+#wget https://sourceforge.net/projects/qpdf/files/qpdf/10.0.1/qpdf-10.0.1.tar.gz
+#tar -xvzf qpdf-10.0.1.tar.gz
+#cd qpdf-10.0.1
+#./configure --prefix=/users/mturchin/local
+#make -I/users/mturchin/local/include/
+#make install
+#
+#wget https://sourceforge.net/projects/libjpeg-turbo/files/2.0.5/libjpeg-turbo-2.0.5.tar.gz
+#tar -xvzf libjpeg-turbo-2.0.5.tar.gz
+#cd libjpeg-turbo-2.0.5
+##cmake /users/mturchin/Software/libjpeg-turbo-2.0.5
+##cmake --prefix /users/mturchin/Software/libjpeg-turbo-2.0.5 --install
+#cmake -DCMAKE_INSTALL_PREFIX=/users/mturchin/local /users/mturchin/Software/libjpeg-turbo-2.0.5
+#make
+#make install
 
    PreprocessData: no visible binding for global variable 'sd'
    PreprocessData: no visible global function definition for 'residuals'
