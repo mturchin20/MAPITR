@@ -2,7 +2,10 @@ language: R
 cache: packages
 latex: false
 r_packages:
+ - doParallel
  - Rcpp
  - RcppArmadillo
  - RcppParallel
-r_check_args: --as-cran
+ - CompQuadForm
+r_build_args: "--no-build-vignettes"
+r_check_args: "--no-build-vignettes --as-cran"

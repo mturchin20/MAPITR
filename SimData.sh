@@ -1016,7 +1016,7 @@ devtools::build();
 
 
 # Final steps for building package, webpage, and misc work for eventual CRAN upload
-#From: https://pkgdown.r-lib.org/, https://sahirbhatnagar.com/blog/2020/03/03/creating-a-website-for-your-r-package/
+#From: https://pkgdown.r-lib.org/, https://sahirbhatnagar.com/blog/2020/03/03/creating-a-website-for-your-r-package/, https://stackoverflow.com/questions/34585560/travis-ci-r-package-error-in-documentation
 library("devtools"); 
 library("pkgdown");
 #Note -- R data object documention needs to be comlpete before the `install()` process can properly finish
@@ -1035,7 +1035,14 @@ devtools::check()
 language: R
 cache: packages
 latex: false
-r_check_args: --as-cran
+r_packages:
+ - doParallel
+ - Rcpp
+ - RcppArmadillo
+ - RcppParallel
+ - CompQuadForm
+r_build_args: "--no-build-vignettes"
+r_check_args: "--no-build-vignettes --as-cran" 
 ```
 
 #couldn't get any of this to work, use travis ci build and do local build on mac
@@ -1056,37 +1063,6 @@ r_check_args: --as-cran
 #make
 #make install
 
-   PreprocessData: no visible binding for global variable 'sd'
-   PreprocessData: no visible global function definition for 'residuals'
-   PreprocessData: no visible global function definition for 'lm'
-   RunMAPITR.wCovs: no visible global function definition for
-     'MAPITRBaseCovs'
-   RunMAPITR.wCovs: no visible binding for global variable
-     'Genotypes.Pathway'
-   Undefined global functions or variables:
-     Genotypes.Pathway MAPITRBaseCovs lm residuals sd
-   Consider adding
-     importFrom("stats", "lm", "residuals", "sd")
-   to your NAMESPACE file.
-v  checking Rd files ...
-v  checking Rd metadata ...
-v  checking Rd line widths ...
-v  checking Rd cross-references (336ms)
-v  checking for missing documentation entries (1.4s)
-W  checking for code/documentation mismatches (3.8s)
-   Data codoc mismatches from documentation object 'MAPITR_SimData_Genotypes':
-   Variables in data frame 'MAPITR_SimData_Genotypes'
-
- Data codoc mismatches from documentation object 'MAPITR_TestData_Genotypes':
-   Variables in data frame 'MAPITR_TestData_Genotypes'
-
-     Note: significantly better compression could be obtained
-           by using R CMD build --resave-data
-                                   old_size new_size compress
-     MAPITR_SimData_Genotypes.rda    15.3Mb    9.2Mb    bzip2
-     MAPITR_TestData_Genotypes.rda    266Kb    162Kb       xz
-v  checking line endings in C/C++/Fortran sources/headers
-v  checking line endings in Makefiles
 W  checking compilation flags in Makevars ...
    Non-portable flags in variable 'PKG_CXXFLAGS':
      -Wall -fopenmp
