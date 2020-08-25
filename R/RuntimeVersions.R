@@ -1,6 +1,6 @@
 #' @useDynLib MAPITR
 #'
-#' @importFrom Rcpp evalCpp
+#' @importFrom Rcpp evalCpp compileAttributes
 #' 
 #' @import doParallel
 #'

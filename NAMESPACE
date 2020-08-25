@@ -3,6 +3,7 @@
 export(MAPITR)
 import(doParallel)
 importFrom(CompQuadForm,davies)
+importFrom(Rcpp,compileAttributes)
 importFrom(Rcpp,evalCpp)
 importFrom(parallel,detectCores)
 importFrom(stats,lm)

@@ -24,6 +24,7 @@ arma::mat GetLinearKernel(arma::mat X){
 //' @param cores an integer for the number of cores
 //'
 //' @export
+//'
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
 List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
