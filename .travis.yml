@@ -5,6 +5,5 @@ r_packages:
  - doParallel
  - Rcpp
  - RcppArmadillo
- - RcppParallel
  - CompQuadForm
 r_check_args: --as-cran
