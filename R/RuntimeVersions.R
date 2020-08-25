@@ -1,9 +1,9 @@
-#' @useDynLib MAPITR, .registration = TRUE
+#' @useDynLib MAPITR
+#'
+#' @importFrom Rcpp evalCpp
+#' 
 #' @import doParallel
-#' @import Rcpp
-#' @import RcppArmadillo
-#' @import RcppParallel
-#' @exportPattern("^[[:alpha:]]+")
+#'
 RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, LogFile) {
 
 	RunMAPITR.Base.Output <- list()
@@ -15,11 +15,10 @@ RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, Lo
 
 }
 
-##' @useDynLib MAPITR, .registration = TRUE
-##' @import doParallel
-##' @import Rcpp
-##' @import RcppArmadillo
-##' @import RcppParallel
+#' @useDynLib MAPITR
+#' 
+#' @import doParallel
+#' 
 #RunMAPITR.wCovs <- function (PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, cores, LogFile) {
 #
 #	RunMAPITR.wCovs.Output <- list()
