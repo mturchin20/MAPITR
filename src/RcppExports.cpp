@@ -31,10 +31,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// MAPITRBaseCovs
+List MAPITRBaseCovs(arma::mat X, arma::mat Y, List regions, arma::mat Z, int cores);
+RcppExport SEXP _MAPITR_MAPITRBaseCovs(SEXP XSEXP, SEXP YSEXP, SEXP regionsSEXP, SEXP ZSEXP, SEXP coresSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< List >::type regions(regionsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< int >::type cores(coresSEXP);
+    rcpp_result_gen = Rcpp::wrap(MAPITRBaseCovs(X, Y, regions, Z, cores));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MAPITR_GetLinearKernel", (DL_FUNC) &_MAPITR_GetLinearKernel, 1},
     {"_MAPITR_MAPITRBase", (DL_FUNC) &_MAPITR_MAPITRBase, 4},
+    {"_MAPITR_MAPITRBaseCovs", (DL_FUNC) &_MAPITR_MAPITRBaseCovs, 5},
     {NULL, NULL, 0}
 };
 

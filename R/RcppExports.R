@@ -9,3 +9,7 @@ MAPITRBase <- function(X, Y, regions, cores = 1L) {
     .Call('_MAPITR_MAPITRBase', PACKAGE = 'MAPITR', X, Y, regions, cores)
 }
 
+MAPITRBaseCovs <- function(X, Y, regions, Z, cores = 1L) {
+    .Call('_MAPITR_MAPITRBaseCovs', PACKAGE = 'MAPITR', X, Y, regions, Z, cores)
+}
+

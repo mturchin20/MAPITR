@@ -15,20 +15,22 @@ RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, Lo
 
 }
 
-##' @useDynLib MAPITR
-##' 
-##' @import doParallel
-##' 
-#RunMAPITR.wCovs <- function (PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, cores, LogFile) {
-#
-#	RunMAPITR.wCovs.Output <- list()
-#	
-#	#MAPITR.wCovs expects a n x r phenotype matrix, a p x n genotype matrix, a z x n covariate matrix, and a list of SNP indices for each pathway
-#	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseCovs(t(as.matrix(Genotypes.Pathway)),as.matrix(PhenotypeMatrix),Pathways.Full,t(as.matrix(Covariates)),cores=cores)
-#
-#	return(list(Est=RunMAPITR.wCovs.Output.temp2$Est, Eigenvalues=RunMAPITR.wCovs.Output.temp2$Eigenvalues, PVE=RunMAPITR.wCovs.Output.temp2$PVE, LogFile=LogFile))
-#
-#}
+#' @useDynLib MAPITR
+#' 
+#' @importFrom Rcpp evalCpp
+#' 
+#' @import doParallel
+#' 
+RunMAPITR.wCovs <- function (PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, cores, LogFile) {
+
+	RunMAPITR.wCovs.Output <- list()
+	
+	#MAPITR.wCovs expects a n x r phenotype matrix, a p x n genotype matrix, a z x n covariate matrix, and a list of SNP indices for each pathway
+	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseCovs(t(as.matrix(Genotypes)),as.matrix(PhenotypeMatrix),Pathways.Full,t(as.matrix(Covariates)),cores=cores)
+
+	return(list(Est=RunMAPITR.wCovs.Output.temp2$Est, Eigenvalues=RunMAPITR.wCovs.Output.temp2$Eigenvalues, PVE=RunMAPITR.wCovs.Output.temp2$PVE, LogFile=LogFile))
+
+}
 
 #RunMAPITR.GRMsProvided <- function ( ) {
 #

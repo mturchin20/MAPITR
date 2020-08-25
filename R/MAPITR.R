@@ -83,11 +83,11 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pa
 		MAPITRoutput$Est <- MAPITRoutput.temp2$Est; MAPITRoutput$PVE <- MAPITRoutput.temp2$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp2$Eigenvalues;
 		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 		rm(MAPITRoutput.temp2)
-#	} else if (!is.null(Covariates)) { 
-#		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Covariates, Pathways.Full, cores, MAPITRoutput$LogFile) 
-#		MAPITRoutput$Est <- MAPITRoutput.temp3$Est; MAPITRoutput$PVE <- MAPITRoutput.temp3$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp3$Eigenvalues;
-#		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
-#		rm(MAPITRoutput.temp3)
+	} else if (!is.null(Covariates)) { 
+		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Covariates, Pathways.Full, cores, MAPITRoutput$LogFile) 
+		MAPITRoutput$Est <- MAPITRoutput.temp3$Est; MAPITRoutput$PVE <- MAPITRoutput.temp3$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp3$Eigenvalues;
+		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
+		rm(MAPITRoutput.temp3)
 	} else {
 		stop(Sys.time(), " -- 'Covariates' is neither null or not null. This should not happen. Contact current maintainer of code.")
 	}
