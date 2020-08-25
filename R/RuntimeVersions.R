@@ -3,7 +3,7 @@
 #' @importFrom Rcpp evalCpp
 #' 
 #' @import doParallel
-#' 
+#'
 RunMAPITR.Base <- function (PhenotypeMatrix, Genotypes, Pathways.Full, cores, LogFile) {
 
 	RunMAPITR.Base.Output <- list()
