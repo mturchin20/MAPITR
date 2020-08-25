@@ -15,11 +15,12 @@ If you find the `MAPITR` package or any of the source code in this
 repository useful for your work, please cite:
 
 > Turchin MC, Darnell G, Crawford L, and Ramachandran S (2020) 
-> "...
+> "Pathway Analysis within Multiple Human Ancestries Reveals 
+> Novel Signals for Epistasis in Complex Traits".
 
 ## License
 
-Copyright (c) 2020, Michael Turchin, Sohini Ramachandran, and Lorin Crawford.
+Copyright (c) 2020, Michael Turchin, Gregory Darnell, Lorin Crawford, and Sohini Ramachandran.
 
 All source code and software in this repository are made available
 under the terms of the [MIT license][mit-license]. See
@@ -36,7 +37,7 @@ install.packages("MAPITR")
 To install the most recent dev version of `MAPITR` from [github](https://github.com/mturchin20/MAPITR):
 ```{r}
 install.packages("devtools")
-devtools::install_github("mturchin20/MAPITR@v1.0.3", build_vignettes=TRUE)
+devtools::install_github("mturchin20/MAPITR@v1.0.4", build_vignettes=TRUE)
 ```
 
 Once you have installed the package, load the package in R:
@@ -50,17 +51,15 @@ Next, view and run the example code provided in the
 
 ## Credits
 
-The `MAPITR` R package was developed by [Michael Turchin][michaelt] at
-the [Brown University][brownu], with contributions from
-[Greg Darnell][greg] and [Lorin Crawford][lorin].
+The `MAPITR` R package was developed by [Michael Turchin][michaelt] at [Brown University][brownu], with contributions from
+[Peter Carbonetto][peter] and [Lorin Crawford][lorin].
 
 [MAPITR-website]: http://mturchin20.github.io/MAPITR 
-[MAPITR-vignette1]: http://mturchin20.github.io/MAPITR/articles/MAPITRIntro.1.SimulatedData.html
-[MAPITR-vignette2]: http://mturchin20.github.io/MAPITR/articles/MAPITRIntro.2.RealData.html
+[MAPITR-vignette1]: http://mturchin20.github.io/MAPITR/articles/MAPITR.Intro.SimulatedData.html
 [biorxiv-paper]: http://www.google.com 
 [issues]: https://github.com/mturchin20/MAPITR/issues
 [lorin]: http://www.lcrawlab.com/ 
 [michaelt]: http://home.uchicago.edu/mturchin20/index.html 
 [mit-license]: https://opensource.org/licenses/mit-license.html
-[greg]: https://www.gregdarnell.com/ 
+[peter]: https://pcarbo.github.io/
 [uchicago]: https://www.brown.edu
