@@ -7,7 +7,9 @@ Authors@R: c(person(given="Michael",family="Turchin",email = "michael_turchin@br
              person(given="Lorin",family="Crawford",email = "lcrawford@brown.edu",
 	            role=c("aut","ctb"), comment=c(ORCID="0000-0003-0178-8242")),
              person(given="Sohini",family="Ramachandran",email="sramachandran@brown.edu", 
-	     	    role="aut", comment=c(ORCID="0000-0002-9588-7964")))
+	     	    role="aut", comment=c(ORCID="0000-0002-9588-7964")),
+             person(given="Peter",family="Carbonetto",email="peter.carbonetto@gmail.com", 
+	     	    role="ctb", comment=c(ORCID="0000-0003-1144-6780")))
 Description: MAPITR is a genetic analysis tool for 
     identifying marginal epistasis between pathways and the 
     rest of the genome. MAPITR uses as input a matrix of 

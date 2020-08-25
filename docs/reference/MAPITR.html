@@ -74,7 +74,7 @@ phenotype and a set of genome-wide SNPs" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAPITR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -203,10 +203,16 @@ associated <code>MAPITR</code> PVEs for each pathway.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>Genotypes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MAPITR_TestData_Genotypes"</span>)
-<span class='no'>Phenotype</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MAPITR_TestData_Phenotype"</span>)
-<span class='no'>Pathways</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MAPITR_TestData_Pathways"</span>)
-<span class='no'>MAPITROutput</span> <span class='kw'>&lt;-</span> <span class='fu'>MAPITR</span>(<span class='no'>Genotypes</span>, <span class='no'>Phenotype</span>, <span class='no'>Pathways</span>)</div><div class='output co'>#&gt; <span class='error'>Error in Pathways[, 2]: incorrect number of dimensions</span></div><div class='input'><span class='no'>MAPITROutput</span>$<span class='no'>Results</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'MAPITROutput' not found</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>MAPITR_TestData_Genotypes</span>, <span class='no'>MAPITR_TestData_Phenotype</span>,
+<span class='no'>MAPITR_TestData_Pathways</span>)
+<span class='no'>MAPITROutput</span> <span class='kw'>&lt;-</span> <span class='fu'>MAPITR</span>(<span class='no'>MAPITR_TestData_Genotypes</span>, <span class='no'>MAPITR_TestData_Phenotype</span>,
+<span class='no'>MAPITR_TestData_Pathways</span>)
+<span class='no'>MAPITROutput</span>$<span class='no'>Results</span></div><div class='output co'>#&gt;      Pathways      pValues       Est       PVE
+#&gt; [1,]        1 0.0001933362 1.0761720 1.2417707
+#&gt; [2,]        2 0.4721117327 0.2013154 0.2303672
+#&gt; [3,]        3 0.4745897324 0.2039635 0.2295905
+#&gt; [4,]        4 0.4314853397 0.2232131 0.2545830
+#&gt; [5,]        5 0.5693362759 0.1596100 0.1858096</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

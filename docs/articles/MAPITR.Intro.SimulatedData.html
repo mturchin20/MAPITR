@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAPITR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
       <h1 data-toc-skip>MAPITR Introduction – Simulated Data</h1>
                         <h4 class="author">Michael C Turchin</h4>
             
-            <h4 class="date">2020-08-23</h4>
+            <h4 class="date">2020-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mturchin20/MAPITR/blob/master/vignettes/MAPITR.Intro.SimulatedData.Rmd"><code>vignettes/MAPITR.Intro.SimulatedData.Rmd</code></a></small>
       <div class="hidden name"><code>MAPITR.Intro.SimulatedData.Rmd</code></div>
@@ -100,74 +100,63 @@
 <a href="#running-mapitr" class="anchor"></a>Running <code>MAPITR</code>
 </h2>
 <p>For this introductory vignette, we will be using <code>MAPITR_SimData_Phenotype</code>, <code>MAPITR_SimData_Genotypes</code>, and <code>MAPITR_SimData_Pathways</code>. These are simulated datasets created for the purposes of this vignette. To load ‘MAPITR’ and the datasets, run the following:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"MAPITR"</span>);</pre></body></html></div>
-<pre><code>## Warning: replacing previous import 'Rcpp::LdFlags' by 'RcppParallel::LdFlags'
-## when loading 'MAPITR'</code></pre>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"MAPITR"</span>);
+
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
 <p>First, we’ll take a look at the formats of our simulated input data:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">MAPITR_SimData_Genotypes</span>[<span class="fl">1</span>:<span class="fl">10</span>,<span class="fl">1</span>:<span class="fl">10</span>]</pre></body></html></div>
-<pre><code>##    X1.10759741_T X2.63375893_G X1.82944926_C X2.142291951_C X1.89628674_G
-## 1              0             0             1              0             0
-## 2              0             0             1              1             0
-## 3              1             0             2              2             0
-## 4              1             0             1              1             0
-## 5              0             1             1              0             0
-## 6              0             0             1              1             0
-## 7              0             0             0              0             0
-## 8              0             0             1              1             0
-## 9              1             0             1              2             1
-## 10             0             0             1              1             0
-##    X1.238625898_T X1.30113436_G X2.70564002_A X1.171543747_C X1.192618028_C
-## 1               1             0             1              0              0
-## 2               1             1             1              0              0
-## 3               1             0             1              0              0
-## 4               1             1             1              0              0
-## 5               1             1             0              0              0
-## 6               2             1             0              0              0
-## 7               0             0             0              0              0
-## 8               1             0             1              0              0
-## 9               1             0             1              0              1
-## 10              1             0             0              0              0</code></pre>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">MAPITR_SimData_Genotypes</span>[<span class="fl">1</span>:<span class="fl">10</span>,<span class="fl">1</span>:<span class="fl">10</span>]</pre></body></html></div>
+<pre><code>##    V1 V2 V3 V4 V5 V6 V7 V8 V9 V10
+## 1   2  1  1  0  2  2  1  1  1   0
+## 2   2  1  0  2  0  2  0  0  2   1
+## 3   2  1  1  1  2  1  1  1  1   1
+## 4   1  1  2  1  0  0  0  1  0   1
+## 5   1  0  0  1  2  2  0  1  1   1
+## 6   1  0  2  1  1  2  2  1  2   0
+## 7   1  1  1  1  1  0  1  0  0   0
+## 8   1  1  1  2  2  2  0  1  2   1
+## 9   1  1  0  1  1  2  1  0  1   1
+## 10  1  2  0  0  1  1  1  2  0   1</code></pre>
 <p>Here you should see the first ten rows and columns of our genotype matrix. The genotype matrix is n x p, so the rows are our n individuals and the columns are our p SNPs. SNP genotypes, the entries of each column, are assumed to be 0, 1, or 2 – so note, diploid information is assumed to have been collaspsed into a single value for each SNP. For example, the typical diploid setup of 0/0, 0/1, and 1/1, representing either reference allele (0) or alternative allele (1) for both chromosomal copies in an individual, is now instead represented as 0 (0/0), 1 (0/1), or 2 (1/1).</p>
 <p>Also note that there can be no genotype missingness present in the genotype matrix. This is necessary due to how the genetic relatedness matrices (GRMs), required components for the MAPITR variance component model, are constructed. For each entry in the genotype matrix, the only acceptable values are 0, 1, and 2.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_SimData_Phenotype</span>)</pre></body></html></div>
-<pre><code>##            V1
-## 1  1.08873598
-## 2 -0.50012837
-## 3 -0.29469920
-## 4  2.08195320
-## 5  0.04315758
-## 6 -1.68266402</code></pre>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_SimData_Phenotype</span>)</pre></body></html></div>
+<pre><code>##           V1
+## 1 -0.6792931
+## 2 -1.6193901
+## 3  0.1757282
+## 4 -1.2569377
+## 5  0.2444250
+## 6  0.1345880</code></pre>
 <p>Here you should see the first ten values of our input phenotype. <code>MAPITR</code> only runs on one phenotype at a time currently, so the main function only requires a single vector of phenotypic values as input.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
 <pre><code>##         V1
 ## 1 Pathway1
 ## 2 Pathway2
 ## 3 Pathway3
 ## 4 Pathway4
 ## 5 Pathway5
-##                                                                                                                                                                                                                                                                                        V2
-## 1           18396,16639,2919,13971,14279,15570,5547,18127,14800,10814,11184,9011,14284,4896,12949,6246,153,2042,12427,36,11034,6428,10967,7939,15052,4097,630,5623,48,18857,7305,5222,13581,5495,19968,11454,17853,12771,15608,7172,4066,11105,19106,16948,611,2219,10302,7236,15397,3958
-## 2      4902,7876,5424,13633,19721,12186,5984,3247,19463,16388,19908,5422,2235,6753,14910,2784,15923,10285,13414,18117,15970,13621,4232,19591,17135,4628,15025,17847,6087,17676,10666,625,13775,2682,10866,569,13137,10176,8111,7115,19946,8088,12515,3682,9794,8515,3209,18263,12454,1258
-## 3          19852,1357,6066,287,2960,4391,9294,17208,12114,16226,8540,12418,4407,8449,11133,12647,1844,9313,3990,3318,1900,19184,12191,7289,13568,15101,4438,18277,11138,9209,16186,4431,16109,12706,11375,5355,16804,8050,4895,8568,14348,7504,5682,6800,18817,14371,2598,9233,2824,12675
-## 4       6924,3521,7691,12012,2973,9373,18497,13685,14719,9489,6992,14639,16211,8314,19690,11023,15791,11067,17421,13015,406,8082,9567,2903,16583,17792,15251,9053,12841,1896,9729,10768,6551,3603,17526,18959,12435,9528,12211,2522,2032,19978,17061,5264,1720,12342,8720,3231,2854,13430
-## 5 11401,15021,13638,17097,6648,17662,15422,12363,11175,16248,10314,3783,11651,12437,350,3035,10454,18465,13508,9345,18304,11959,19563,11952,2805,17284,1315,14345,8114,14707,19923,11691,7336,8548,13957,16553,5452,3739,3666,17706,5969,19594,9196,7699,7827,2256,13460,6272,12183,19712</code></pre>
+##                                                                                                                                                                                                                                                                                                      V2
+## 1  293,648,355,675,17,158,754,502,49,212,62,187,529,594,258,497,964,305,132,774,117,12,269,460,521,276,360,317,834,806,669,655,74,894,311,104,244,580,470,216,309,624,739,24,963,449,283,661,202,252,384,268,433,761,286,699,620,762,832,428,68,603,330,213,125,938,315,179,591,266,226,663,804,387,396
+## 2  668,90,201,739,866,642,667,916,357,743,781,348,204,21,481,29,444,658,676,532,548,509,822,500,949,24,331,253,218,197,967,746,757,656,206,352,782,768,939,522,982,452,696,981,475,161,926,765,602,940,664,615,109,57,241,764,551,99,785,216,897,513,243,261,812,327,622,740,778,210,50,867,726,889,562
+## 3 114,254,521,18,960,983,929,809,849,405,504,697,673,766,298,804,617,530,824,17,732,933,551,398,292,308,108,213,838,490,435,315,752,922,861,920,583,524,150,79,668,261,822,443,196,395,709,434,578,374,584,601,761,864,754,295,989,758,496,935,317,777,604,477,485,774,540,939,159,54,375,460,365,2,846
+## 4 632,279,429,915,96,863,448,18,826,510,957,963,859,11,930,821,686,890,950,380,864,698,599,312,169,756,575,876,482,921,355,413,426,704,115,962,208,250,394,502,692,571,418,42,527,901,657,782,992,592,452,330,85,41,639,428,282,289,319,816,469,347,944,674,918,382,348,558,573,290,328,862,416,650,860
+## 5  250,507,491,451,312,720,666,138,92,714,843,702,427,136,755,973,917,309,76,65,116,368,816,586,379,860,812,388,743,543,795,911,369,296,584,939,758,897,741,174,645,330,269,21,276,510,82,132,478,292,206,552,969,417,655,12,351,142,172,797,573,506,339,210,53,319,943,457,674,777,425,739,729,840,535</code></pre>
 <p>Here you should see a matrix with two columns. The first column should list the name of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by <code>MAPITR</code> to extract the proper SNPs per pathway from the input genotype matrix to conduct the marginal epistasis analysis. Note that the values for this second column are not the SNP IDs (eg rsID#s) or column headers (if your genotype matrix has them), they are the specific column locations in the input genotype matrix for each SNP.</p>
 <p>Now to run <code>MAPITR</code>, we use the following code:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">MAPITR_Output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">MAPITR_Output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
 <p>And to see the output <code><a href="../reference/MAPITR.html">MAPITR()</a></code> provides, we can run the following:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_Output</span>$<span class="no">Results</span>)</pre></body></html></div>
-<pre><code>##      Pathways      pValues          Est          PVE
-## [1,]        1 5.137640e-07  0.209502630  0.229032122
-## [2,]        2 1.932025e-01  0.056204460  0.059912568
-## [3,]        3 5.878403e-01  0.022488880  0.024802621
-## [4,]        4 8.407904e-01 -0.008759748 -0.009333399
-## [5,]        5 9.580596e-01  0.001885406  0.001978515</code></pre>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_Output</span>$<span class="no">Results</span>)</pre></body></html></div>
+<pre><code>##      Pathways      pValues       Est       PVE
+## [1,]        1 0.0001933362 1.0761720 1.2417707
+## [2,]        2 0.4721117327 0.2013154 0.2303672
+## [3,]        3 0.4745897324 0.2039635 0.2295905
+## [4,]        4 0.4314853397 0.2232131 0.2545830
+## [5,]        5 0.5693362759 0.1596100 0.1858096</code></pre>
 <p>The output shown from <code>MAPITR_Output$Results</code> should be a matrix with four columns. The first column should be the list of pathway names being analyzed (same order as input file), the second column should be the <code>MAPITR</code> p-values for each pathway, the third column should be the estimate of the epistatic GRM variance component (‘Q’ in the <a href="http://biorxiv.org/">model</a>) for each pathway, and the fourth column should be the proportion of variance explained (PVE) for the phenotype by each pathway. Note the PVE estimates here are for pathways that generally have overlapping variants included, so the interpretation has a different meaning than is typically thought of under single variant models where PVE can theoretically sum to 1 across all variants. A priori it is unclear what PVE should theoretically sum to since variant overlap across pathways will vary depending on the list of pathways used.</p>
 <p>In this example, there should be 1 pathway that has a p-value below the Bonferonni-corrected threshold of .01 (.05 / 5, the number of pathways tested):</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">MAPITR_Output</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">MAPITR_Output</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
 <pre><code>##     Pathways      pValues          Est          PVE 
-## 1.000000e+00 5.137640e-07 2.095026e-01 2.290321e-01</code></pre>
+## 1.0000000000 0.0001933362 1.0761720108 1.2417707084</code></pre>
+<p>Also note this is a simulated dataset made to run quickly for this vignette – you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be &gt; 1 in real data.</p>
 <p>For further details on the <code>MAPITR</code> model, please see the associated <a href="http://biorxiv.org/">manuscript</a>.</p>
 </div>
   </div>
