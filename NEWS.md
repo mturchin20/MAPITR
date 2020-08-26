@@ -2,6 +2,20 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
+## MAPITR v1.0.1
+
+###### Summary
+* Reopened functionality for covariate usage and included example in current vignette
+
+###### Since previous version (v1.0.0)
+* Added the `Covariate` option back into the `MAPITR` function
+* Included example of `Covariate` option usage into vignette
+
+###### Notes
+
+###### Next steps (if applicable)
+
+
 ## MAPITR v1.0.0
 
 ###### Summary

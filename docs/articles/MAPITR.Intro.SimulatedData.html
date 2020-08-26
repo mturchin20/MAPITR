@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAPITR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -99,10 +99,10 @@
 <h2 class="hasAnchor">
 <a href="#running-mapitr" class="anchor"></a>Running <code>MAPITR</code>
 </h2>
-<p>For this introductory vignette, we will be using <code>MAPITR_SimData_Phenotype</code>, <code>MAPITR_SimData_Genotypes</code>, and <code>MAPITR_SimData_Pathways</code>. These are simulated datasets created for the purposes of this vignette. To load ‘MAPITR’ and the datasets, run the following:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"MAPITR"</span>);
+<p>For this introductory vignette, we will be using <code>MAPITR_SimData_Phenotype</code>, <code>MAPITR_SimData_Genotypes</code>, and <code>MAPITR_SimData_Pathways</code>. These are simulated datasets created for the purposes of this vignette. To load <code>MAPITR</code> and the datasets, run the following:</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"MAPITR"</span>)
 
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="no">MAPITR_SimData_PCs</span>)</pre></body></html></div>
 <p>First, we’ll take a look at the formats of our simulated input data:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">MAPITR_SimData_Genotypes</span>[<span class="fl">1</span>:<span class="fl">10</span>,<span class="fl">1</span>:<span class="fl">10</span>]</pre></body></html></div>
 <pre><code>##    V1 V2 V3 V4 V5 V6 V7 V8 V9 V10
@@ -116,16 +116,16 @@
 ## 8   1  1  1  2  2  2  0  1  2   1
 ## 9   1  1  0  1  1  2  1  0  1   1
 ## 10  1  2  0  0  1  1  1  2  0   1</code></pre>
-<p>Here you should see the first ten rows and columns of our genotype matrix. The genotype matrix is n x p, so the rows are our n individuals and the columns are our p SNPs. SNP genotypes, the entries of each column, are assumed to be 0, 1, or 2 – so note, diploid information is assumed to have been collaspsed into a single value for each SNP. For example, the typical diploid setup of 0/0, 0/1, and 1/1, representing either reference allele (0) or alternative allele (1) for both chromosomal copies in an individual, is now instead represented as 0 (0/0), 1 (0/1), or 2 (1/1).</p>
-<p>Also note that there can be no genotype missingness present in the genotype matrix. This is necessary due to how the genetic relatedness matrices (GRMs), required components for the MAPITR variance component model, are constructed. For each entry in the genotype matrix, the only acceptable values are 0, 1, and 2.</p>
+<p>Here you should see the first ten rows and columns of our genotype matrix. The genotype matrix is n x p, so the rows are our n individuals and the columns are our p SNPs. SNP genotypes, the entries of each column, are assumed to be 0, 1, or 2 – so note, diploid information is assumed to have been collapsed into a single value for each SNP. For example, the typical diploid setup of 0/0, 0/1, and 1/1, which represents the three possible combinations a given pair of reference (0) and alternative (1) alleles can have across both chromosomal copies in an individual, is now instead represented as 0 (0/0), 1 (0/1), or 2 (1/1). One way to derive a genotype matrix with this type of encoding is to use PLINK’s <code>--recodeAD</code> output option and remove all the <code>*_HET</code> columns afterwards.</p>
+<p>Also note that the genotype matrix can have no missing genotypes (0% rate of genotype missingness). This is necessary due to how the genetic relatedness matrices (GRMs), required components for the <code>MAPITR</code> variance component model, are constructed. For each entry in the genotype matrix, the only acceptable values are 0, 1, and 2.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_SimData_Phenotype</span>)</pre></body></html></div>
 <pre><code>##           V1
-## 1 -0.6792931
-## 2 -1.6193901
-## 3  0.1757282
-## 4 -1.2569377
-## 5  0.2444250
-## 6  0.1345880</code></pre>
+## 1 -0.6796317
+## 2 -1.4496919
+## 3 -0.1318539
+## 4 -1.4731807
+## 5 -0.4276638
+## 6  0.3917982</code></pre>
 <p>Here you should see the first ten values of our input phenotype. <code>MAPITR</code> only runs on one phenotype at a time currently, so the main function only requires a single vector of phenotypic values as input.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
 <pre><code>##         V1
@@ -146,17 +146,24 @@
 <p>And to see the output <code><a href="../reference/MAPITR.html">MAPITR()</a></code> provides, we can run the following:</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_Output</span>$<span class="no">Results</span>)</pre></body></html></div>
 <pre><code>##      Pathways      pValues       Est       PVE
-## [1,]        1 0.0001933362 1.0761720 1.2417707
-## [2,]        2 0.4721117327 0.2013154 0.2303672
-## [3,]        3 0.4745897324 0.2039635 0.2295905
-## [4,]        4 0.4314853397 0.2232131 0.2545830
-## [5,]        5 0.5693362759 0.1596100 0.1858096</code></pre>
-<p>The output shown from <code>MAPITR_Output$Results</code> should be a matrix with four columns. The first column should be the list of pathway names being analyzed (same order as input file), the second column should be the <code>MAPITR</code> p-values for each pathway, the third column should be the estimate of the epistatic GRM variance component (‘Q’ in the <a href="http://biorxiv.org/">model</a>) for each pathway, and the fourth column should be the proportion of variance explained (PVE) for the phenotype by each pathway. Note the PVE estimates here are for pathways that generally have overlapping variants included, so the interpretation has a different meaning than is typically thought of under single variant models where PVE can theoretically sum to 1 across all variants. A priori it is unclear what PVE should theoretically sum to since variant overlap across pathways will vary depending on the list of pathways used.</p>
+## [1,]        1 0.0006793231 1.0684080 1.1281354
+## [2,]        2 0.3746938563 0.2651890 0.2847803
+## [3,]        3 0.2244317548 0.3696023 0.3918250
+## [4,]        4 0.3775966094 0.2714509 0.2854367
+## [5,]        5 0.4023264905 0.2529208 0.2742095</code></pre>
+<p>The output shown from <code>MAPITR_Output$Results</code> should be a matrix with four columns. The first column should be the list of pathway names being analyzed (same order as input file), the second column should be the <code>MAPITR</code> p-values for each pathway, the third column should be the estimate of the epistatic GRM variance component (<code>G</code> in the <a href="http://biorxiv.org/">model</a>) for each pathway, and the fourth column should be the proportion of variance explained (PVE) for the phenotype by each pathway. Note the PVE estimates here are for pathways that generally have overlapping variants included, so the interpretation has a different meaning than is typically thought of under single variant models where PVE can theoretically sum to 1 across all variants. A priori it is unclear what PVE should theoretically sum to since variant overlap across pathways will vary depending on the list of pathways used.</p>
 <p>In this example, there should be 1 pathway that has a p-value below the Bonferonni-corrected threshold of .01 (.05 / 5, the number of pathways tested):</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">MAPITR_Output</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
 <pre><code>##     Pathways      pValues          Est          PVE 
-## 1.0000000000 0.0001933362 1.0761720108 1.2417707084</code></pre>
+## 1.0000000000 0.0006793231 1.0684079900 1.1281354388</code></pre>
 <p>Also note this is a simulated dataset made to run quickly for this vignette – you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be &gt; 1 in real data.</p>
+<p>Lastly, we will go over how one can introduce a covariate to this test (on both sides of the model) if desired. However, we recommend that most covariates should be directly regressed out from the phenotype prior to <code>MAPITR</code> analysis. To include a covariate as part of <code>MAPITR</code> though, it is incorporated as part of the orthogonality projection matrix, H, used in equation 3 of the <a href="http://biorxiv.org/">MAPITR manuscript</a>. This projection matrix is applied to both sides of the model, meaning it is applied to both the phenotype <em>and</em> the genotypes, and rotates both spaces to be orthogonal to the components of H. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix.</p>
+<p>To include the top 10 principal components of our simulated dataset into the <code>MAPITR</code> analysis, we can run the following:</p>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">MAPITR_Output2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">Covariates</span><span class="kw">=</span><span class="no">MAPITR_SimData_PCs</span>)
+<span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
+<pre><code>##     Pathways      pValues          Est          PVE 
+## 1.0000000000 0.0001282748 1.1540812533 1.2908322801</code></pre>
+<p>And after doing so, we find that including top principal components does further help refine our epistatic signal in this simulated dataset.</p>
 <p>For further details on the <code>MAPITR</code> model, please see the associated <a href="http://biorxiv.org/">manuscript</a>.</p>
 </div>
   </div>
