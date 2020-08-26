@@ -12,7 +12,7 @@ A data frame with 4000 rows (individuals) and 1 variables
 Manually created
 }
 \description{
-A simulated set of phenotypes for use in unit
-tests.
+A simulated set of phenotypes for use in
+vignettes
 }
 \keyword{data}

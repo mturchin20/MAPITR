@@ -12,7 +12,7 @@ variables (SNPs)
 Manually created
 }
 \description{
-A simulated dataset of genotypes for use in unit
-tests.
+A simulated dataset of genotypes for use in 
+vignettes
 }
 \keyword{data}

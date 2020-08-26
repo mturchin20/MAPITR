@@ -13,6 +13,6 @@ Manually created
 }
 \description{
 A simulated dataset of genotypes for use in unit
-tests.
+tests
 }
 \keyword{data}

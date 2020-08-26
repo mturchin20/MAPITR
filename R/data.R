@@ -5,7 +5,7 @@
 #' @docType data
 #'
 #' @description A simulated dataset of genotypes for use in unit
-#' tests.
+#' tests
 #'
 #' @format A data frame with 750 rows (individuals) and 10000 
 #' variables (SNPs)
@@ -23,7 +23,7 @@ NULL
 #' @docType data
 #'
 #' @description A simulated set of phenotypes for use in unit
-#' tests.
+#' tests
 #'
 #' @format A data frame with 750 rows (individuals) and 1 
 #' variables (phenotype)
@@ -41,10 +41,28 @@ NULL
 #' @docType data
 #'
 #' @description A simulated set of pathways for use in unit
-#' tests.
+#' tests
 #'
 #' @format A data frame with 5 rows (pathways) and 2 variables 
 #' (pathway name, comma-separated list of pathway column indices)
+#'
+#' @source Manually created
+#'
+#' @keywords data
+#'
+NULL
+
+#' @name MAPITR_TestData_PCs
+#'
+#' @title MAPITR TestData PCs
+#'
+#' @docType data
+#'
+#' @description Top 10 principal components from the simulated
+#' genotypes for for use in unit tests
+#'
+#' @format A data frame with 750 rows (individuals) and 10 
+#' variables (PCs)
 #'
 #' @source Manually created
 #'
@@ -58,8 +76,8 @@ NULL
 #'
 #' @docType data
 #'
-#' @description A simulated dataset of genotypes for use in unit
-#' tests.
+#' @description A simulated dataset of genotypes for use in 
+#' vignettes
 #'
 #' @format A data frame with 40000 rows (individuals) and 20000 
 #' variables (SNPs)
@@ -76,8 +94,8 @@ NULL
 #'
 #' @docType data
 #'
-#' @description A simulated set of phenotypes for use in unit
-#' tests.
+#' @description A simulated set of phenotypes for use in
+#' vignettes
 #'
 #' @format A data frame with 4000 rows (individuals) and 1 variables 
 #' (phenotype)
@@ -94,11 +112,29 @@ NULL
 #'
 #' @docType data
 #'
-#' @description A simulated set of pathways for use in unit
-#' tests.
+#' @description A simulated set of pathways for use in 
+#' vignettes
 #'
 #' @format A data frame with 5 rows (pathways) and 2 variables 
 #' (pathway name, comma-separated list of pathway column indices)
+#'
+#' @source Manually created
+#'
+#' @keywords data
+#'
+NULL
+
+#' @name MAPITR_SimData_PCs
+#'
+#' @title MAPITR SimData PCs
+#'
+#' @docType data
+#'
+#' @description Top 10 principal components from the simulated
+#' genotypes for for use in vignettes
+#'
+#' @format A data frame with 750 rows (individuals) and 10 
+#' variables (PCs)
 #'
 #' @source Manually created
 #'

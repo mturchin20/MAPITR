@@ -12,7 +12,7 @@ A data frame with 5 rows (pathways) and 2 variables
 Manually created
 }
 \description{
-A simulated set of pathways for use in unit
-tests.
+A simulated set of pathways for use in 
+vignettes
 }
 \keyword{data}

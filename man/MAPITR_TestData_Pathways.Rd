@@ -13,6 +13,6 @@ Manually created
 }
 \description{
 A simulated set of pathways for use in unit
-tests.
+tests
 }
 \keyword{data}

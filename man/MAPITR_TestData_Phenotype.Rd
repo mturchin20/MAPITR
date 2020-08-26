@@ -13,6 +13,6 @@ Manually created
 }
 \description{
 A simulated set of phenotypes for use in unit
-tests.
+tests
 }
 \keyword{data}
