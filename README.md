@@ -69,7 +69,7 @@ The `MAPITR` R package was developed by [Michael Turchin][michaelt] at [Brown Un
 [Peter Carbonetto][peter] and [Lorin Crawford][lorin].
 
 [MAPITR-website]: http://mturchin20.github.io/MAPITR 
-[MAPITR-vignette1]: http://mturchin20.github.io/MAPITR/articles/MAPITR.Intro.SimulatedData.html
+[MAPITR-vignette1]: https://mturchin20.github.io/MAPITR/articles/MAPITR.Intro.SimulatedData.html
 [biorxiv-paper]: https://www.biorxiv.org/ 
 [issues]: https://github.com/mturchin20/MAPITR/issues
 [lorin]: http://www.lcrawlab.com/ 

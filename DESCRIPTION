@@ -22,7 +22,7 @@ Description: MAPITR is a genetic analysis tool for
     null model of there being no epistatic interactions 
     between a pathway and the rest of the genome can be 
     rejected.
-License: GPL (>= 3)
+License: MIT + file LICENSE
 URL: https://github.com/mturchin20/MAPITR
 BugReports: https://github.com/mturchin20/MAPITR/issues
 Depends: R (>= 3.3.0)
