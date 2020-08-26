@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MAPITR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -96,38 +96,38 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#mapitr-marginal-epistasis-test-for-regions" class="anchor"></a>MAPITR: MArginal ePIstasis Test for Regions</h1></div>
 
-<p>The <code>MAPITR</code> R package provides accessible functions for running the algorithms described in…</p>
+<p>The <code>MAPITR</code> R package provides accessible functions for running the algorithms described in <a href="https://www.biorxiv.org/">Turchin et al. 2020</a>. <code>MAPITR</code> itself is a variance component model that tests for marginal epistasis – the presence of <em>any</em> epistatic interactions – between a given genetic pathway and the rest of the genome. <code>MAPITR</code> expects as input a set of genotypes, a single phenotype, and a list of pathways, and returns as output a p-value for each pathway for a test against the null model of there being no interactions between a pathway and the rest of the genome.</p>
 <p>If you find a bug, or you have a question or feedback on our work, please post an <a href="https://github.com/mturchin20/MAPITR/issues">issue</a>.</p>
 <div id="citing-this-work" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citing-this-work" class="anchor"></a>Citing this work</h2>
 <p>If you find the <code>MAPITR</code> package or any of the source code in this repository useful for your work, please cite:</p>
 <blockquote>
-<p>Turchin MC, Darnell G, Crawford L, and Ramachandran S (2020) "…</p>
+<p>Turchin MC, Darnell G, Crawford L, and Ramachandran S (2020) “Pathway Analysis within Multiple Human Ancestries Reveals Novel Signals for Epistasis in Complex Traits”.</p>
 </blockquote>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"></a>License</h2>
-<p>Copyright (c) 2020, Michael Turchin, Sohini Ramachandran, and Lorin Crawford.</p>
+<p>Copyright (c) 2020, Michael Turchin, Gregory Darnell, Lorin Crawford, and Sohini Ramachandran.</p>
 <p>All source code and software in this repository are made available under the terms of the <a href="https://opensource.org/licenses/mit-license.html">MIT license</a>. See file <a href="LICENSE">LICENSE</a> for the full text of the license.</p>
 </div>
 <div id="quick-start" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-start" class="anchor"></a>Quick Start</h2>
-<p>To install <code>MAPITR</code> from <a href="https://cran.r-project.org/web/packages/MAPITR/index.html">CRAN</a>:</p>
+<p>To install <code>MAPITR</code> from <a href="https://CRAN.R-project.org/package=MAPITR">CRAN</a>:</p>
 <pre class="{r}"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("MAPITR")</a></code></pre>
 <p>To install the most recent dev version of <code>MAPITR</code> from <a href="https://github.com/mturchin20/MAPITR">github</a>:</p>
 <pre class="{r}"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("devtools")
-devtools::install_github("mturchin20/MAPITR@v1.0.3", build_vignettes=TRUE)</a></code></pre>
+devtools::install_github("mturchin20/MAPITR@v1.0.0", build_vignettes=TRUE)</a></code></pre>
 <p>Once you have installed the package, load the package in R:</p>
 <pre class="{r}"><code><a href="https://rdrr.io/pkg/MAPITR/man">library("MAPITR")</a></code></pre>
-<p>Next, view and run the example code provided in the <a href="http://mturchin20.github.io/MAPITR/articles/MAPITRIntro.1.SimulatedData.html">introductory vignette</a> using simulated data.</p>
+<p>Next, view and run the example code provided in the <a href="https://mturchin20.github.io/MAPITR/articles/MAPITR.Intro.SimulatedData.html">introductory vignette</a> using simulated data.</p>
 </div>
 <div id="credits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#credits" class="anchor"></a>Credits</h2>
-<p>The <code>MAPITR</code> R package was developed by <a href="http://home.uchicago.edu/mturchin20/index.html">Michael Turchin</a> at the [Brown University][brownu], with contributions from <a href="https://www.gregdarnell.com/">Greg Darnell</a> and <a href="http://www.lcrawlab.com/">Lorin Crawford</a>.</p>
+<p>The <code>MAPITR</code> R package was developed by <a href="http://home.uchicago.edu/mturchin20/index.html">Michael Turchin</a> at <a href="https://www.brown.edu">Brown University</a>, with contributions from <a href="https://pcarbo.github.io/">Peter Carbonetto</a> and <a href="http://www.lcrawlab.com/">Lorin Crawford</a>.</p>
 </div>
 </div>
   </div>
@@ -145,7 +145,9 @@ devtools::install_github("mturchin20/MAPITR@v1.0.3", build_vignettes=TRUE)</a></
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li>GPL (&gt;= 3)</li>
+<li>
+<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
 </ul>
 </div>
 <div class="developers">
