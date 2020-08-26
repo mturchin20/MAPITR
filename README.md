@@ -4,20 +4,12 @@
 [![Travis Build Status](https://travis-ci.org/mturchin20/MAPITR.svg?branch=master)](https://travis-ci.org/mturchin20/MAPITR)
 
 The `MAPITR` R package provides accessible functions for running the algorithms described 
-in [Turchin et al. 2020][biorxiv]
-
-
-bmass conducts a Bayesian multivariate analysis of GWAS data using univariate association summary statistics. Output inclues whether any new SNPs are found as multivariate genome-wide significant as well as posterior probabilities of each significant SNP's assignment to different multivariate models.
-
-
-The mixsqp R package provides algorithms based on sequential quadratic programming for maximum likelihood estimation of the mixture proportions in a finite mixture model where the component densities are known. The SQP algorithm is expected to obtain solutions that are at least as accurate as the state-of-the-art MOSEK interior-point solver (called via the "KWDual" function in the REBayes package), and is expected to compute these solutions much more quickly in large data sets.
-
-For more details on the methods, please see the journal paper or the arXiv preprint.
-
-The methods were originally implemented in Julia; please see here for the Julia implementation.
-
-If you find a bug, or you have a question or feedback on our work, please post an issue.
-
+in [Turchin et al. 2020][biorxiv]. `MAPITR` itself is a variance component model that tests
+for marginal epistasis -- the presence of *any* epistatic interactions -- between a given 
+genetic pathway and the rest of the genome. `MAPITR` expects as input a set of genotypes, a 
+single phenotype, and a list of pathways, and returns as output a p-value for each pathway
+testing the null model of there being no interactions between a pathway and the rest 
+of the genome.
 
 If you find a bug, or you have a question or feedback on our work,
 please post an [issue][issues].
@@ -76,4 +68,4 @@ The `MAPITR` R package was developed by [Michael Turchin][michaelt] at [Brown Un
 [michaelt]: http://home.uchicago.edu/mturchin20/index.html 
 [mit-license]: https://opensource.org/licenses/mit-license.html
 [peter]: https://pcarbo.github.io/
-[uchicago]: https://www.brown.edu
+[brownu]: https://www.brown.edu
