@@ -4,7 +4,7 @@
 [![Travis Build Status](https://travis-ci.org/mturchin20/MAPITR.svg?branch=master)](https://travis-ci.org/mturchin20/MAPITR)
 
 The `MAPITR` R package provides accessible functions for running the algorithms described 
-in [Turchin et al. 2020][biorxiv]. `MAPITR` itself is a variance component model that tests
+in [Turchin et al. 2020][biorxiv-paper]. `MAPITR` itself is a variance component model that tests
 for marginal epistasis -- the presence of *any* epistatic interactions -- between a given 
 genetic pathway and the rest of the genome. `MAPITR` expects as input a set of genotypes, a 
 single phenotype, and a list of pathways, and returns as output a p-value for each pathway
