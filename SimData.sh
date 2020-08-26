@@ -998,6 +998,43 @@ save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPI
 
 
 
+library("devtools"); 
+devtools::load_all(); 
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt.gz", header=T);
+Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Phenotype.txt", header=F);
+Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Pathways.txt", header=F);
+
+X.pca <- prcomp(X)
+Covs <- X.pca$x[,1:10]
+Y2 <- Y + .1 * Covs[,1] + .1 * Covs[,1]
+
+#Output3a <- MAPITR(X, Y2, Pathways);
+Output3a <- MAPITR(X, Y2, Pathways, Covariates=Covs);
+
+#Output1 <- MAPITRmain(X, Y, Pathways); 
+#Output1$Results
+Output2 <- MAPITR(X, Y, Pathways); 
+Output2$Results
+Output3a <- MAPITR(X, Y2, Pathways); 
+Output3a$Results
+
+Output3a <- MAPITR(X, Y2, Pathways);
+Output3a <- MAPITR(X, Y2, Pathways, Covariates=Covs);
+
+MAPITR_TestData_Genotypes <- X;
+MAPITR_TestData_Phenotype <- Y;
+MAPITR_TestData_Pathways <- Pathways;
+MAPITR_SimData_Genotypes <- MAPITR_TestData_Genotypes
+MAPITR_SimData_Phenotype <- MAPITR_TestData_Phenotype
+MAPITR_SimData_Pathways <- MAPITR_TestData_Pathways
+
+saveCompress2 <- "xz"
+save(MAPITR_TestData2_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData2_Genotypes.rda", compress=saveCompress2);
+save(MAPITR_TestData2_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData2_Phenotype.rda");
+save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
+
+
+
 # Sim data for unit tests
 
 #From: https://stackoverflow.com/questions/54056594/cran-acceptable-way-of-linking-to-openmp-some-c-code-called-from-rcpp, https://github.com/r-lib/testthat/issues/361
