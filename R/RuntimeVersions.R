@@ -26,7 +26,7 @@ RunMAPITR.wCovs <- function (PhenotypeMatrix, Genotypes, Pathways.Full, Covariat
 	RunMAPITR.wCovs.Output <- list()
 	
 	#MAPITR.wCovs expects a p x n genotype matrix, a n x r phenotype matrix, a z x n covariate matrix, and a list of SNP indices for each pathway
-	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseCovs(t(as.matrix(Genotypes)),as.matrix(PhenotypeMatrix),Pathways.Full,t(as.matrix(Covariates)),cores=cores)
+	RunMAPITR.wCovs.Output.temp2 <- MAPITRBaseCovs(t(as.matrix(Genotypes)),as.matrix(PhenotypeMatrix),t(as.matrix(Covariates)),Pathways.Full,cores=cores)
 
 	return(list(Est=RunMAPITR.wCovs.Output.temp2$Est, Eigenvalues=RunMAPITR.wCovs.Output.temp2$Eigenvalues, PVE=RunMAPITR.wCovs.Output.temp2$PVE, LogFile=LogFile))
 

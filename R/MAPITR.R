@@ -52,7 +52,7 @@ MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterSta
 }
 
 #' @importFrom parallel detectCores
-MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pathway = NULL, Covariates = NULL, CenterStandardize = TRUE, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
+MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, GRM_Grand = NULL, GRM_Pathway = NULL, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
         MAPITRprocessing <- list()
 	MAPITRoutput <- list()
@@ -84,7 +84,7 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, GRM_Grand = NULL, GRM_Pa
 		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
 		rm(MAPITRoutput.temp2)
 	} else if (!is.null(Covariates)) { 
-		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Covariates, Pathways.Full, cores, MAPITRoutput$LogFile) 
+		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, cores, MAPITRoutput$LogFile) 
 		MAPITRoutput$Est <- MAPITRoutput.temp3$Est; MAPITRoutput$PVE <- MAPITRoutput.temp3$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp3$Eigenvalues;
 		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
 		rm(MAPITRoutput.temp3)

@@ -133,13 +133,13 @@ List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
 //'
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
-List MAPITRBaseCovs(arma::mat X,arma::mat Y,List regions,arma::mat Z,int cores = 1){
+List MAPITRBaseCovs(arma::mat X,arma::mat Y,arma::mat Z,List regions,int cores = 1){
     int i;
     const int n = X.n_cols;
     const int nsnp = X.n_rows;
     const int p = regions.size();
     const int q = Z.n_rows;
-    
+   
     //Set up the vectors to save the outputs
     NumericVector sigma_est(p);
     NumericVector pve(p);

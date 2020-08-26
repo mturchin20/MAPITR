@@ -32,17 +32,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // MAPITRBaseCovs
-List MAPITRBaseCovs(arma::mat X, arma::mat Y, List regions, arma::mat Z, int cores);
-RcppExport SEXP _MAPITR_MAPITRBaseCovs(SEXP XSEXP, SEXP YSEXP, SEXP regionsSEXP, SEXP ZSEXP, SEXP coresSEXP) {
+List MAPITRBaseCovs(arma::mat X, arma::mat Y, arma::mat Z, List regions, int cores);
+RcppExport SEXP _MAPITR_MAPITRBaseCovs(SEXP XSEXP, SEXP YSEXP, SEXP ZSEXP, SEXP regionsSEXP, SEXP coresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< List >::type regions(regionsSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< List >::type regions(regionsSEXP);
     Rcpp::traits::input_parameter< int >::type cores(coresSEXP);
-    rcpp_result_gen = Rcpp::wrap(MAPITRBaseCovs(X, Y, regions, Z, cores));
+    rcpp_result_gen = Rcpp::wrap(MAPITRBaseCovs(X, Y, Z, regions, cores));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -988,13 +988,14 @@ MAPITR_SimData_Genotypes <- MAPITR_TestData_Genotypes
 MAPITR_SimData_Phenotype <- MAPITR_TestData_Phenotype
 MAPITR_SimData_Pathways <- MAPITR_TestData_Pathways
 
-saveCompress2 <- "xz"
-save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Genotypes.rda", compress=saveCompress2);
-save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Phenotype.rda");
-save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
-save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda", compress=saveCompress2);
-save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
-save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
+#20200825 NOTE -- moved all saved versions of these files to the 'w/ Cov' version below, even if using it for functions that include covariates
+#saveCompress2 <- "xz"
+#save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Genotypes.rda", compress=saveCompress2);
+#save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Phenotype.rda");
+#save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
+#save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda", compress=saveCompress2);
+#save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
+#save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
 
 
 
@@ -1008,30 +1009,37 @@ X.pca <- prcomp(X)
 Covs <- X.pca$x[,1:10]
 Y2 <- Y + .1 * Covs[,1] + .1 * Covs[,1]
 
-#Output3a <- MAPITR(X, Y2, Pathways);
-Output3a <- MAPITR(X, Y2, Pathways, Covariates=Covs);
+Output3a <- MAPITR(X, Y2, Pathways);
+Output3b <- MAPITR(X, Y2, Pathways, Covariates=Covs);
+Output3a$Results
+Output3b$Results
 
 #Output1 <- MAPITRmain(X, Y, Pathways); 
 #Output1$Results
 Output2 <- MAPITR(X, Y, Pathways); 
 Output2$Results
-Output3a <- MAPITR(X, Y2, Pathways); 
-Output3a$Results
-
-Output3a <- MAPITR(X, Y2, Pathways);
-Output3a <- MAPITR(X, Y2, Pathways, Covariates=Covs);
 
 MAPITR_TestData_Genotypes <- X;
-MAPITR_TestData_Phenotype <- Y;
+MAPITR_TestData_Phenotype <- Y2;
 MAPITR_TestData_Pathways <- Pathways;
+MAPITR_TestData_PCs <- Covs;
 MAPITR_SimData_Genotypes <- MAPITR_TestData_Genotypes
 MAPITR_SimData_Phenotype <- MAPITR_TestData_Phenotype
 MAPITR_SimData_Pathways <- MAPITR_TestData_Pathways
+MAPITR_SimData_PCs <- MAPITR_TestData_PCs
 
 saveCompress2 <- "xz"
-save(MAPITR_TestData2_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData2_Genotypes.rda", compress=saveCompress2);
-save(MAPITR_TestData2_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData2_Phenotype.rda");
+save(MAPITR_TestData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Genotypes.rda", compress=saveCompress2);
+save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Phenotype.rda");
 save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
+#save(MAPITR_TestData2_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData2_Genotypes.rda", compress=saveCompress2);
+#save(MAPITR_TestData2_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData2_Phenotype.rda");
+#save(MAPITR_TestData2_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData2_Pathways.rda");
+save(MAPITR_TestData_PCs, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_PCs.rda");
+save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda", compress=saveCompress2);
+save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
+save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
+save(MAPITR_SimData_PCs, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_PCs.rda");
 
 
 
@@ -1308,6 +1316,43 @@ Warnings: 0
 Skipped:  0
 
 You are a coding rockstar!
+
+> library("devtools");
+Loading required package: usethis
+> devtools::load_all();
+Loading MAPITR
+
+Attaching package: 'testthat'
+
+The following object is masked from 'package:devtools':
+
+    test_file
+
+> X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt.gz", header=T);
+> Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Phenotype.txt", header=F);
+> Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Pathways.txt", header=F);
+> 
+> X.pca <- prcomp(X)
+> Covs <- X.pca$x[,1:10]
+> Y2 <- Y + .1 * Covs[,1] + .1 * Covs[,1]
+> 
+> Output3a <- MAPITR(X, Y2, Pathways);
+> Output3b <- MAPITR(X, Y2, Pathways, Covariates=Covs);
+> Output3a$Results
+     Pathways      pValues       Est       PVE
+[1,]        1 0.0006793231 1.0684080 1.1281354
+[2,]        2 0.3746938563 0.2651890 0.2847803
+[3,]        3 0.2244317548 0.3696023 0.3918250
+[4,]        4 0.3775966094 0.2714509 0.2854367
+[5,]        5 0.4023264905 0.2529208 0.2742095
+> Output3b$Results
+     Pathways      pValues       Est       PVE
+[1,]        1 0.0001282748 1.1540813 1.2908323
+[2,]        2 0.4324023089 0.2264257 0.2542162
+[3,]        3 0.3637608053 0.2695065 0.2949725
+[4,]        4 0.3706962405 0.2653234 0.2921159
+[5,]        5 0.4454911342 0.2236257 0.2523179
+
 
 ```
 
