@@ -3,8 +3,21 @@
 [![CRAN status badge](https://www.r-pkg.org/badges/version/MAPITR)](https://cran.r-project.org/package=MAPITR)
 [![Travis Build Status](https://travis-ci.org/mturchin20/MAPITR.svg?branch=master)](https://travis-ci.org/mturchin20/MAPITR)
 
-The `MAPITR` R package provides accessible functions for running the
-algorithms described in...
+The `MAPITR` R package provides accessible functions for running the algorithms described 
+in [Turchin et al. 2020][biorxiv]
+
+
+bmass conducts a Bayesian multivariate analysis of GWAS data using univariate association summary statistics. Output inclues whether any new SNPs are found as multivariate genome-wide significant as well as posterior probabilities of each significant SNP's assignment to different multivariate models.
+
+
+The mixsqp R package provides algorithms based on sequential quadratic programming for maximum likelihood estimation of the mixture proportions in a finite mixture model where the component densities are known. The SQP algorithm is expected to obtain solutions that are at least as accurate as the state-of-the-art MOSEK interior-point solver (called via the "KWDual" function in the REBayes package), and is expected to compute these solutions much more quickly in large data sets.
+
+For more details on the methods, please see the journal paper or the arXiv preprint.
+
+The methods were originally implemented in Julia; please see here for the Julia implementation.
+
+If you find a bug, or you have a question or feedback on our work, please post an issue.
+
 
 If you find a bug, or you have a question or feedback on our work,
 please post an [issue][issues].
@@ -37,7 +50,8 @@ install.packages("MAPITR")
 To install the most recent dev version of `MAPITR` from [github](https://github.com/mturchin20/MAPITR):
 ```{r}
 install.packages("devtools")
-devtools::install_github("mturchin20/MAPITR@v1.0.4", build_vignettes=TRUE)
+#devtools::install_github("mturchin20/MAPITR@v0.1.5", build_vignettes=TRUE)
+devtools::install_github("mturchin20/MAPITR", build_vignettes=TRUE)
 ```
 
 Once you have installed the package, load the package in R:
@@ -56,7 +70,7 @@ The `MAPITR` R package was developed by [Michael Turchin][michaelt] at [Brown Un
 
 [MAPITR-website]: http://mturchin20.github.io/MAPITR 
 [MAPITR-vignette1]: http://mturchin20.github.io/MAPITR/articles/MAPITR.Intro.SimulatedData.html
-[biorxiv-paper]: http://www.google.com 
+[biorxiv-paper]: https://www.biorxiv.org/ 
 [issues]: https://github.com/mturchin20/MAPITR/issues
 [lorin]: http://www.lcrawlab.com/ 
 [michaelt]: http://home.uchicago.edu/mturchin20/index.html 
