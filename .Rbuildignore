@@ -1,8 +1,8 @@
-^.*\.Rproj$         
-^README\.Rmd$       
-^cran-comments\.md$ 
-^NEWS\.md$          
-^\.travis\.yml$     
+^.*\.Rproj$
+^README\.Rmd$
+^cran-comments\.md$
+^NEWS\.md$
+^\.travis\.yml$
 ^doc$
 ^docs$
 ^LICENSE$
@@ -11,4 +11,3 @@
 ^_pkgdown\.yml$
 ^pkgdown$
 ^Meta$
-^20200820_temp1\.RData$
