@@ -2,6 +2,20 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
+## MAPITR v1.0.0
+
+###### Summary
+* First CRAN-ready release and submission
+
+###### Since previous version (v0.1.5)
+* Cleaned up files as needed for CRAN submission
+* Cleaned up README.md
+
+###### Notes
+
+###### Next steps (if applicable)
+
+
 ## MAPITR v0.1.5
 
 ###### Summary
