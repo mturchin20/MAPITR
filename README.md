@@ -8,7 +8,7 @@ in [Turchin et al. 2020][biorxiv-paper]. `MAPITR` itself is a variance component
 for marginal epistasis -- the presence of *any* epistatic interactions -- between a given 
 genetic pathway and the rest of the genome. `MAPITR` expects as input a set of genotypes, a 
 single phenotype, and a list of pathways, and returns as output a p-value for each pathway
-for the test against the null model of there being no interactions between a pathway and the rest 
+for a test against the null model of there being no interactions between a pathway and the rest 
 of the genome.
 
 If you find a bug, or you have a question or feedback on our work,
