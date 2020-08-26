@@ -41,7 +41,7 @@ file [LICENSE](LICENSE) for the full text of the license.
 
 ## Quick Start
 
-To install `MAPITR` from [CRAN](https://cran.r-project.org/web/packages/MAPITR/index.html):
+To install `MAPITR` from [CRAN](https://CRAN.R-project.org/package=MAPITR):
 
 ```{r}
 install.packages("MAPITR")
