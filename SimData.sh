@@ -1069,6 +1069,7 @@ devtools::install()
 pkgdown::build_site()
 devtools::build_vignettes()
 devtools::document()
+devtools::test();
 devtools::build()
 devtools::check()
 
