@@ -152,14 +152,27 @@
 ## [4,]        4 0.3775966094 0.2714509 0.2854367
 ## [5,]        5 0.4023264905 0.2529208 0.2742095</code></pre>
 <p>The output shown from <code>MAPITR_Output$Results</code> should be a matrix with four columns. The first column should be the list of pathway names being analyzed (same order as input file), the second column should be the <code>MAPITR</code> p-values for each pathway, the third column should be the estimate of the epistatic GRM variance component (<code>G</code> in the <a href="http://biorxiv.org/">model</a>) for each pathway, and the fourth column should be the proportion of variance explained (PVE) for the phenotype by each pathway. Note that PVE estimates here are for pathways that generally contain overlapping variants – this impacts our interpretation of PVE. When single variant models are used in complex trait analysis, which is often the case, PVE can theoretically sum to 1 across all variants. A priori it is unclear what PVE should theoretically sum to across multiple pathways due to this common scenario where variants are shared across pathway definitions.</p>
-<p>In this example, there should be 1 pathway that has a p-value below the Bonferonni-corrected threshold of .01 (.05 / 5, the number of pathways tested):</p>
+<p>In this example, there should be one pathway that has a p-value below the Bonferonni-corrected threshold of .01 (.05 / 5, the number of pathways tested):</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">MAPITR_Output</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
 <pre><code>##     Pathways      pValues          Est          PVE 
 ## 1.0000000000 0.0006793231 1.0684079900 1.1281354388</code></pre>
 <p>Also note this is a simulated dataset made to run quickly for this vignette – you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be &gt; 1 in real data.</p>
 <p>Lastly, we will go over how one can introduce a covariate to this test (on both sides of the model) if desired. However, we recommend that most covariates should be directly regressed out from the phenotype prior to <code>MAPITR</code> analysis. To include a covariate as part of <code>MAPITR</code> though, it is incorporated as part of the orthogonality projection matrix, H, used in equation 3 of the <a href="http://biorxiv.org/">MAPITR manuscript</a>. This projection matrix is applied to both sides of the model, meaning it is applied to both the phenotype <em>and</em> the genotypes, and rotates both spaces to be orthogonal to the components of H. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix.</p>
-<p>To include the top 10 principal components of our simulated dataset into the <code>MAPITR</code> analysis, we can run the following:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">MAPITR_Output2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">Covariates</span><span class="kw">=</span><span class="no">MAPITR_SimData_PCs</span>)
+<p>To include the top ten principal components of our simulated dataset into the <code>MAPITR</code> analysis, we can run the following:</p>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">MAPITR_SimData_PCs</span>[<span class="fl">1</span>:<span class="fl">5</span>,<span class="fl">1</span>:<span class="fl">10</span>]</pre></body></html></div>
+<pre><code>##               PC1         PC2         PC3        PC4        PC5         PC6
+## [1,] -0.001693465  2.06962675 -0.49035215  1.9184082 -1.4713917  0.32623279
+## [2,]  0.848490788 -0.96559992 -0.32186378 -0.3283807 -0.7315292 -1.60393459
+## [3,] -1.537910661  0.09096513 -2.60469428  1.9572098  1.6467182  1.33009344
+## [4,] -1.081214910 -2.37048663 -2.32338290 -1.8401574 -3.3125524  0.95205814
+## [5,] -3.360443660 -0.48186184 -0.08084703  0.1815256  2.4763967 -0.06958336
+##             PC7        PC8        PC9       PC10
+## [1,] -0.5424500  0.9890759 -1.1998381  1.6159222
+## [2,] -0.1273656 -3.1150575 -0.1798635 -0.5736735
+## [3,]  0.2536364  2.6855915 -1.5928265  2.6232124
+## [4,] -1.3727205 -1.4277867  1.0328219  0.4956740
+## [5,]  1.6072292  0.2792542  2.2400548  0.2873197</code></pre>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">MAPITR_Output2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">Covariates</span><span class="kw">=</span><span class="no">MAPITR_SimData_PCs</span>)
 <span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
 <pre><code>##     Pathways      pValues          Est          PVE 
 ## 1.0000000000 0.0001282748 1.1540812533 1.2908322801</code></pre>
