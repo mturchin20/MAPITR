@@ -13,7 +13,7 @@ This is a simple introductory vignette to the `MAPITR` package. In this introduc
 
 ## Running `MAPITR`
 
-For this introductory vignette, we will be using `MAPITR_SimData_Phenotype`, `MAPITR_SimData_Genotypes`, and `MAPITR_SimData_Pathways`. These are simulated datasets created for the purposes of this vignette. To load `MAPITR` and the datasets, run the following:
+For this introductory vignette, we will be using `MAPITR_SimData_Phenotype`, `MAPITR_SimData_Genotypes`, `MAPITR_SimData_Pathways`, and `MAPITR_SimData_PCs`. These are simulated datasets created for the purposes of this vignette. To load `MAPITR` and the datasets, run the following:
 
 ```{r}
 library("MAPITR")
@@ -42,7 +42,7 @@ Here you should see the first ten values of our input phenotype. `MAPITR` only r
 head(MAPITR_SimData_Pathways)
 ```
 
-Here you should see a matrix with two columns. The first column should list the name of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by `MAPITR` to extract the proper SNPs per pathway from the input genotype matrix to conduct the marginal epistasis analysis. Note that the values for this second column are not the SNP IDs (eg rsID#s) or column headers (if your genotype matrix has them), they are the specific column locations in the input genotype matrix for each SNP.
+Here you should see a matrix with two columns. The first column should list the names of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by `MAPITR` to extract the proper SNPs per pathway from the input genotype matrix to conduct the marginal epistasis analysis. Note that the values for this second column are not the SNP IDs (eg rsID#s) or column headers (if your genotype matrix has them), they are the specific column locations in the input genotype matrix for each SNP.
 
 Now to run `MAPITR`, we use the following code:
 
@@ -56,7 +56,7 @@ And to see the output `MAPITR()` provides, we can run the following:
 head(MAPITR_Output$Results)
 ```
 
-The output shown from `MAPITR_Output$Results` should be a matrix with four columns. The first column should be the list of pathway names being analyzed (same order as input file), the second column should be the `MAPITR` p-values for each pathway, the third column should be the estimate of the epistatic GRM variance component (`G` in the [model][MAPITR-paper]) for each pathway, and the fourth column should be the proportion of variance explained (PVE) for the phenotype by each pathway. Note that PVE estimates here are for pathways that generally contain overlapping variants -- this impacts our interpretation of PVE. When single variant models are used in complex trait analysis, which is often the case, PVE can theoretically sum to 1 across all variants. A priori it is unclear what PVE should theoretically sum to across multiple pathways due to this common scenario where variants are shared across pathway definitions.
+The output shown from `MAPITR_Output$Results` should be a matrix with four columns. The first column should be the list of pathway names being analyzed (same order as input file), the second column should be the `MAPITR` p-values for each pathway, the third column should be the estimate of the epistatic GRM variance component (`G` in the [model][MAPITR-paper]) for each pathway, and the fourth column should be the proportion of variance explained (PVE) for the phenotype by each pathway. Note that PVE estimates here are for pathways that generally contain overlapping variants -- this impacts our interpretation of PVE. When single variant models are used in complex trait analysis, which is often the case, PVE can theoretically sum to 1 across all variants. *A priori* it is unclear what PVE should theoretically sum to across multiple pathways due to this common scenario where variants are shared across pathway definitions.
 
 In this example, there should be one pathway that has a p-value below the Bonferonni-corrected threshold of .01 (.05 / 5, the number of pathways tested):
 
@@ -66,7 +66,7 @@ MAPITR_Output$Results[MAPITR_Output$Results[,2] < .01,]
 
 Also note this is a simulated dataset made to run quickly for this vignette -- you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be > 1 in real data.
 
-Lastly, we will go over how one can introduce a covariate to this test (on both sides of the model) if desired. However, we recommend that most covariates should be directly regressed out from the phenotype prior to `MAPITR` analysis. To include a covariate as part of `MAPITR` though, it is incorporated as part of the orthogonality projection matrix, H, used in equation 3 of the [MAPITR manuscript][MAPITR-paper]. This projection matrix is applied to both sides of the model, meaning it is applied to both the phenotype *and* the genotypes, and rotates both spaces to be orthogonal to the components of H. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix.
+Lastly, we will go over how one can introduce a covariate to this test (on both sides of the model) if desired. However, we recommend that most covariates should be directly regressed out from the phenotype prior to `MAPITR` analysis. To include a covariate as part of `MAPITR` though, it is incorporated as part of the orthogonality projection matrix, H, used in equation 3 of the [MAPITR manuscript][MAPITR-paper]. This projection matrix is applied to both sides of the model, meaning it is applied to both the phenotype **and** the genotypes, and rotates both spaces to be orthogonal to the components of H. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix.
 
 To include the top ten principal components of our simulated dataset into the `MAPITR` analysis, we can run the following: 
 ```{r}

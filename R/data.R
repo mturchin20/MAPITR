@@ -7,7 +7,7 @@
 #' @description A simulated dataset of genotypes for use in unit
 #' tests
 #'
-#' @format A data frame with 750 rows (individuals) and 10000 
+#' @format A data frame with 500 rows (individuals) and 750 
 #' variables (SNPs)
 #'
 #' @source Manually created
@@ -25,7 +25,7 @@ NULL
 #' @description A simulated set of phenotypes for use in unit
 #' tests
 #'
-#' @format A data frame with 750 rows (individuals) and 1 
+#' @format A data frame with 500 rows (individuals) and 1 
 #' variables (phenotype)
 #'
 #' @source Manually created
@@ -61,7 +61,7 @@ NULL
 #' @description Top 10 principal components from the simulated
 #' genotypes for for use in unit tests
 #'
-#' @format A data frame with 750 rows (individuals) and 10 
+#' @format A data frame with 500 rows (individuals) and 10 
 #' variables (PCs)
 #'
 #' @source Manually created
@@ -79,7 +79,7 @@ NULL
 #' @description A simulated dataset of genotypes for use in 
 #' vignettes
 #'
-#' @format A data frame with 40000 rows (individuals) and 20000 
+#' @format A data frame with 500 rows (individuals) and 750 
 #' variables (SNPs)
 #'
 #' @source Manually created
@@ -97,7 +97,7 @@ NULL
 #' @description A simulated set of phenotypes for use in
 #' vignettes
 #'
-#' @format A data frame with 4000 rows (individuals) and 1 variables 
+#' @format A data frame with 500 rows (individuals) and 1 variables 
 #' (phenotype)
 #'
 #' @source Manually created
@@ -133,7 +133,7 @@ NULL
 #' @description Top 10 principal components from the simulated
 #' genotypes for for use in vignettes
 #'
-#' @format A data frame with 750 rows (individuals) and 10 
+#' @format A data frame with 500 rows (individuals) and 10 
 #' variables (PCs)
 #'
 #' @source Manually created

@@ -1,7 +1,7 @@
 Package: MAPITR
 Title: MArginal ePIstasis Test for Regions
-Version: 1.0.1
-Date: 2020-08-24
+Version: 1.0.2
+Date: 2020-08-26
 Authors@R: c(person(given="Michael",family="Turchin",email = "michael_turchin@brown.edu",
                     role=c("aut","cre"), comment=c(ORCID="0000-0003-3569-1529")),
              person(given="Lorin",family="Crawford",email = "lcrawford@brown.edu",
@@ -10,18 +10,17 @@ Authors@R: c(person(given="Michael",family="Turchin",email = "michael_turchin@br
 	     	    role="aut", comment=c(ORCID="0000-0002-9588-7964")),
              person(given="Peter",family="Carbonetto",email="peter.carbonetto@gmail.com", 
 	     	    role="ctb", comment=c(ORCID="0000-0003-1144-6780")))
-Description: MAPITR is a genetic analysis tool for 
-    identifying marginal epistasis between pathways and the 
-    rest of the genome. MAPITR uses as input a matrix of 
-    genotypes, a vector of phenotypes, and a list of pathways, 
-    and iteratively tests each pathway for epistasis between 
-    any variants within the pathway versus any variants 
-    remaining in the rest of the genome. MAPITR is based on 
-    a variance component model and returns results in form 
-    of p-values for every pathway indicating whether the 
-    null model of there being no epistatic interactions 
-    between a pathway and the rest of the genome can be 
-    rejected.
+Description: A genetic analysis tool and variance component 
+    model for identifying marginal epistasis between pathways 
+    and the rest of the genome. MAPITR uses as input a matrix 
+    of genotypes, a vector of phenotypes, and a list of 
+    pathways, and iteratively tests each pathway for epistasis 
+    between any variants within the pathway versus any 
+    variants remaining in the rest of the genome. MAPITR
+    returns results in the form of p-values for every pathway 
+    indicating whether the null model of there being no 
+    epistatic interactions between a pathway and the rest of 
+    the genome can be rejected.
 License: MIT + file LICENSE
 URL: https://github.com/mturchin20/MAPITR
 BugReports: https://github.com/mturchin20/MAPITR/issues

@@ -5,7 +5,7 @@
 \alias{MAPITR_TestData_PCs}
 \title{MAPITR TestData PCs}
 \format{
-A data frame with 750 rows (individuals) and 10 
+A data frame with 500 rows (individuals) and 10 
 variables (PCs)
 }
 \source{

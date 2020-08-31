@@ -5,7 +5,7 @@
 \alias{MAPITR_TestData_Phenotype}
 \title{MAPITR TestData Phenotype}
 \format{
-A data frame with 750 rows (individuals) and 1 
+A data frame with 500 rows (individuals) and 1 
 variables (phenotype)
 }
 \source{

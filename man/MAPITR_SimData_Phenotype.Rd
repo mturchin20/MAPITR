@@ -5,7 +5,7 @@
 \alias{MAPITR_SimData_Phenotype}
 \title{MAPITR SimData Phenotype}
 \format{
-A data frame with 4000 rows (individuals) and 1 variables 
+A data frame with 500 rows (individuals) and 1 variables 
 (phenotype)
 }
 \source{

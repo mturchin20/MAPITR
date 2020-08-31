@@ -5,7 +5,7 @@
 \alias{MAPITR_SimData_Genotypes}
 \title{MAPITR SimData Genotypes}
 \format{
-A data frame with 40000 rows (individuals) and 20000 
+A data frame with 500 rows (individuals) and 750 
 variables (SNPs)
 }
 \source{

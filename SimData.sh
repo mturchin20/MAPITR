@@ -892,16 +892,17 @@ MAPITR_SimData_Pathways <- Pathways;
 #20200831 NOTE -- below was for the first try at CRAN submission, the second try was with the leaner Data2 version
 #set.seed(173463); 
 #Data2 <- Data1[sample(1:nrow(Data1), 750), sample(1:ncol(Data1), 1000)];
+#set.seed(214756); (550) 
+#test1(1245653) #"Pathway1" "2.51417753771577e-06" (500 indvs, 750 SNPs, 75 pathway SNPs)
+#test1(121910061) #"Pathway1" "0.00311225500146861" "Pathway2" "0.0778531718360918"  (500 indvs, 750 SNPs, 100 pathway SNPs)
+#test1(19061) #"Pathway1" "0.00305002076201233" (500 indvs, 750 SNPs, 100 pathway SNPs)
 
 library("devtools"); devtools::load_all(); 
 Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 
-set.seed(214756); (550) 
-test1(1245653) #"Pathway1" "2.51417753771577e-06" (500 indvs, 750 SNPs, 75 pathway SNPs)
-test1(121910061) #"Pathway1" "0.00311225500146861" "Pathway2" "0.0778531718360918"  (500 indvs, 750 SNPs, 100 pathway SNPs)
-test1(19061) #"Pathway1" "0.00305002076201233" (500 indvs, 750 SNPs, 100 pathway SNPs)
-test1 <- function(seed1) {
-set.seed(seed1)
+#test1 <- function(seed1) {
+#set.seed(seed1)
+set.seed(19061)
 Data2 <- Data1[sample(1:nrow(Data1), 500), sample(1:ncol(Data1), 750)];
 #Data3 <- apply(Data2, 2, function(x) { MAF <- sum(x)/(2*length(x)); return(rbinom(length(x), 2, MAF)); }); 
 #Data3 <- c(); for (i in 1:ncol(Data2)) { Data3 <- cbind(Data3, rbinom(nrow(Data2), 2, runif(1,.4,.6))); };
@@ -971,14 +972,21 @@ Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")
 
 #Output1 <- MAPITRmain(X, y, Pathways.Edits); 
 Output1 <- MAPITR(X, y, Pathways.Edits); 
-return(Output1$Results);
-}
+Output1$Results
+
+#return(Output1$Results);
+#}
 
 #Output writing
-write.table(Data3, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
-write.table(y, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Phenotype.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
-write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
-system("gzip -f /users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt");
+write.table(Data3, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
+write.table(y, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Phenotype.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+system("gzip -f /users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Genotypes.txt");
+
+#write.table(Data3, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
+#write.table(y, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Phenotype.txt", quote=FALSE, row.names=FALSE, col.names=FALSE); 
+#write.table(Pathways.Edits, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Pathways.txt", quote=FALSE, row.names=FALSE, col.names=FALSE);  
+#system("gzip -f /users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt");
 
 library("devtools"); devtools::load_all(); 
 X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt.gz", header=T);
@@ -1010,9 +1018,9 @@ MAPITR_SimData_Pathways <- MAPITR_TestData_Pathways
 
 library("devtools"); 
 devtools::load_all(); 
-X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt.gz", header=T);
-Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Phenotype.txt", header=F);
-Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Pathways.txt", header=F);
+X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Genotypes.txt.gz", header=T);
+Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Phenotype.txt", header=F);
+Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Pathways.txt", header=F);
 
 X.pca <- prcomp(X)
 Covs <- X.pca$x[,1:10]
@@ -1362,6 +1370,79 @@ The following object is masked from 'package:devtools':
 [3,]        3 0.3637608053 0.2695065 0.2949725
 [4,]        4 0.3706962405 0.2653234 0.2921159
 [5,]        5 0.4454911342 0.2236257 0.2523179
+...
+#leaner version for CRAN resubmission
+> set.seed(19061)
+> Data2 <- Data1[sample(1:nrow(Data1), 500), sample(1:ncol(Data1), 750)];
+.
+.
+.
+>   dim(X); dim(y)
+[1] 500 750
+[1] 500   1
+> 
+> #Pathway Formatting
+> Pathways <- matrix(unlist(regions), nrow=5, byrow=5)
+> Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); }); Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits); Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits); Pat> ays.Edits.2 <- apply(Pathways.Edits[,1:2], 1, function(x) { return(paste(x, collapse="")); }); Pathways.Edits <- cbind(Pathways.Edits.2, Pathways.Edits[,3]);
+> #Output1 <- MAPITRmain(X, y, Pathways.Edits);
+> Output1 <- MAPITR(X, y, Pathways.Edits);
+> Output1$Results
+     Pathways   pValues               Est                  
+[1,] "Pathway1" "0.00305002076201233" "1.1331960654346"    
+[2,] "Pathway2" "0.836865828830452"   "0.077634225473254"  
+[3,] "Pathway3" "0.351530894094338"   "0.336899820658481"  
+[4,] "Pathway4" "0.629605756307697"   "0.177391766378008"  
+[5,] "Pathway5" "0.84530361588241"    "-0.0705643345318876"
+     PVE                  
+[1,] "1.4027184067871"    
+[2,] "0.0910287895698874" 
+[3,] "0.421249909698699"  
+[4,] "0.213963983611117"  
+[5,] "-0.0898772513808778"
+> devtools::load_all();
+Loading MAPITR
+
+Attaching package: 'testthat'
+
+The following object is masked from 'package:devtools':
+
+    test_file
+
+> X <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Genotypes.txt.gz", header=T);
+> Y <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Phenotype.txt", header=F);
+> Pathways <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData4.Pathways.txt", header=F);
+> 
+> X.pca <- prcomp(X)
+> Covs <- X.pca$x[,1:10]
+> Y2 <- Y + .1 * Covs[,1] + .1 * Covs[,1]
+> 
+> Output3a <- MAPITR(X, Y2, Pathways);
+> Output3b <- MAPITR(X, Y2, Pathways, Covariates=Covs);
+> Output3a$Results
+     Pathways    pValues        Est        PVE
+[1,]        1 0.00511314 1.09663702 1.32243728
+[2,]        2 0.31118083 0.40971253 0.45740085
+[3,]        3 0.33131510 0.36199437 0.43933281
+[4,]        4 0.96134690 0.01706105 0.02017861
+[5,]        5 0.94181499 0.02552678 0.03176702
+> Output3b$Results
+     Pathways     pValues       Est        PVE
+[1,]        1 0.002208826 1.2121906 1.47945478
+[2,]        2 0.530080842 0.2472190 0.28587151
+[3,]        3 0.499924974 0.2514774 0.30968824
+[4,]        4 0.933473894 0.0305961 0.03653262
+[5,]        5 0.744500543 0.1188532 0.14990350
+> 
+> #Output1 <- MAPITRmain(X, Y, Pathways);
+> #Output1$Results
+> Output2 <- MAPITR(X, Y, Pathways);
+> Output2$Results
+     Pathways     pValues         Est         PVE
+[1,]        1 0.003050021  1.13319607  1.40271841
+[2,]        2 0.836865829  0.07763423  0.09102879
+[3,]        3 0.351530894  0.33689982  0.42124991
+[4,]        4 0.629605756  0.17739177  0.21396398
+[5,]        5 0.845303616 -0.07056433 -0.08987725
 
 
 ```
