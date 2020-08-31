@@ -889,13 +889,20 @@ MAPITR_SimData_Pathways <- Pathways;
 
 
 # Trying to create a unit test 'sized' simulated dataset
+#20200831 NOTE -- below was for the first try at CRAN submission, the second try was with the leaner Data2 version
+#set.seed(173463); 
+#Data2 <- Data1[sample(1:nrow(Data1), 750), sample(1:ncol(Data1), 1000)];
 
-set.seed(173463); 
 library("devtools"); devtools::load_all(); 
 Data1 <- read.table("/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/ukb_chrAll_v3.British.Ran10000.QCed.reqDrop.QCed.dropRltvs.PCAdrop.sort.ImptHRC.dose.100geno.raw.edit.Simulation.cutdwn.vs3.gz", header=T);
 
-set.seed(173463); 
-Data2 <- Data1[sample(1:nrow(Data1), 750), sample(1:ncol(Data1), 1000)];
+set.seed(214756); (550) 
+test1(1245653) #"Pathway1" "2.51417753771577e-06" (500 indvs, 750 SNPs, 75 pathway SNPs)
+test1(121910061) #"Pathway1" "0.00311225500146861" "Pathway2" "0.0778531718360918"  (500 indvs, 750 SNPs, 100 pathway SNPs)
+test1(19061) #"Pathway1" "0.00305002076201233" (500 indvs, 750 SNPs, 100 pathway SNPs)
+test1 <- function(seed1) {
+set.seed(seed1)
+Data2 <- Data1[sample(1:nrow(Data1), 500), sample(1:ncol(Data1), 750)];
 #Data3 <- apply(Data2, 2, function(x) { MAF <- sum(x)/(2*length(x)); return(rbinom(length(x), 2, MAF)); }); 
 #Data3 <- c(); for (i in 1:ncol(Data2)) { Data3 <- cbind(Data3, rbinom(nrow(Data2), 2, runif(1,.4,.6))); };
 Data3 <- c(); for (i in 1:ncol(Data2)) { Data3 <- cbind(Data3, rbinom(nrow(Data2), 2, .5)); };
@@ -913,7 +920,7 @@ rho = 0.1; #Proportion of the heritability caused by additive effects {0.8, 0.5}
 
 ### Set Up Causal SNPs
 n.pathways = 2 #Number of Pathways
-ncausal1a = 75; ncausal1b = 250 #
+ncausal1a = 100; ncausal1b = 650 #
 ncausal2a = 100; ncausal2b = 1000 #
 
   #Select Causal Pathways
@@ -923,7 +930,7 @@ ncausal2a = 100; ncausal2b = 1000 #
 
   regions <- list(); regions[[1]] <- s1a;
   for (i in 2:5) {
-	regions[[i]] <- sample(snp.ids, 75, replace=F);
+	regions[[i]] <- sample(snp.ids, 100, replace=F);
   }
 
   #Additive Effects
@@ -962,8 +969,10 @@ ncausal2a = 100; ncausal2b = 1000 #
 Pathways <- matrix(unlist(regions), nrow=5, byrow=5)
 Pathways.Edits <- apply(Pathways, 1, function(x) { return(paste(x, collapse=",")); }); Pathways.Edits <- cbind(1:length(Pathways.Edits), Pathways.Edits); Pathways.Edits <- cbind(rep("Pathway", nrow(Pathways.Edits)), Pathways.Edits); Pathways.Edits.2 <- apply(Pathways.Edits[,1:2], 1, function(x) { return(paste(x, collapse="")); }); Pathways.Edits <- cbind(Pathways.Edits.2, Pathways.Edits[,3]); 
 
-Output1 <- MAPITRmain(X, y, Pathways.Edits); 
-Output1$Results
+#Output1 <- MAPITRmain(X, y, Pathways.Edits); 
+Output1 <- MAPITR(X, y, Pathways.Edits); 
+return(Output1$Results);
+}
 
 #Output writing
 write.table(Data3, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/temp1/SimData/SimData3.Genotypes.txt", quote=FALSE, row.names=FALSE, col.names=TRUE);
