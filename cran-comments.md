@@ -14,12 +14,12 @@ Maintainer: 'Michael Turchin <michael_turchin@brown.edu>'
 New submission
 
 Possibly mis-spelled words in DESCRIPTION:
-  MAPITR (13:14, 15:25, 19:42)
+  MAPITR (15:33, 19:51)
   MArginal (2:8)
   ePIstasis (2:17)
-  epistasis (14:26, 17:44)
-  epistatic (22:34)
-  iteratively (17:9)
-  phenotypes (16:28)
+  epistasis (14:36, 17:54)
+  epistatic (22:5)
+  iteratively (17:19)
+  phenotypes (16:31)
 
 These words are spelled correctly.
