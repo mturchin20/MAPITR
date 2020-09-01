@@ -37,5 +37,3 @@ Possibly mis-spelled words in DESCRIPTION:
   phenotypes (16:31)
 
 These words are spelled correctly.
-
-R
