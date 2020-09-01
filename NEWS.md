@@ -2,6 +2,19 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
+## MAPITR v1.0.3
+
+###### Summary
+* Tweaks for CRAN resubmission
+
+###### Since previous version (v1.0.2)
+* Update MIT license format for CRAN template version
+
+###### Notes
+
+###### Next steps (if applicable)
+
+
 ## MAPITR v1.0.2
 
 ###### Summary
