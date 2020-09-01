@@ -1011,7 +1011,7 @@ MAPITR_SimData_Pathways <- MAPITR_TestData_Pathways
 #save(MAPITR_TestData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Phenotype.rda");
 #save(MAPITR_TestData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_TestData_Pathways.rda");
 #save(MAPITR_SimData_Genotypes, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Genotypes.rda", compress=saveCompress2);
-#save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
+#(save(MAPITR_SimData_Phenotype, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Phenotype.rda");
 #save(MAPITR_SimData_Pathways, file="/users/mturchin/LabMisc/RamachandranLab/MAPITR/data/MAPITR_SimData_Pathways.rda");
 
 

@@ -6,7 +6,7 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There were 3 NOTEs (win-builder):
+There were 1 NOTEs (win-builder):
 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Michael Turchin <michael_turchin@brown.edu>'
@@ -23,16 +23,3 @@ Possibly mis-spelled words in DESCRIPTION:
   phenotypes (16:28)
 
 These words are spelled correctly.
-
-
-** running examples for arch 'i386' ... [13s] NOTE
-Examples with CPU (user + system) or elapsed time > 10s
-        user system elapsed
-MAPITR 18.79   0.55   12.12
-
-** running examples for arch 'x64' ... [12s] NOTE
-Examples with CPU (user + system) or elapsed time > 10s
-        user system elapsed
-MAPITR 17.77   0.53   10.67
-
-Both of these examples are close to 10s.

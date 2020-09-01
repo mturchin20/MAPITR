@@ -2,6 +2,20 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
+## MAPITR v1.0.2
+
+###### Summary
+* Tweaks for CRAN resubmission
+
+###### Since previous version (v1.0.1)
+* Made leaner version of simulated dataset for unit tests and vignette
+
+###### Notes
+* Updated unit tests and vignette to match new, leaner simulated dataset
+
+###### Next steps (if applicable)
+
+
 ## MAPITR v1.0.1
 
 ###### Summary
