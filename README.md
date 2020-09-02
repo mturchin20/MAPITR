@@ -42,7 +42,7 @@ install.packages("MAPITR")
 To install the most recent dev version of `MAPITR` from [github](https://github.com/mturchin20/MAPITR):
 ```{r}
 install.packages("devtools")
-devtools::install_github("mturchin20/MAPITR@v1.0.1", build_vignettes=TRUE)
+devtools::install_github("mturchin20/MAPITR@v1.0.4", build_vignettes=TRUE)
 ```
 
 Once you have installed the package, load the package in R:
