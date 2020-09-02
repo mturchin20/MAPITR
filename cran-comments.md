@@ -5,12 +5,12 @@ This is a resubmission. In this version I have:
   CRAN template
 * In the comments from the earlier submission it 
   was requested to include a reference for this
-  method if possible. Currently a reference is
-  not publicly available online, however we will
-  update the package accordingly once there is.
-  We are aiming to have a preprint up soon, but
-  would like to have the package set up with CRAN
-  before submission to a journal.
+  method if possible in DESCRIPTION. Currently a 
+  reference is not publicly available online, 
+  however we will update the package accordingly 
+  once there is. We are aiming to have a preprint 
+  up soon, but would like to have the package set 
+  up with CRAN before submission to a journal.
 
 ## Test environments
 * local OS X install, R 4.0.2
