@@ -57,7 +57,7 @@ Next, view and run the example code provided in the
 ## Credits
 
 The `MAPITR` R package was developed by [Michael Turchin][michaelt] at [Brown University][brownu], with contributions from
-[Peter Carbonetto][peter] and [Lorin Crawford][lorin].
+[Peter Carbonetto][peter], [Greg Darnell][greg], and [Lorin Crawford][lorin].
 
 [MAPITR-website]: http://mturchin20.github.io/MAPITR 
 [MAPITR-vignette1]: https://mturchin20.github.io/MAPITR/articles/MAPITR.Intro.SimulatedData.html
@@ -68,3 +68,4 @@ The `MAPITR` R package was developed by [Michael Turchin][michaelt] at [Brown Un
 [mit-license]: https://opensource.org/licenses/mit-license.html
 [peter]: https://pcarbo.github.io/
 [brownu]: https://www.brown.edu
+[greg]: https://www.gregdarnell.com/

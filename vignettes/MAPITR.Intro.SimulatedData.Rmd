@@ -47,8 +47,9 @@ Here you should see a matrix with two columns. The first column should list the 
 Now to run `MAPITR`, we use the following code:
 
 ```{r}
-MAPITR_Output <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways)
+MAPITR_Output <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, cores=1)
 ```
+(note that `cores=1` is included only for CRAN specifications and does not need to be included by default)
 
 And to see the output `MAPITR()` provides, we can run the following:
 
@@ -71,9 +72,10 @@ Lastly, we will go over how one can introduce a covariate to this test (on both 
 To include the top ten principal components of our simulated dataset into the `MAPITR` analysis, we can run the following: 
 ```{r}
 MAPITR_SimData_PCs[1:5,1:10]
-MAPITR_Output2 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs)
+MAPITR_Output2 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs, cores=1)
 MAPITR_Output2$Results[MAPITR_Output2$Results[,2] < .01,]
 ```
+(note that `cores=1` is included only for CRAN specifications and does not need to be included by default)
 
 And after doing so, we find that including top principal components does further help refine our epistatic signal in this simulated dataset.
 

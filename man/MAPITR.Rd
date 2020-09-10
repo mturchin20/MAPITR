@@ -11,6 +11,7 @@ MAPITR(
   Pathways,
   Covariates = NULL,
   CenterStandardize = TRUE,
+  cores = NULL,
   ...
 )
 }
@@ -41,6 +42,13 @@ centered and standardized before analysis. This is a recommended step.
 Indicate \code{FALSE} if this is a preprocessing step that has
 already been done prior to running \code{MAPITR}. The default value 
 is TRUE.}
+
+\item{cores}{A numeric value providing the expected number of cores
+if the OpenMP version of the code is being used. 
+'parallel::detectCores()' is used by default to assign this variable 
+when no value is given. A value generally should only be given when 
+needing finer control of the code or for testing purposes. The 
+default value is NULL.}
 
 \item{...}{Additional optional arguments.}
 }

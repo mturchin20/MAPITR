@@ -1,8 +1,15 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Updated the MIT license to match the specific
-  CRAN template
+* Made sure all package names, software names and 
+  API (application programming interface) names are 
+  in single quotes in title and description.
+* Added "Gregory Darnell" to the Authors@R field
+  as an author and contributor.
+* Removed the modification of '.GlobalEnv' in the
+  unit tests
+* Made sure 'cores' is always set to 1 in vignette
+  and all unit tests
 * In the comments from the earlier submission it 
   was requested to include a reference for this
   method if possible in DESCRIPTION. Currently a 

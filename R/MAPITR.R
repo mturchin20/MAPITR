@@ -31,6 +31,13 @@
 #' already been done prior to running \code{MAPITR}. The default value 
 #' is TRUE.  
 #'
+#' @param cores A numeric value providing the expected number of cores
+#' if the OpenMP version of the code is being used. 
+#' 'parallel::detectCores()' is used by default to assign this variable 
+#' when no value is given. A value generally should only be given when 
+#' needing finer control of the code or for testing purposes. The 
+#' default value is NULL. 
+#'
 #' @param ... Additional optional arguments.
 #'
 #' @return A matrix containing in the first column the list of pathways
@@ -47,19 +54,21 @@
 #'
 #' @export
 #' 
-MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterStandardize = TRUE, ...) {
-	return(MAPITRmain(Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, ...))
+MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterStandardize = TRUE, cores = NULL, ...) {
+	return(MAPITRmain(Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, cores, ...))
 }
 
 #' @importFrom parallel detectCores
-MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, GRM_Grand = NULL, GRM_Pathway = NULL, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
+MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, cores, GRM_Grand = NULL, GRM_Pathway = NULL, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
         MAPITRprocessing <- list()
 	MAPITRoutput <- list()
 	MAPITRoutput$LogFile <- c()
 	MAPITRoutput$pValues <- NULL
 	MAPITRoutput$PVE <- NULL
-	cores = parallel::detectCores()
+	if (is.null(cores)) { 
+		cores = parallel::detectCores()
+	}
 
         MAPITRoutput$LogFile <- rbind(MAPITRoutput$LogFile, paste(format(Sys.time()), " -- beginning MAPITR.", sep=""))
         if (PrintProgress == TRUE) {

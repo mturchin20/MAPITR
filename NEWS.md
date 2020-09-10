@@ -2,6 +2,21 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
+## MAPITR v1.0.5
+
+###### Summary
+* Edits for CRAN resubmission
+
+###### Since previous version (v1.0.4)
+* Removed use of '.GlobalEnv' in unit tests as requested
+* Made sure 'cores' is always set to 1 in vignettes and unit tests as requested
+* Made a formatting edit to 'Description' field in DESCRIPTION as requested
+
+###### Notes
+
+###### Next steps (if applicable)
+
+
 ## MAPITR v1.0.4
 
 ###### Summary
