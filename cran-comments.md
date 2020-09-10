@@ -7,10 +7,10 @@ This is a resubmission. In this version I have:
 * Added "Gregory Darnell" to the Authors@R field
   as an author and contributor.
 * Removed the modification of '.GlobalEnv' in the
-  unit tests
+  unit tests.
 * Made sure 'cores' is always set to 1 in vignette
-  and all unit tests
-* In the comments from the earlier submission it 
+  and all unit tests.
+* In the comments from an earlier submission it 
   was requested to include a reference for this
   method if possible in DESCRIPTION. Currently a 
   reference is not publicly available online, 
@@ -22,7 +22,7 @@ This is a resubmission. In this version I have:
 ## Test environments
 * local OS X install, R 4.0.2
 * ubuntu 16.04.6 (on travis-ci), R 4.0.0
-* win-builder (release & devel), R 4.0.2 & R 2020-08-25 r79074
+* win-builder (release & devel), R 4.0.2 & R 2020-09-09 r79174
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.
@@ -35,12 +35,11 @@ Maintainer: 'Michael Turchin <michael_turchin@brown.edu>'
 New submission
 
 Possibly mis-spelled words in DESCRIPTION:
-  MAPITR (15:33, 19:51)
   MArginal (2:8)
   ePIstasis (2:17)
-  epistasis (14:36, 17:54)
-  epistatic (22:5)
-  iteratively (17:19)
-  phenotypes (16:31)
+  epistasis (16:36, 19:54)
+  epistatic (24:5)
+  iteratively (19:19)
+  phenotypes (18:31)
 
 These words are spelled correctly.
