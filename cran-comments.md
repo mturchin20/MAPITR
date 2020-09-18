@@ -1,5 +1,5 @@
-## Resubmission
-This is a resubmission. In this version I have:
+## New Version Submission
+This is a new version submission. In this version I have:
 
 * In the comments from an earlier submission it 
   was requested to include a reference for this
@@ -26,11 +26,6 @@ Maintainer: 'Michael Turchin <michael_turchin@brown.edu>'
 New submission
 
 Possibly mis-spelled words in DESCRIPTION:
-  MArginal (2:8)
-  ePIstasis (2:17)
-  epistasis (16:36, 19:54)
-  epistatic (24:5)
-  iteratively (19:19)
-  phenotypes (18:31)
+  MAPITR (19:16)
 
 These words are spelled correctly.
