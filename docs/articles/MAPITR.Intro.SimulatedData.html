@@ -85,7 +85,7 @@
       <h1 data-toc-skip>MAPITR Introduction – Simulated Data</h1>
                         <h4 class="author">Michael C Turchin</h4>
             
-            <h4 class="date">2020-09-10</h4>
+            <h4 class="date">2020-09-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mturchin20/MAPITR/blob/master/vignettes/MAPITR.Intro.SimulatedData.Rmd"><code>vignettes/MAPITR.Intro.SimulatedData.Rmd</code></a></small>
       <div class="hidden name"><code>MAPITR.Intro.SimulatedData.Rmd</code></div>
@@ -95,10 +95,9 @@
     
     
 <p>This is a simple introductory vignette to the <code>MAPITR</code> package. In this introductory example, we will use a simulated dataset to run <code>MAPITR</code> and explore some basic output. The dataset is provided with the package.</p>
-<div id="running-mapitr" class="section level2">
+<div id="loading-mapitr-and-input-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#running-mapitr" class="anchor"></a>Running <code>MAPITR</code>
-</h2>
+<a href="#loading-mapitr-and-input-data" class="anchor"></a>Loading <code>MAPITR</code> and input data</h2>
 <p>For this introductory vignette, we will be using <code>MAPITR_SimData_Phenotype</code>, <code>MAPITR_SimData_Genotypes</code>, <code>MAPITR_SimData_Pathways</code>, and <code>MAPITR_SimData_PCs</code>. These are simulated datasets created for the purposes of this vignette. To load <code>MAPITR</code> and the datasets, run the following:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"MAPITR"</span>)
 
@@ -141,9 +140,15 @@
 ## 4           17,242,560,104,96,95,406,191,266,411,230,320,311,545,591,589,386,408,227,45,616,462,414,596,196,538,226,623,82,15,66,442,500,232,173,435,564,144,693,667,608,29,563,11,28,100,61,669,463,369,221,516,267,629,401,354,138,180,670,576,33,514,429,622,148,651,277,107,535,729,181,436,733,128,119,198,206,460,372,709,485,335,428,171,495,203,554,459,42,642,351,660,605,127,14,53,416,137,41,510
 ## 5             41,553,729,696,322,38,458,684,210,450,411,457,94,185,297,494,206,104,577,539,251,274,141,8,481,124,743,734,40,45,631,705,595,397,306,440,342,525,739,575,167,360,611,348,189,50,282,357,530,133,582,464,142,722,615,151,218,288,376,154,620,727,418,541,569,265,139,284,109,533,459,605,88,136,312,359,334,82,340,486,316,66,9,391,742,404,690,91,71,456,623,536,442,273,15,329,663,373,603,5</code></pre>
 <p>Here you should see a matrix with two columns. The first column should list the names of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by <code>MAPITR</code> to extract the proper SNPs per pathway from the input genotype matrix to conduct the marginal epistasis analysis. Note that the values for this second column are not the SNP IDs (eg rsID#s) or column headers (if your genotype matrix has them), they are the specific column locations in the input genotype matrix for each SNP.</p>
+</div>
+<div id="running-mapitr" class="section level2">
+<h2 class="hasAnchor">
+<a href="#running-mapitr" class="anchor"></a>Running <code>MAPITR</code>
+</h2>
 <p>Now to run <code>MAPITR</code>, we use the following code:</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">MAPITR_Output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">cores</span><span class="kw">=</span><span class="fl">1</span>)</pre></body></html></div>
-<p>(note that <code>cores=1</code> is included only for CRAN specifications and does not need to be included by default)</p>
+<div id="note-that-cores1-is-included-only-for-cran-specifications-and-does-not-need-to-be-included-by-default-" class="section level6">
+<h6>(note that <code>cores=1</code> is included only for CRAN specifications and does not need to be included by default).</h6>
 <p>And to see the output <code><a href="../reference/MAPITR.html">MAPITR()</a></code> provides, we can run the following:</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_Output</span>$<span class="no">Results</span>)</pre></body></html></div>
 <pre><code>##      Pathways    pValues        Est        PVE
@@ -158,7 +163,12 @@
 <pre><code>##   Pathways    pValues        Est        PVE 
 ## 1.00000000 0.00511314 1.09663702 1.32243728</code></pre>
 <p>Also note this is a simulated dataset made to run quickly for this vignette – you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be &gt; 1 in real data.</p>
-<p>Lastly, we will go over how one can introduce a covariate to this test (on both sides of the model) if desired. However, we recommend that most covariates should be directly regressed out from the phenotype prior to <code>MAPITR</code> analysis. To include a covariate as part of <code>MAPITR</code> though, it is incorporated as part of the orthogonality projection matrix, H, used in equation 3 of the <a href="http://biorxiv.org/">MAPITR manuscript</a>. This projection matrix is applied to both sides of the model, meaning it is applied to both the phenotype <strong>and</strong> the genotypes, and rotates both spaces to be orthogonal to the components of H. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix.</p>
+</div>
+</div>
+<div id="incorporating-covariates" class="section level2">
+<h2 class="hasAnchor">
+<a href="#incorporating-covariates" class="anchor"></a>Incorporating covariates</h2>
+<p>Lastly, we will go over how to incorporate covariates into this test. Our main recommendation is that most covariates should be directly regressed out from the phenotype prior to <code>MAPITR</code> analysis. In the <code>MAPITR</code> <a href="http://biorxiv.org/">paper</a> this is how we correct for sex, age, and assessment center. The main <code>MAPITR</code> function also automatically regresses out the additive effects of each pathway from the phenotype. However, we also provide an option to remove the effects of a covariate from both the phenotype and genotypes – specificially this is the orthogonality projection matrix, H, used to produce equation 3 from in the <a href="http://biorxiv.org/">MAPITR manuscript</a>. This projection matrix is applied to both sides of the model, thus allowing an effect to removed both from the phenotype and the genetic relatedness matrices. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix to help remove more subtle population stratification effects from our genetic relatedness matrices.</p>
 <p>To include the top ten principal components of our simulated dataset into the <code>MAPITR</code> analysis, we can run the following:</p>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">MAPITR_SimData_PCs</span>[<span class="fl">1</span>:<span class="fl">5</span>,<span class="fl">1</span>:<span class="fl">10</span>]</pre></body></html></div>
 <pre><code>##             PC1        PC2        PC3        PC4        PC5        PC6
@@ -177,9 +187,11 @@
 <span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
 <pre><code>##    Pathways     pValues         Est         PVE 
 ## 1.000000000 0.002208826 1.212190616 1.479454779</code></pre>
-<p>(note that <code>cores=1</code> is included only for CRAN specifications and does not need to be included by default)</p>
+<div id="note-that-cores1-is-included-only-for-cran-specifications-and-does-not-need-to-be-included-by-default--1" class="section level6">
+<h6>(note that <code>cores=1</code> is included only for CRAN specifications and does not need to be included by default).</h6>
 <p>And after doing so, we find that including top principal components does further help refine our epistatic signal in this simulated dataset.</p>
 <p>For further details on the <code>MAPITR</code> model, please see the associated <a href="http://biorxiv.org/">manuscript</a>.</p>
+</div>
 </div>
   </div>
 

@@ -11,7 +11,7 @@ vignette: >
 
 This is a simple introductory vignette to the `MAPITR` package. In this introductory example, we will use a simulated dataset to run `MAPITR` and explore some basic output. The dataset is provided with the package.
 
-## Running `MAPITR`
+## Loading `MAPITR` and input data
 
 For this introductory vignette, we will be using `MAPITR_SimData_Phenotype`, `MAPITR_SimData_Genotypes`, `MAPITR_SimData_Pathways`, and `MAPITR_SimData_PCs`. These are simulated datasets created for the purposes of this vignette. To load `MAPITR` and the datasets, run the following:
 
@@ -44,12 +44,14 @@ head(MAPITR_SimData_Pathways)
 
 Here you should see a matrix with two columns. The first column should list the names of each pathway being analyzed. The second column should be a list of comma-separated column indices, representing the set of SNPs belonging to each associated pathway. These indices will be used by `MAPITR` to extract the proper SNPs per pathway from the input genotype matrix to conduct the marginal epistasis analysis. Note that the values for this second column are not the SNP IDs (eg rsID#s) or column headers (if your genotype matrix has them), they are the specific column locations in the input genotype matrix for each SNP.
 
+## Running `MAPITR`
+
 Now to run `MAPITR`, we use the following code:
 
 ```{r}
 MAPITR_Output <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, cores=1)
 ```
-(note that `cores=1` is included only for CRAN specifications and does not need to be included by default)
+###### (note that `cores=1` is included only for CRAN specifications and does not need to be included by default).
 
 And to see the output `MAPITR()` provides, we can run the following:
 
@@ -67,7 +69,9 @@ MAPITR_Output$Results[MAPITR_Output$Results[,2] < .01,]
 
 Also note this is a simulated dataset made to run quickly for this vignette -- you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be > 1 in real data.
 
-Lastly, we will go over how one can introduce a covariate to this test (on both sides of the model) if desired. However, we recommend that most covariates should be directly regressed out from the phenotype prior to `MAPITR` analysis. To include a covariate as part of `MAPITR` though, it is incorporated as part of the orthogonality projection matrix, H, used in equation 3 of the [MAPITR manuscript][MAPITR-paper]. This projection matrix is applied to both sides of the model, meaning it is applied to both the phenotype **and** the genotypes, and rotates both spaces to be orthogonal to the components of H. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix.
+## Incorporating covariates
+
+Lastly, we will go over how to incorporate covariates into this test. Our main recommendation is that most covariates should be directly regressed out from the phenotype prior to `MAPITR` analysis. In the `MAPITR` [paper][MAPITR-paper] this is how we correct for sex, age, and assessment center. The main `MAPITR` function also automatically regresses out the additive effects of each pathway from the phenotype. However, we also provide an option to remove the effects of a covariate from both the phenotype and genotypes -- specificially this is the orthogonality projection matrix, H, used to produce equation 3 from in the [MAPITR manuscript][MAPITR-paper]. This projection matrix is applied to both sides of the model, thus allowing an effect to removed both from the phenotype and the genetic relatedness matrices. By default a column of ones is included in this matrix to act as a y-intercept term. However, any additional covariates can be appended to this matrix. We currently choose to include top principal components as a part of this matrix to help remove more subtle population stratification effects from our genetic relatedness matrices.
 
 To include the top ten principal components of our simulated dataset into the `MAPITR` analysis, we can run the following: 
 ```{r}
@@ -75,7 +79,7 @@ MAPITR_SimData_PCs[1:5,1:10]
 MAPITR_Output2 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs, cores=1)
 MAPITR_Output2$Results[MAPITR_Output2$Results[,2] < .01,]
 ```
-(note that `cores=1` is included only for CRAN specifications and does not need to be included by default)
+###### (note that `cores=1` is included only for CRAN specifications and does not need to be included by default).
 
 And after doing so, we find that including top principal components does further help refine our epistatic signal in this simulated dataset.
 

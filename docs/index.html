@@ -95,7 +95,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#mapitr-marginal-epistasis-test-for-regions" class="anchor"></a>MAPITR: MArginal ePIstasis Test for Regions</h1></div>
 
-<p>The <code>MAPITR</code> R package provides accessible functions for running the algorithms described in <a href="https://www.biorxiv.org/">Turchin et al. 2020</a>. <code>MAPITR</code> itself is a variance component model that tests for marginal epistasis – the presence of <em>any</em> epistatic interactions – between a given genetic pathway and the rest of the genome. <code>MAPITR</code> expects as input a set of genotypes, a single phenotype, and a list of pathways, and returns as output for each pathway a p-value for the test against the null model of there <em>not</em> being any interactions between the pathway and the rest of the genome.</p>
+<p>The <code>MAPITR</code> R package provides accessible functions for running the algorithms described in <a href="https://www.biorxiv.org/">Turchin et al. 2020</a>. <code>MAPITR</code> itself is a variance component model that tests for marginal epistasis – the presence of <em>any</em> epistatic interactions – between a given genetic pathway and the rest of the genome. <code>MAPITR</code> expects as input a set of genotypes, a single phenotype, and a list of pathways. As output, it returns for each pathway a p-value for the test against the null model of there <em>not</em> being any interactions between the pathway and the rest of the genome.</p>
 <p>If you find a bug, or you have a question or feedback on our work, please post an <a href="https://github.com/mturchin20/MAPITR/issues">issue</a>.</p>
 <div id="citing-this-work" class="section level2">
 <h2 class="hasAnchor">
@@ -118,7 +118,7 @@
 <pre class="{r}"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("MAPITR")</a></code></pre>
 <p>To install the most recent dev version of <code>MAPITR</code> from <a href="https://github.com/mturchin20/MAPITR">github</a>:</p>
 <pre class="{r}"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("devtools")
-devtools::install_github("mturchin20/MAPITR@v1.0.4", build_vignettes=TRUE)</a></code></pre>
+devtools::install_github("mturchin20/MAPITR@v1.0.5", build_vignettes=TRUE)</a></code></pre>
 <p>Once you have installed the package, load the package in R:</p>
 <pre class="{r}"><code><a href="https://rdrr.io/pkg/MAPITR/man">library("MAPITR")</a></code></pre>
 <p>Next, view and run the example code provided in the <a href="https://mturchin20.github.io/MAPITR/articles/MAPITR.Intro.SimulatedData.html">introductory vignette</a> using simulated data.</p>
@@ -135,6 +135,8 @@ devtools::install_github("mturchin20/MAPITR@v1.0.4", build_vignettes=TRUE)</a></
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=MAPITR">https://​cloud.r-project.org/​package=MAPITR</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/mturchin20/MAPITR/">https://​github.com/​mturchin20/​MAPITR/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/mturchin20/MAPITR/issues">https://​github.com/​mturchin20/​MAPITR/​issues</a>
@@ -164,7 +166,7 @@ devtools::install_github("mturchin20/MAPITR@v1.0.4", build_vignettes=TRUE)</a></
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=MAPITR"><img src="https://www.r-pkg.org/badges/version/MAPITR" alt="CRAN status badge"></a></li>
-<li><a href="https://travis-ci.org/mturchin20/MAPITR"><img src="https://travis-ci.org/mturchin20/MAPITR.svg?branch=master" alt="Travis Build Status"></a></li>
+<li><a href="https://travis-ci.com/mturchin20/MAPITR"><img src="https://travis-ci.com/mturchin20/MAPITR.svg?branch=master" alt="Travis Build Status"></a></li>
 </ul>
 </div>
 </div>
