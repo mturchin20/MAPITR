@@ -31,12 +31,18 @@
 #' already been done prior to running \code{MAPITR}. The default value 
 #' is TRUE.  
 #'
+#' @param OpenMP A logical \code{TRUE}/\code{FALSE} flag that indicates
+#' whether OpenMP versions of \code{MAPITR} should be implemented.
+#' OpenMP versions of the underlying Rcpp code will run more quickly, 
+#' but requires the user to be operating an R version that has 
+#' been installed with OpenMP access. The default value is FALSE.
+#'
 #' @param cores A numeric value providing the expected number of cores
 #' if the OpenMP version of the code is being used. 
-#' 'parallel::detectCores()' is used by default to assign this variable 
-#' when no value is given. A value generally should only be given when 
-#' needing finer control of the code or for testing purposes. The 
-#' default value is NULL. 
+#' \code{parallel::detectCores()} is used by default to assign this 
+#' variable when no value is given. A value generally should only be 
+#' given when needing finer control of the code or for testing purposes. 
+#' The default value is NULL. 
 #'
 #' @param ... Additional optional arguments.
 #'
@@ -49,17 +55,17 @@
 #' data(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, 
 #' MAPITR_TestData_Pathways)
 #' MAPITROutput <- MAPITR(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, 
-#' MAPITR_TestData_Pathways)
+#' MAPITR_TestData_Pathways, OpenMP=FALSE)
 #' MAPITROutput$Results
 #'
 #' @export
 #' 
-MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterStandardize = TRUE, cores = NULL, ...) {
-	return(MAPITRmain(Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, cores, ...))
+MAPITR <- function (Genotypes, Phenotype, Pathways, Covariates = NULL, CenterStandardize = TRUE, OpenMP = FALSE, cores = NULL, ...) {
+	return(MAPITRmain(Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, OpenMP, cores, ...))
 }
 
 #' @importFrom parallel detectCores
-MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, cores, GRM_Grand = NULL, GRM_Pathway = NULL, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
+MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStandardize, OpenMP, cores, GRM_Grand = NULL, GRM_Pathway = NULL, RegressPhenotypes = TRUE, PrintProgress = FALSE) {
 
         MAPITRprocessing <- list()
 	MAPITRoutput <- list()
@@ -87,18 +93,37 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStanda
 	rm(MAPITRoutput.temp1)	
 
 	#Running appropriate version of MAPITR
-	if (is.null(Covariates)) {
-		MAPITRoutput.temp2 <- RunMAPITR.Base(PhenotypeMatrix, Genotypes, Pathways.Full, cores, MAPITRoutput$LogFile) 
-		MAPITRoutput$Est <- MAPITRoutput.temp2$Est; MAPITRoutput$PVE <- MAPITRoutput.temp2$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp2$Eigenvalues;
-		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
-		rm(MAPITRoutput.temp2)
-	} else if (!is.null(Covariates)) { 
-		MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, cores, MAPITRoutput$LogFile) 
-		MAPITRoutput$Est <- MAPITRoutput.temp3$Est; MAPITRoutput$PVE <- MAPITRoutput.temp3$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp3$Eigenvalues;
-		MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
-		rm(MAPITRoutput.temp3)
-	} else {
-		stop(Sys.time(), " -- 'Covariates' is neither null or not null. This should not happen. Contact current maintainer of code.")
+	if (OpenMP == "FALSE") { 
+		if (is.null(Covariates)) {
+			MAPITRoutput.temp4 <- RunMAPITR.Base.noOpenMP(PhenotypeMatrix, Genotypes, Pathways.Full, MAPITRoutput$LogFile) 
+			MAPITRoutput$Est <- MAPITRoutput.temp4$Est; MAPITRoutput$PVE <- MAPITRoutput.temp4$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp4$Eigenvalues;
+			MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp4$Est, MAPITRoutput.temp4$Eigenvalues)
+			rm(MAPITRoutput.temp4)
+		} else if (!is.null(Covariates)) { 
+			MAPITRoutput.temp5 <- RunMAPITR.wCovs.noOpenMP(PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, MAPITRoutput$LogFile) 
+			MAPITRoutput$Est <- MAPITRoutput.temp5$Est; MAPITRoutput$PVE <- MAPITRoutput.temp5$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp5$Eigenvalues;
+			MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp5$Est, MAPITRoutput.temp5$Eigenvalues)
+			rm(MAPITRoutput.temp5)
+		} else {
+			stop(Sys.time(), " -- 'Covariates' is neither null or not null. This should not happen. Contact current maintainer of code.")
+		}
+	} else if (OpenMP == "TRUE") { 
+		if (is.null(Covariates)) {
+			MAPITRoutput.temp2 <- RunMAPITR.Base(PhenotypeMatrix, Genotypes, Pathways.Full, cores, MAPITRoutput$LogFile) 
+			MAPITRoutput$Est <- MAPITRoutput.temp2$Est; MAPITRoutput$PVE <- MAPITRoutput.temp2$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp2$Eigenvalues;
+			MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp2$Est, MAPITRoutput.temp2$Eigenvalues)
+			rm(MAPITRoutput.temp2)
+		} else if (!is.null(Covariates)) { 
+			MAPITRoutput.temp3 <- RunMAPITR.wCovs(PhenotypeMatrix, Genotypes, Pathways.Full, Covariates, cores, MAPITRoutput$LogFile) 
+			MAPITRoutput$Est <- MAPITRoutput.temp3$Est; MAPITRoutput$PVE <- MAPITRoutput.temp3$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp3$Eigenvalues;
+			MAPITRoutput$pValues <- GetMAPITRpValues(MAPITRoutput.temp3$Est, MAPITRoutput.temp3$Eigenvalues)
+			rm(MAPITRoutput.temp3)
+		} else {
+			stop(Sys.time(), " -- 'Covariates' is neither null or not null. This should not happen. Contact current maintainer of code.")
+		}
+	}
+	else {
+		stop(Sys.time(), " -- 'OpenMP' is neither TRUE or FALSE. Please rerun with one of these two options.")
 	}
 		
 	#Postprocessing of results (if needed)

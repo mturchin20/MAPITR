@@ -49,9 +49,8 @@ Here you should see a matrix with two columns. The first column should list the 
 Now to run `MAPITR`, we use the following code:
 
 ```{r}
-MAPITR_Output <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, cores=1)
+MAPITR_Output <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways)
 ```
-###### (note that `cores=1` is included only for CRAN specifications and does not need to be included by default).
 
 And to see the output `MAPITR()` provides, we can run the following:
 
@@ -76,12 +75,21 @@ Lastly, we will go over how to incorporate covariates into this test. Our main r
 To include the top ten principal components of our simulated dataset into the `MAPITR` analysis, we can run the following: 
 ```{r}
 MAPITR_SimData_PCs[1:5,1:10]
-MAPITR_Output2 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs, cores=1)
+MAPITR_Output2 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs)
 MAPITR_Output2$Results[MAPITR_Output2$Results[,2] < .01,]
 ```
-###### (note that `cores=1` is included only for CRAN specifications and does not need to be included by default).
 
 And after doing so, we find that including top principal components does further help refine our epistatic signal in this simulated dataset.
+
+## Implementing OpenMP
+
+OpenMP versions of the `MAPITR` code is available. If possible, it is recommended to use OpenMP versions since it will allow the code to run more quickly. Note that OpenMP must already be intalled on your system however to run these versions of the functions. 
+
+To run OpenMP versions of `MAPITR`, use the same commands as before but with the inclusion of the following flag: `OpenMP = TRUE`. Examples are shown below:
+```
+MAPITR_Output1 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, OpenMP=TRUE)
+MAPITR_Output2 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs, OpenMP=TRUE)
+```
 
 
 For further details on the `MAPITR` model, please see the associated [manuscript][MAPITR-paper]. 

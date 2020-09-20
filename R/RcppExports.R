@@ -13,3 +13,11 @@ MAPITRBaseCovs <- function(X, Y, Z, regions, cores = 1L) {
     .Call('_MAPITR_MAPITRBaseCovs', PACKAGE = 'MAPITR', X, Y, Z, regions, cores)
 }
 
+MAPITRBase_noOpenMP <- function(X, Y, regions) {
+    .Call('_MAPITR_MAPITRBase_noOpenMP', PACKAGE = 'MAPITR', X, Y, regions)
+}
+
+MAPITRBaseCovs_noOpenMP <- function(X, Y, Z, regions) {
+    .Call('_MAPITR_MAPITRBaseCovs_noOpenMP', PACKAGE = 'MAPITR', X, Y, Z, regions)
+}
+

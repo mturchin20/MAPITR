@@ -46,11 +46,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// MAPITRBase_noOpenMP
+List MAPITRBase_noOpenMP(arma::mat X, arma::mat Y, List regions);
+RcppExport SEXP _MAPITR_MAPITRBase_noOpenMP(SEXP XSEXP, SEXP YSEXP, SEXP regionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< List >::type regions(regionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(MAPITRBase_noOpenMP(X, Y, regions));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MAPITRBaseCovs_noOpenMP
+List MAPITRBaseCovs_noOpenMP(arma::mat X, arma::mat Y, arma::mat Z, List regions);
+RcppExport SEXP _MAPITR_MAPITRBaseCovs_noOpenMP(SEXP XSEXP, SEXP YSEXP, SEXP ZSEXP, SEXP regionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< List >::type regions(regionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(MAPITRBaseCovs_noOpenMP(X, Y, Z, regions));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MAPITR_GetLinearKernel", (DL_FUNC) &_MAPITR_GetLinearKernel, 1},
     {"_MAPITR_MAPITRBase", (DL_FUNC) &_MAPITR_MAPITRBase, 4},
     {"_MAPITR_MAPITRBaseCovs", (DL_FUNC) &_MAPITR_MAPITRBaseCovs, 5},
+    {"_MAPITR_MAPITRBase_noOpenMP", (DL_FUNC) &_MAPITR_MAPITRBase_noOpenMP, 3},
+    {"_MAPITR_MAPITRBaseCovs_noOpenMP", (DL_FUNC) &_MAPITR_MAPITRBaseCovs_noOpenMP, 4},
     {NULL, NULL, 0}
 };
 

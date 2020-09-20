@@ -11,6 +11,7 @@ MAPITR(
   Pathways,
   Covariates = NULL,
   CenterStandardize = TRUE,
+  OpenMP = FALSE,
   cores = NULL,
   ...
 )
@@ -43,12 +44,18 @@ Indicate \code{FALSE} if this is a preprocessing step that has
 already been done prior to running \code{MAPITR}. The default value 
 is TRUE.}
 
+\item{OpenMP}{A logical \code{TRUE}/\code{FALSE} flag that indicates
+whether OpenMP versions of \code{MAPITR} should be implemented.
+OpenMP versions of the underlying Rcpp code will run more quickly, 
+but requires the user to be operating an R version that has 
+been installed with OpenMP access. The default value is FALSE.}
+
 \item{cores}{A numeric value providing the expected number of cores
 if the OpenMP version of the code is being used. 
-'parallel::detectCores()' is used by default to assign this variable 
-when no value is given. A value generally should only be given when 
-needing finer control of the code or for testing purposes. The 
-default value is NULL.}
+\code{parallel::detectCores()} is used by default to assign this 
+variable when no value is given. A value generally should only be 
+given when needing finer control of the code or for testing purposes. 
+The default value is NULL.}
 
 \item{...}{Additional optional arguments.}
 }
@@ -66,7 +73,7 @@ phenotype and a set of genome-wide SNPs
 data(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, 
 MAPITR_TestData_Pathways)
 MAPITROutput <- MAPITR(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, 
-MAPITR_TestData_Pathways)
+MAPITR_TestData_Pathways, OpenMP=FALSE)
 MAPITROutput$Results
 
 }
