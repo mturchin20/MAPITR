@@ -83,9 +83,9 @@ And after doing so, we find that including top principal components does further
 
 ## Implementing OpenMP
 
-OpenMP versions of the `MAPITR` code is available. If possible, it is recommended to use OpenMP versions since it will allow the code to run more quickly. Note that OpenMP must already be intalled on your system however to run these versions of the functions. 
+OpenMP versions of the `MAPITR` code is available. If possible, it is recommended to use OpenMP versions since it will allow the code to run more quickly. Note that OpenMP must already be installed on your system however to run these versions of the functions. 
 
-To run OpenMP versions of `MAPITR`, use the same commands as before but with the inclusion of the following flag: `OpenMP = TRUE`. Examples are shown below:
+To run OpenMP versions of `MAPITR`, use the same commands as before but with the inclusion of the following option: `OpenMP = TRUE`. Examples are shown below:
 ```
 MAPITR_Output1 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, OpenMP=TRUE)
 MAPITR_Output2 <- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs, OpenMP=TRUE)

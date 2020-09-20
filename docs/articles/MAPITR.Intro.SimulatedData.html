@@ -85,7 +85,7 @@
       <h1 data-toc-skip>MAPITR Introduction – Simulated Data</h1>
                         <h4 class="author">Michael C Turchin</h4>
             
-            <h4 class="date">2020-09-19</h4>
+            <h4 class="date">2020-09-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mturchin20/MAPITR/blob/master/vignettes/MAPITR.Intro.SimulatedData.Rmd"><code>vignettes/MAPITR.Intro.SimulatedData.Rmd</code></a></small>
       <div class="hidden name"><code>MAPITR.Intro.SimulatedData.Rmd</code></div>
@@ -189,8 +189,8 @@
 <div id="implementing-openmp" class="section level2">
 <h2 class="hasAnchor">
 <a href="#implementing-openmp" class="anchor"></a>Implementing OpenMP</h2>
-<p>OpenMP versions of the <code>MAPITR</code> code is available. If possible, it is recommended to use OpenMP versions since it will allow the code to run more quickly. Note that OpenMP must already be intalled on your system however to run these versions of the functions.</p>
-<p>To run OpenMP versions of <code>MAPITR</code>, use the same commands as before but with the inclusion of the following flag: <code>OpenMP = TRUE</code>. Examples are shown below:</p>
+<p>OpenMP versions of the <code>MAPITR</code> code is available. If possible, it is recommended to use OpenMP versions since it will allow the code to run more quickly. Note that OpenMP must already be installed on your system however to run these versions of the functions.</p>
+<p>To run OpenMP versions of <code>MAPITR</code>, use the same commands as before but with the inclusion of the following option: <code>OpenMP = TRUE</code>. Examples are shown below:</p>
 <pre><code>MAPITR_Output1 &lt;- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, OpenMP=TRUE)
 MAPITR_Output2 &lt;- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs, OpenMP=TRUE)</code></pre>
 <p>For further details on the <code>MAPITR</code> model, please see the associated <a href="http://biorxiv.org/">manuscript</a>.</p>

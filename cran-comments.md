@@ -15,7 +15,7 @@ This is a new version resubmission. In this version I have:
 ## Test environments
 * local OS X install, R 4.0.2
 * ubuntu 16.04.6 (on travis-ci), R 4.0.0
-* win-builder (release & devel), R 4.0.2 & R 2020-09-09 r79174
+* win-builder (release & devel), R 4.0.2 & R 2020-09-17 r79226
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.
@@ -25,9 +25,4 @@ There were 1 NOTEs (win-builder):
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Michael Turchin <michael_turchin@brown.edu>'
 
-New submission
-
-Possibly mis-spelled words in DESCRIPTION:
-  MAPITR (19:16)
-
-These words are spelled correctly.
+Days since last update: 3
