@@ -74,7 +74,7 @@ phenotype and a set of genome-wide SNPs" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAPITR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -145,6 +145,7 @@ phenotype and a set of genome-wide SNPs</p>
   <span class='no'>Pathways</span>,
   <span class='kw'>Covariates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>CenterStandardize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>OpenMP</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
@@ -190,13 +191,21 @@ already been done prior to running <code>MAPITR</code>. The default value
 is TRUE.</p></td>
     </tr>
     <tr>
+      <th>OpenMP</th>
+      <td><p>A logical <code>TRUE</code>/<code>FALSE</code> flag that indicates
+whether OpenMP versions of <code>MAPITR</code> should be implemented.
+OpenMP versions of the underlying Rcpp code will run more quickly, 
+but requires the user to be operating an R version that has 
+been installed with OpenMP access. The default value is FALSE.</p></td>
+    </tr>
+    <tr>
       <th>cores</th>
       <td><p>A numeric value providing the expected number of cores
 if the OpenMP version of the code is being used. 
-'parallel::detectCores()' is used by default to assign this variable 
-when no value is given. A value generally should only be given when 
-needing finer control of the code or for testing purposes. The 
-default value is NULL.</p></td>
+<code><a href='https://rdrr.io/r/parallel/detectCores.html'>parallel::detectCores()</a></code> is used by default to assign this 
+variable when no value is given. A value generally should only be 
+given when needing finer control of the code or for testing purposes. 
+The default value is NULL.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -216,7 +225,7 @@ associated <code>MAPITR</code> PVEs for each pathway.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>MAPITR_TestData_Genotypes</span>, <span class='no'>MAPITR_TestData_Phenotype</span>,
 <span class='no'>MAPITR_TestData_Pathways</span>)
 <span class='no'>MAPITROutput</span> <span class='kw'>&lt;-</span> <span class='fu'>MAPITR</span>(<span class='no'>MAPITR_TestData_Genotypes</span>, <span class='no'>MAPITR_TestData_Phenotype</span>,
-<span class='no'>MAPITR_TestData_Pathways</span>)
+<span class='no'>MAPITR_TestData_Pathways</span>, <span class='kw'>OpenMP</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
 <span class='no'>MAPITROutput</span>$<span class='no'>Results</span></div><div class='output co'>#&gt;      Pathways    pValues        Est        PVE
 #&gt; [1,]        1 0.00511314 1.09663702 1.32243728
 #&gt; [2,]        2 0.31118083 0.40971253 0.45740085

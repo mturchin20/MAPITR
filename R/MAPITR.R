@@ -93,7 +93,7 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStanda
 	rm(MAPITRoutput.temp1)	
 
 	#Running appropriate version of MAPITR
-	if (OpenMP == "FALSE") { 
+	if (OpenMP == FALSE) { 
 		if (is.null(Covariates)) {
 			MAPITRoutput.temp4 <- RunMAPITR.Base.noOpenMP(PhenotypeMatrix, Genotypes, Pathways.Full, MAPITRoutput$LogFile) 
 			MAPITRoutput$Est <- MAPITRoutput.temp4$Est; MAPITRoutput$PVE <- MAPITRoutput.temp4$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp4$Eigenvalues;
@@ -107,7 +107,7 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStanda
 		} else {
 			stop(Sys.time(), " -- 'Covariates' is neither null or not null. This should not happen. Contact current maintainer of code.")
 		}
-	} else if (OpenMP == "TRUE") { 
+	} else if (OpenMP == TRUE) { 
 		if (is.null(Covariates)) {
 			MAPITRoutput.temp2 <- RunMAPITR.Base(PhenotypeMatrix, Genotypes, Pathways.Full, cores, MAPITRoutput$LogFile) 
 			MAPITRoutput$Est <- MAPITRoutput.temp2$Est; MAPITRoutput$PVE <- MAPITRoutput.temp2$PVE; MAPITRoutput$Eigenvalues <- MAPITRoutput.temp2$Eigenvalues;

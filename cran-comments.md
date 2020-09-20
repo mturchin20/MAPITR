@@ -1,6 +1,8 @@
 ## New Version Submission
-This is a new version submission. In this version I have:
+This is a new version resubmission. In this version I have:
 
+* In this resubmission I have created non-
+  OpenMP versions of the code.
 * In the comments from an earlier submission it 
   was requested to include a reference for this
   method if possible in DESCRIPTION. Currently a 

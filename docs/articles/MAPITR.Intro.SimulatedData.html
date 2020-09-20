@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAPITR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
       <h1 data-toc-skip>MAPITR Introduction – Simulated Data</h1>
                         <h4 class="author">Michael C Turchin</h4>
             
-            <h4 class="date">2020-09-18</h4>
+            <h4 class="date">2020-09-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mturchin20/MAPITR/blob/master/vignettes/MAPITR.Intro.SimulatedData.Rmd"><code>vignettes/MAPITR.Intro.SimulatedData.Rmd</code></a></small>
       <div class="hidden name"><code>MAPITR.Intro.SimulatedData.Rmd</code></div>
@@ -146,9 +146,7 @@
 <a href="#running-mapitr" class="anchor"></a>Running <code>MAPITR</code>
 </h2>
 <p>Now to run <code>MAPITR</code>, we use the following code:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">MAPITR_Output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">cores</span><span class="kw">=</span><span class="fl">1</span>)</pre></body></html></div>
-<div id="note-that-cores1-is-included-only-for-cran-specifications-and-does-not-need-to-be-included-by-default-" class="section level6">
-<h6>(note that <code>cores=1</code> is included only for CRAN specifications and does not need to be included by default).</h6>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">MAPITR_Output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
 <p>And to see the output <code><a href="../reference/MAPITR.html">MAPITR()</a></code> provides, we can run the following:</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_Output</span>$<span class="no">Results</span>)</pre></body></html></div>
 <pre><code>##      Pathways    pValues        Est        PVE
@@ -163,7 +161,6 @@
 <pre><code>##   Pathways    pValues        Est        PVE 
 ## 1.00000000 0.00511314 1.09663702 1.32243728</code></pre>
 <p>Also note this is a simulated dataset made to run quickly for this vignette – you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be &gt; 1 in real data.</p>
-</div>
 </div>
 <div id="incorporating-covariates" class="section level2">
 <h2 class="hasAnchor">
@@ -183,15 +180,20 @@
 ## [3,]  2.0332192  0.9221459  1.7075565 0.4946276
 ## [4,]  1.0631471  0.9807124 -0.6004786 0.1891073
 ## [5,]  0.7364327 -0.3032539 -1.3603440 2.8166732</code></pre>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">MAPITR_Output2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">Covariates</span><span class="kw">=</span><span class="no">MAPITR_SimData_PCs</span>, <span class="kw">cores</span><span class="kw">=</span><span class="fl">1</span>)
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">MAPITR_Output2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">Covariates</span><span class="kw">=</span><span class="no">MAPITR_SimData_PCs</span>)
 <span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
 <pre><code>##    Pathways     pValues         Est         PVE 
 ## 1.000000000 0.002208826 1.212190616 1.479454779</code></pre>
-<div id="note-that-cores1-is-included-only-for-cran-specifications-and-does-not-need-to-be-included-by-default--1" class="section level6">
-<h6>(note that <code>cores=1</code> is included only for CRAN specifications and does not need to be included by default).</h6>
 <p>And after doing so, we find that including top principal components does further help refine our epistatic signal in this simulated dataset.</p>
-<p>For further details on the <code>MAPITR</code> model, please see the associated <a href="http://biorxiv.org/">manuscript</a>.</p>
 </div>
+<div id="implementing-openmp" class="section level2">
+<h2 class="hasAnchor">
+<a href="#implementing-openmp" class="anchor"></a>Implementing OpenMP</h2>
+<p>OpenMP versions of the <code>MAPITR</code> code is available. If possible, it is recommended to use OpenMP versions since it will allow the code to run more quickly. Note that OpenMP must already be intalled on your system however to run these versions of the functions.</p>
+<p>To run OpenMP versions of <code>MAPITR</code>, use the same commands as before but with the inclusion of the following flag: <code>OpenMP = TRUE</code>. Examples are shown below:</p>
+<pre><code>MAPITR_Output1 &lt;- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, OpenMP=TRUE)
+MAPITR_Output2 &lt;- MAPITR(MAPITR_SimData_Genotypes, MAPITR_SimData_Phenotype, MAPITR_SimData_Pathways, Covariates=MAPITR_SimData_PCs, OpenMP=TRUE)</code></pre>
+<p>For further details on the <code>MAPITR</code> model, please see the associated <a href="http://biorxiv.org/">manuscript</a>.</p>
 </div>
   </div>
 

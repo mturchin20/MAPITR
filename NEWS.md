@@ -2,6 +2,20 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
+## MAPITR v1.1.0
+
+###### Summary
+* Included no-OpenMP versions
+
+###### Since previous version (v1.0.6)
+* Included no-OpenMP versions of the main 'MAPITR' code
+* Updated Roxygen comments, vignette, and unit tests accordingly
+
+###### Notes
+
+###### Next steps (if applicable)
+
+
 ## MAPITR v1.0.6
 
 ###### Summary
