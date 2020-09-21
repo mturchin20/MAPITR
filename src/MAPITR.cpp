@@ -1,6 +1,8 @@
 // load Rcpp
 #include <RcppArmadillo.h>
-#include <omp.h>
+#ifdef _OPENMP
+# include <omp.h>
+#endif
 using namespace Rcpp;
 using namespace arma;
 
@@ -40,7 +42,9 @@ List MAPITRBase(arma::mat X,arma::mat Y,List regions,int cores = 1){
     //Pre-compute the Linear GSM
     arma::mat GSM = GetLinearKernel(X);
 
-    omp_set_num_threads(cores);
+    #ifdef _OPENMP
+        omp_set_num_threads(cores);
+    #endif
 #pragma omp parallel for schedule(dynamic)
     for(i=0; i<p; i++){
 	//Extract phenotype
@@ -148,7 +152,9 @@ List MAPITRBaseCovs(arma::mat X,arma::mat Y,arma::mat Z,List regions,int cores =
     //Pre-compute the Linear GSM
     arma::mat GSM = GetLinearKernel(X);
 
-    omp_set_num_threads(cores);
+    #ifdef _OPENMP
+        omp_set_num_threads(cores);
+    #endif
 #pragma omp parallel for schedule(dynamic)
     for(i=0; i<p; i++){
 	//Extract phenotype

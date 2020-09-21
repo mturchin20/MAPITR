@@ -1,8 +1,10 @@
 ## New Version Submission
 This is a new version resubmission. In this version I have:
 
-* In this resubmission I have created non-
-  OpenMP versions of the code.
+* In this resubmission I have included the
+  proper if/else code to handle non-OpenMP 
+  versions of R. This has been tested using
+  R-hub's macOS + CRAN's setup version as well
 * In the comments from an earlier submission it 
   was requested to include a reference for this
   method if possible in DESCRIPTION. Currently a 
@@ -14,6 +16,7 @@ This is a new version resubmission. In this version I have:
 
 ## Test environments
 * local OS X install, R 4.0.2
+* macOS 10.13.6 High Sierra (on R-hub), R-release, CRAN's setup
 * ubuntu 16.04.6 (on travis-ci), R 4.0.0
 * win-builder (release & devel), R 4.0.2 & R 2020-09-17 r79226
 
