@@ -2,13 +2,27 @@
 
 Version updates will be tracked and explained here. Major updates & releases will be particularly highlighted.
 
-## MAPITR v1.1.1
-* Further tweaks for no-OpenMP version to match CRAN specifications
+## MAPITR v1.1.2
 
 ###### Summary
-* Included proper 'if/else' statement in .cpp to get no-OpenMP versions working
+* Fixed pathway naming issue in results output
+
+###### Since previous version (v1.1.1)
+* Better hard-coded results output so pathway names stay intact
+* Also switched 'Results' output to be a data.frame and not a matrix 
+
+###### Notes
+
+###### Next steps (if applicable)
+
+
+## MAPITR v1.1.1
+
+###### Summary
+* Further tweaks for no-OpenMP version to match CRAN specifications
 
 ###### Since previous version (v1.1.0)
+* Included proper 'if/else' statement in .cpp to get no-OpenMP versions working
 
 ###### Notes
 * Followed some examples from https://github.com/stephenslab/mashr to fix this on recommendation from Peter
