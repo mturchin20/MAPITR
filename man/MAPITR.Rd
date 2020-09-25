@@ -60,10 +60,14 @@ The default value is NULL.}
 \item{...}{Additional optional arguments.}
 }
 \value{
-A matrix containing in the first column the list of pathways
-that were analyzed, in the second column the associated 
-\code{MAPITR} p-values for each pathway, and in the third column the
-associated \code{MAPITR} PVEs for each pathway.
+A list containing two entries. First, a dataframe (\code{Results})
+containing in the first column the list of pathways that were analyzed, 
+in the second column the associated \code{MAPITR} p-values for each 
+pathway, in the third column the associated \code{MAPITR} variance 
+component estimates for each pathway, and in the fourth column the 
+associated \code{MAPITR} PVEs for each pathway. Second, a matrix
+(\code{Eigenvalues}) containing the n associated \code{MAPITR} 
+eigenvalues for each pathway per column.
 }
 \description{
 Run \code{MAPITR} for a group of pathways on a single

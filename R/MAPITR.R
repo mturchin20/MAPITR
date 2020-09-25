@@ -46,10 +46,14 @@
 #'
 #' @param ... Additional optional arguments.
 #'
-#' @return A matrix containing in the first column the list of pathways
-#' that were analyzed, in the second column the associated 
-#' \code{MAPITR} p-values for each pathway, and in the third column the
-#' associated \code{MAPITR} PVEs for each pathway.
+#' @return A list containing two entries. First, a dataframe (\code{Results})
+#' containing in the first column the list of pathways that were analyzed, 
+#' in the second column the associated \code{MAPITR} p-values for each 
+#' pathway, in the third column the associated \code{MAPITR} variance 
+#' component estimates for each pathway, and in the fourth column the 
+#' associated \code{MAPITR} PVEs for each pathway. Second, a matrix
+#' (\code{Eigenvalues}) containing the n associated \code{MAPITR} 
+#' eigenvalues for each pathway per column. 
 #' 
 #' @examples
 #' data(MAPITR_TestData_Genotypes, MAPITR_TestData_Phenotype, 
@@ -127,10 +131,11 @@ MAPITRmain <- function (Genotypes, Phenotype, Pathways, Covariates, CenterStanda
 	}
 		
 	#Postprocessing of results (if needed)
-	Pathway.Names <- Pathways[,1] 
+	Pathway.Names <- as.character(Pathways[,1])
 
 	MAPITRoutput.Final <- list();
 	MAPITRoutput.Final.Sub1 <- cbind(Pathway.Names, MAPITRoutput$pValues, MAPITRoutput$Est, MAPITRoutput$PVE); colnames(MAPITRoutput.Final.Sub1) <- c("Pathways", "pValues", "Est", "PVE"); 
+	MAPITRoutput.Final.Sub1 <- as.data.frame(MAPITRoutput.Final.Sub1); MAPITRoutput.Final.Sub1[,1] <- as.character(MAPITRoutput.Final.Sub1[,1]); MAPITRoutput.Final.Sub1[,2] <- as.numeric(as.character(MAPITRoutput.Final.Sub1[,2])); MAPITRoutput.Final.Sub1[,3] <- as.numeric(as.character(MAPITRoutput.Final.Sub1[,3])); MAPITRoutput.Final.Sub1[,4] <- as.numeric(as.character(MAPITRoutput.Final.Sub1[,4]));
 	MAPITRoutput.Final[["Results"]] <- MAPITRoutput.Final.Sub1; MAPITRoutput.Final[["Eigenvalues"]] <- MAPITRoutput$Eigenvalues; 
 
 	return(MAPITRoutput.Final) 

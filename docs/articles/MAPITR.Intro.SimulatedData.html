@@ -85,7 +85,7 @@
       <h1 data-toc-skip>MAPITR Introduction – Simulated Data</h1>
                         <h4 class="author">Michael C Turchin</h4>
             
-            <h4 class="date">2020-09-21</h4>
+            <h4 class="date">2020-09-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mturchin20/MAPITR/blob/master/vignettes/MAPITR.Intro.SimulatedData.Rmd"><code>vignettes/MAPITR.Intro.SimulatedData.Rmd</code></a></small>
       <div class="hidden name"><code>MAPITR.Intro.SimulatedData.Rmd</code></div>
@@ -149,17 +149,17 @@
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">MAPITR_Output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>)</pre></body></html></div>
 <p>And to see the output <code><a href="../reference/MAPITR.html">MAPITR()</a></code> provides, we can run the following:</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">MAPITR_Output</span>$<span class="no">Results</span>)</pre></body></html></div>
-<pre><code>##      Pathways    pValues        Est        PVE
-## [1,]        1 0.00511314 1.09663702 1.32243728
-## [2,]        2 0.31118083 0.40971253 0.45740085
-## [3,]        3 0.33131510 0.36199437 0.43933281
-## [4,]        4 0.96134690 0.01706105 0.02017861
-## [5,]        5 0.94181499 0.02552678 0.03176702</code></pre>
+<pre><code>##   Pathways    pValues        Est        PVE
+## 1 Pathway1 0.00511314 1.09663702 1.32243728
+## 2 Pathway2 0.31118083 0.40971253 0.45740085
+## 3 Pathway3 0.33131510 0.36199437 0.43933281
+## 4 Pathway4 0.96134690 0.01706105 0.02017861
+## 5 Pathway5 0.94181499 0.02552678 0.03176702</code></pre>
 <p>The output shown from <code>MAPITR_Output$Results</code> should be a matrix with four columns. The first column should be the list of pathway names being analyzed (same order as input file), the second column should be the <code>MAPITR</code> p-values for each pathway, the third column should be the estimate of the epistatic GRM variance component (<span class="math inline">\(g_l\)</span> in equation 3 of the <code>MAPITR</code> <a href="http://biorxiv.org/">paper</a>) for each pathway, and the fourth column should be the proportion of variance explained (PVE) for the phenotype by each pathway. Note that PVE estimates here are for pathways that generally contain overlapping variants – this impacts our interpretation of PVE. When single variant models are used in complex trait analysis, which is often the case, PVE can theoretically sum to 1 across all variants. <em>A priori</em> it is unclear what PVE should theoretically sum to across multiple pathways due to this common scenario where variants are shared across pathway definitions.</p>
 <p>In this example, there should be one pathway that has a p-value below the Bonferonni-corrected threshold of .01 (.05 / 5, the number of pathways tested):</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">MAPITR_Output</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
-<pre><code>##   Pathways    pValues        Est        PVE 
-## 1.00000000 0.00511314 1.09663702 1.32243728</code></pre>
+<pre><code>##   Pathways    pValues      Est      PVE
+## 1 Pathway1 0.00511314 1.096637 1.322437</code></pre>
 <p>Also note this is a simulated dataset made to run quickly for this vignette – you will very likely need many more individuals and SNPs to identify an epistatic signal, and PVE should never be &gt; 1 in real data.</p>
 </div>
 <div id="incorporating-covariates" class="section level2">
@@ -182,8 +182,8 @@
 ## [5,]  0.7364327 -0.3032539 -1.3603440 2.8166732</code></pre>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">MAPITR_Output2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MAPITR.html">MAPITR</a></span>(<span class="no">MAPITR_SimData_Genotypes</span>, <span class="no">MAPITR_SimData_Phenotype</span>, <span class="no">MAPITR_SimData_Pathways</span>, <span class="kw">Covariates</span><span class="kw">=</span><span class="no">MAPITR_SimData_PCs</span>)
 <span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[<span class="no">MAPITR_Output2</span>$<span class="no">Results</span>[,<span class="fl">2</span>] <span class="kw">&lt;</span> <span class="fl">.01</span>,]</pre></body></html></div>
-<pre><code>##    Pathways     pValues         Est         PVE 
-## 1.000000000 0.002208826 1.212190616 1.479454779</code></pre>
+<pre><code>##   Pathways     pValues      Est      PVE
+## 1 Pathway1 0.002208826 1.212191 1.479455</code></pre>
 <p>And after doing so, we find that including top principal components does further help refine our epistatic signal in this simulated dataset.</p>
 </div>
 <div id="implementing-openmp" class="section level2">
